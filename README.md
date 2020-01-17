@@ -71,4 +71,4 @@ By default the 'Hide icons (at low zoom)', 'Areas drawn with partial fill', 'Inl
 
 **Originally Based On:**
 
-* [JOSM Default] - Core elements (https://josm.openstreetmap.de/wiki/Styles)
+* [JOSM Default](https://josm.openstreetmap.de/wiki/Styles)
