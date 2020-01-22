@@ -33,6 +33,7 @@ Use this method for manual updates
   - "+" under Active styles.
   - Name the style.
   - Add zipped paint-master repo link to 'URL / File'. 
+      - ```https://github.com/osmlab/applepaintstyles/archive/master.zip```
   - Ok.
 
 3. Installed! You should now see the paint style in the 'Map Paint Styles' window.
@@ -49,12 +50,15 @@ Use this method for automatic updates
 2. Open JOSM preferences and navigate to Map Paint Styles (third icon down, second over):
   - "+" under Active styles.
   - Name the style.
-  - Add zipped paint-master repo link to 'URL / File'. 
+  - Add zipped paint-master repo link to 'URL / File'.
+      - ```https://github.com/osmlab/applepaintstyles/archive/master.zip```
   - Ok.
 
 3. Installed! You should now see the paint style in the 'Map Paint Styles' window.
 
 ## Usage
+
+**Note** Please see out [wiki](https://github.com/osmlab/applepaintstyles/wiki/JOSM-MapCSS-Paint-Style-Wiki) for more documentation.
 
 By default the 'Hide icons (at low zoom)', 'Areas drawn with partial fill', 'Inline validation checks', 'Sensitive features', and 'Hide tagged waynodes at low zoom' settings are turned on. To enable and disable these and other settings: 
 1. Right click on the paint style -> Left click 'Style settings'
