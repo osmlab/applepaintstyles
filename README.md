@@ -24,8 +24,7 @@ Various settings and inline validation errors were added to better identify data
 
 ## Installation
 
-### Local Copy Installation
-Use this method for manual updates
+**Note:** This method ensures automatic changes to your paint style in JOSM when updates are made to this repository.
 
 1. Copy a zipped version of this repo by clicking 'Clone or download' -> and right-clicking 'Download ZIP' and selecting 'Copy Link'.
 
