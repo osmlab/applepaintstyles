@@ -27,7 +27,7 @@ Various settings and inline validation errors were added to better identify data
 ### Local Copy Installation
 Use this method for manual updates
 
-1. Copy a zipped version of this repo by clicking 'Clone or download' -> 'Download ZIP'.
+1. Copy a zipped version of this repo by clicking 'Clone or download' -> and right-clicking 'Download ZIP' and selecting 'Copy Link'.
 
 2. Open JOSM preferences and navigate to Map Paint Styles (third icon down, second over):
   - "+" under Active styles.
@@ -38,27 +38,9 @@ Use this method for manual updates
 
 3. Installed! You should now see the paint style in the 'Map Paint Styles' window.
 
-Note: If you do not download a zipped copy, all icons could be broken! 
-
-### Github Remote URL Installation
-Use this method for automatic updates
-
-1. Copy HTTPS link to GitHub by clicking 'Clone or download'
-  - Ensure dialog box says "Clone with HTTPS". If not, click 'Use HTTPS'
-  - Copy URL
-
-2. Open JOSM preferences and navigate to Map Paint Styles (third icon down, second over):
-  - "+" under Active styles.
-  - Name the style.
-  - Add zipped paint-master repo link to 'URL / File'.
-      - ```https://github.com/osmlab/applepaintstyles/archive/master.zip```
-  - Ok.
-
-3. Installed! You should now see the paint style in the 'Map Paint Styles' window.
-
 ## Usage
 
-**Note** Please see out [wiki](https://github.com/osmlab/applepaintstyles/wiki/JOSM-MapCSS-Paint-Style-Wiki) for more documentation.
+**Note:** Please see our [wiki](https://github.com/osmlab/applepaintstyles/wiki/JOSM-MapCSS-Paint-Style-Wiki) for more documentation.
 
 By default the 'Hide icons (at low zoom)', 'Areas drawn with partial fill', 'Inline validation checks', 'Sensitive features', and 'Hide tagged waynodes at low zoom' settings are turned on. To enable and disable these and other settings: 
 1. Right click on the paint style -> Left click 'Style settings'
