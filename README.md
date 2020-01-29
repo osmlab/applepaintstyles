@@ -57,3 +57,4 @@ By default the 'Hide icons (at low zoom)', 'Areas drawn with partial fill', 'Inl
 **Originally Based On:**
 
 * [JOSM Default](https://josm.openstreetmap.de/wiki/Styles)
+* [Apple Inline Validation](https://github.com/osmlab/appledata/wiki/Inline-Validation-Paint-Style-Information)
