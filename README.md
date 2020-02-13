@@ -30,10 +30,10 @@ There are two ways to install the paint style -- link to the paint style on this
 Or to download it to your computer: click 'Clone or download' then click 'Download ZIP' and save the ZIP file somewhere on your computer.
 
 2. Open JOSM preferences and navigate to Map Paint Styles (third icon down then second tab over):
-  - Click "+" next to 'Active styles'.
-  - Name the style whatever you choose.
-  - Under 'URL / File' either paste the direct link: ```https://github.com/osmlab/applepaintstyles/archive/master.zip``` or navigate to where you saved the ZIP file on your computer.
-  - Click 'Ok'.
+  - Click "+" next to 'Active styles'
+  - Name the style whatever you choose
+  - Under 'URL / File' either paste the direct link: ```https://github.com/osmlab/applepaintstyles/archive/master.zip``` or navigate to where you saved the ZIP file on your computer
+  - Click 'Ok'
 
 3. Installed! You should now see the paint style qith the name you gave it in the 'Map Paint Styles' window.
 
