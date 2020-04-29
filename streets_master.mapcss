@@ -58,7 +58,9 @@ meta {
     title: "Apple Paint Style";
     icon: "icons/mapicon.svg";
     description: "This map paint style was created to improve the visibility of the streets network for easier editing of ways, nodes, and relations in the JOSM editor.";
-    last_update: "11.22.2019";
+    last_update: "04.24.2020";
+    version: "1.1";
+    link: "https://github.com/osmlab/applepaintstyles";
  }
 
  canvas {
@@ -200,7 +202,12 @@ setting::sensitive {
   default: true;
   group: "tag_check_group";
 }
-
+setting::pedestrian {
+  type: boolean;
+  label: tr("Highlight pedestrian accessibility");
+  default: false;
+  group: "tag_check_group";
+}
 /* Create Alternative Setting Group */
 
 settings::alt_group {
@@ -340,9 +347,13 @@ node[restriction] {
     set icon_z17;
 }
 
+/***************************/
 /* Access Restriction Tags */
+/***************************/
 
-way["access"=~/^(yes|permissive|private|destination|delivery|customers|designated|discouraged|emergency|delivery|agricultural|forestry)$/],
+/* Vehicle restrictions on ways */
+
+way["access"=~/^(permissive|private|destination|delivery|customers|designated|discouraged|emergency|delivery|agricultural|forestry)$/],
 way["motor_vehicle"=~/^(yes|permissive|private|destination|delivery|customers|designated|discouraged|emergency|delivery|agricultural|forestry)$/],
 way["motorcar"=~/^(yes|permissive|private|destination|delivery|customers|designated|discouraged|emergency|delivery|agricultural|forestry)$/],
 way["vehicle"=~/^(yes|permissive|private|destination|delivery|customers|designated|discouraged|emergency|delivery|agricultural|forestry)$/] {  
@@ -356,6 +367,13 @@ way|z17-["highway"=~/^(motorway|trunk|primary|secondary|tertiary|motorway_link|t
     z-index: 1;
 }
 
+way|z17-[access=yes] {  
+    repeat-image: "presets/vehicle/restriction/vehicles_allowed.svg";
+    repeat-image-spacing: 350;
+    repeat-image-width: 23;
+    z-index: 1;
+}
+
 way[motor_vehicle=~/^(yes|permissive|designated)$/],
 way[vehicle=~/^(yes|permissive|designated|public)$/],
 way[motorcar=~/^(yes|permissive|designated|public)$/] {
@@ -364,9 +382,9 @@ way[motorcar=~/^(yes|permissive|designated|public)$/] {
 
 way[access=no]!.way_vehicles_allowed,
 way[oneway=reversible],
-way["motor_vehicle"=no],
-way["motorcar"=no],
-way["vehicle"=no] {  
+way[motor_vehicle=no],
+way[motorcar=no],
+way[vehicle=no] {  
     set .way_no_access;
 }
 
@@ -376,22 +394,24 @@ way|z17-["highway"=~/^(motorway|trunk|primary|secondary|tertiary|motorway_link|t
     repeat-image-spacing: 350;
     repeat-image-width: 23;
     z-index: 1;
-} 
+}
 
-/* Node barriers and access routing check */
+/* Vehicle restrictions on nodes */
+
+
+node["motor_vehicle"=~/^(yes|permissive|designated)$/],
+node["motorcar"=~/^(yes|permissive|designated)$/],
+node["vehicle"=~/^(yes|permissive|designated)$/] {
+    set .node_vehicle_class;
+}
+
 
 node["barrier"=~/^(toll_booth|lift_gate|sally_port|cattle_grid|entrance|border_control)$/],
-node["access"=~/^(yes|permissive|public|private)$/]["motor_vehicle"=~/^(yes|permissive|designated)$/],
-node["access"=~/^(yes|permissive|public|private)$/]["motorcar"=~/^(yes|permissive|designated)$/],
-node["access"=~/^(yes|permissive|public|private)$/]["vehicle"=~/^(yes|permissive|designated)$/] {
+node["access"=~/^(yes|permissive|public)$/].node_vehicle_class {
     set .node_vehicle_allowed;
 }
 
-node|z17-["barrier"=~/^(toll_booth|lift_gate|sally_port|cattle_grid|entrance|border_control)$/]::core_access,
-node|z17-[barrier]["access"=~/^(yes|permissive|public|private)$/]::core_access,
-node|z17-[barrier]["motor_vehicle"=~/^(yes|permissive|designated)$/]::core_access,
-node|z17-[barrier]["motorcar"=~/^(yes|permissive|designated)$/]::core_access,
-node|z17-[barrier]["vehicle"=~/^(yes|permissive|designated)$/]::core_access {
+node|z17-["barrier"=~/^(toll_booth|lift_gate|sally_port|cattle_grid|entrance|border_control)$/]::barrier_restrictions {
     symbol-shape: square;
     symbol-size: 23;
     symbol-stroke-color: orange;
@@ -399,12 +419,35 @@ node|z17-[barrier]["vehicle"=~/^(yes|permissive|designated)$/]::core_access {
     symbol-fill-color: #457585;
     symbol-fill-opacity: .7;
     z-index: -15;
-} 
+    }
 
-node|z17-["barrier"=~/^(fence|wall|gate|hedge|bollard|retaining_wall|stile|cycle_barrier|kerb|yes|block|ditch|kissing_gate|city_wall|cable_barrier|guard_rail|hedge_bank|wire_fence|line|swing_gate|chain|turnstile|embankment|field_boundary|door|hampshire_gate|wood_fence|bump_gate|bus_trap)$/]::core_access,
-node|z17-[barrier][access=no]::core_access,
-node|z17-[barrier][motor_vehicle=no]::core_access,
-node|z17-[barrier][vehicle=no]::core_access {
+node|z17-["barrier"=~/^(fence|wall|gate|hedge|bollard|retaining_wall|stile|cycle_barrier|kerb|yes|block|ditch|kissing_gate|city_wall|cable_barrier|guard_rail|hedge_bank|wire_fence|line|swing_gate|chain|turnstile|embankment|field_boundary|door|hampshire_gate|wood_fence|bump_gate|bus_trap)$/]::core_access {
+    symbol-shape: square;
+    symbol-size: 23;
+    symbol-stroke-color: red;
+    symbol-stroke-width: 2;
+    symbol-fill-color: #F5CB73;
+    symbol-fill-opacity: .7;
+    z-index: -15;
+}
+
+node|z17-[barrier]["access"=~/^(yes|permissive|public)$/]::core_access,
+node|z17-[barrier]["access"=~/^(yes|permissive|public)$/]["motor_vehicle"=~/^(yes|permissive|designated)$/]::core_access,
+node|z17-[barrier]["access"=~/^(yes|permissive|public)$/]["motorcar"=~/^(yes|permissive|designated)$/]::core_access,
+node|z17-[barrier]["access"=~/^(yes|permissive|public)$/]["vehicle"=~/^(yes|permissive|designated)$/]::core_access {
+    symbol-shape: square;
+    symbol-size: 23;
+    symbol-stroke-color: orange;
+    symbol-stroke-width: 2;
+    symbol-fill-color: #457585;
+    symbol-fill-opacity: .7;
+    z-index: -15;
+}
+
+node|z17-[barrier]["access"=~/^(no|private)$/]::node_no_access,
+node|z17-[barrier][motor_vehicle=no]::node_no_access,
+node|z17-[barrier][vehicle=no]::node_no_access,
+node|z17-[barrier][motorcar=no]::node_no_access {
     symbol-shape: square;
     symbol-size: 23;
     symbol-stroke-color: red;
@@ -474,7 +517,7 @@ node[barrier=cable_barrier] {
     set icon_z17;
 }
 node[barrier=block] {
-    icon-image: "presets/barrier/block.svg";
+    icon-image: "presets/barrier/block1.svg";
     set icon_z17;
 }
 node[barrier=chain] {
@@ -661,14 +704,12 @@ area|z18.addrBuilding[setting("Address_names")] {
                                                     Highway Styling
 \*----------------------------------------------------------------------------------------------------------------------*/
 
-way[motorroad=yes]::core_motorroad {
-    major-z-index: 9;
-    z-index: -1;
-    width: 1;
-    casing-width: .5;
-    casing-color: .1;
-    color: motorroad#3377ff;
-    opacity: 0;
+way|z17-[motorroad=yes]::core_motorroad {
+    major-z-index: 8;
+    z-index: 8;
+    repeat-image: "presets/vehicle/motorroad.svg";
+    repeat-image-spacing: 385;
+    repeat-image-width: 20;
 }
 way[highway=motorway] {
     z-index: 8;
@@ -1024,7 +1065,7 @@ node[highway=give_way] {
     set icon_z17;
 }
 node[cycleway=asl] {
-    icon-image: "presets/transport/way/asl.svg";
+    icon-image: "presets/vehicle/asl.svg";
     set icon_z17;
 }
 node[highway=traffic_signals] {
@@ -1673,6 +1714,101 @@ way[highway=unclassified][junction=circular][setting("Alt_Highways_setting")] {
     dashes: 15, 15;
 }
 
+/*******************************/
+/* Pedestrian Access Display */
+/*******************************/
+
+way|z15-["highway"=~/^(trunk|primary|secondary|trunk_link|primary_link|secondary_link|tertiary|tertiary_link|unclassified|residential|service|living_street|track|road|pedestrian|footway|bridleway|steps|path)$/] {
+  set    .pedestrian_access;
+}
+way[highway][setting("pedestrian")] {
+  width: 3;
+}
+way|z15-["highway"=~/^(motorway|motorway_link)$/][setting("pedestrian")]  {
+    casing-color: #cf142b; 
+    casing-width: 3;
+    casing-opacity: 0.5;
+}
+way|z15-["highway"=~/^(motorway|motorway_link)$/][setting("pedestrian")]::motorwayaccess  {
+    repeat-image: "presets/No-Pedestrians.png";
+    repeat-image-spacing: 200;
+    repeat-image-width: 20;
+    repeat-image-phase: 40;
+    major-z-index: 5;
+}
+way|z15-[highway=cycleway][foot!~/yes|designated|official|permissive|destination/][setting("pedestrian")]  {
+    casing-color: #cf142b; 
+    casing-width: 3;
+    casing-opacity: 0.5;
+}
+way|z15-[highway=cycleway][foot!~/yes|designated|official|permissive|destination/][setting("pedestrian")]::cyclewayaccess  {
+    repeat-image: "presets/No-Pedestrians.png";
+    repeat-image-spacing: 200;
+    repeat-image-width: 20;
+    repeat-image-phase: 40;
+    major-z-index: 5;
+}
+/* Sidewalk Styling */
+way.pedestrian_access["sidewalk"=~/^(yes|both|separate)$/][setting("pedestrian")] { 
+    casing-color: #00ab66; 
+    casing-width: 4;
+    casing-dashes: 2,7,2,3 ;
+    casing-opacity: 0.6;  
+}
+way.pedestrian_access[sidewalk=right][setting("pedestrian")] { 
+    casing-color: #00ab66; 
+    casing-width: 4;
+    casing-dashes: 2,7,2,3 ;
+    casing-offset: -4;
+    casing-opacity: 0.6; 
+}
+way.pedestrian_access[sidewalk=left][setting("pedestrian")] { 
+    casing-color: #00ab66; 
+    casing-width: 4;
+    casing-dashes: 2,7,2,3 ;
+    casing-offset: 4;
+    casing-opacity: 0.6;  
+}
+/* Foot=* Styling */
+way|z15-[highway=cycleway]["foot"=~/^(yes|designated|official|permissive|destination)$/][setting("pedestrian")]  {
+    casing-color: #00ab66; 
+    casing-width: 4;
+    casing-opacity: 0.3;
+}
+way.pedestrian_access["foot"=~/^(no|none|private)$/][setting("pedestrian")] {
+    casing-color: #cf142b; 
+    casing-width: 4;
+    casing-opacity: 0.4;
+}
+way["foot"=~/^(no|none|private)$/][setting("pedestrian")]::imagelayer {
+    repeat-image: "presets/No-Pedestrians.png";
+    repeat-image-spacing: 200;
+    repeat-image-width: 20;
+    repeat-image-phase: 40;
+    major-z-index: 5; 
+}
+way.pedestrian_access["foot"=~/^(yes|designated|official|permissive|destination)$/][setting("pedestrian")] { 
+    casing-color: #00ab66; 
+    casing-width: 4;
+    casing-opacity: 0.3;
+}
+way["foot"=~/^(yes|designated|official|permissive|destination)$/][setting("pedestrian")]::imagelayer2 { 
+    repeat-image: "presets/ped_access_allowed.png";
+    repeat-image-spacing: 200;
+    repeat-image-width: 20;
+    repeat-image-phase: 40;
+    major-z-index: 5;
+}
+way.pedestrian_access["foot"=~/^(yes|designated|official|permissive|destination)$/][sidewalk][setting("pedestrian")] { 
+    casing-color: #00ab66; 
+    casing-width: 4;
+    casing-opacity: 0.6;
+}
+way.pedestrian_access[setting("pedestrian")][!sidewalk][!foot] { 
+    casing-color: #00ab66; 
+    casing-width: 4;
+    casing-opacity: 0.3;
+}
 
 /*----------------------------------------------------------------------------------------------------------------------*\
                                               General Tags (POI, Natural, Transport)
@@ -1829,14 +1965,14 @@ way[man_made=embankment][!highway][!railway][!waterway] {
     width: 1;
     color: embankment#c14d00;
 }
-way[embankment?][highway],
-way[embankment?][railway],
-way[embankment?][waterway] {
+way[embankment?][highway]::embankment_layer,
+way[embankment?][railway]::embankment_layer,
+way[embankment?][waterway]::embankment_layer {
     repeat-image: "presets/misc/embankment-pattern-centered.png";
 }
-way[man_made=embankment][highway],
-way[man_made=embankment][railway],
-way[man_made=embankment][waterway] {
+way[man_made=embankment][highway]::embankment_layer,
+way[man_made=embankment][railway]::embankment_layer,
+way[man_made=embankment][waterway]::embankment_layer {
     repeat-image: "presets/misc/embankment-pattern.png";
     repeat-image-align: top;
     repeat-image-offset: -1;
@@ -3217,7 +3353,7 @@ node[amenity=place_of_worship][religion=zoroastrian][!is_prop_set(icon-image)] {
     set icon_z17;
 }
 node[amenity=grave_yard] {
-    icon-image: "presets/misc/landuse/graveyard.svg";
+    icon-image: "presets/landuse/graveyard.svg";
     set icon_z17;
 }
 node[amenity=crematorium][!is_prop_set(icon-image)] {
@@ -5613,10 +5749,17 @@ way[admin_level=2]::core_boundary,
 relation[admin_level=2] > way::core_boundary {
     z-index: 2;
     modifier: false;
-    width: 5;
+    width: 6;
     color: #3F3D42;
-    dashes: 30,10;
+    dashes: 25,15,15,25;
     dashes-background-color: red;
+    text: name;
+    font-size: 12;
+    text-offset: 10;
+    font-weight: bold;
+    text-color:black;
+    text-halo-color: white;
+    text-halo-radius: 1;
 }
 node[boundary=national],
 node[boundary=administrative],
@@ -6161,7 +6304,7 @@ way|z15-[highway^=trunk][setting("highway_labels")] {
     text-position: line;
     text-halo-opacity: 1;
     text-halo-radius: 1.7;
-    tect-halo-color: black;
+    text-halo-color: black;
 }
 
 way|z16[highway^=motorway][setting("highway_labels")], way|z16[highway^=trunk][setting("highway_labels")] {
@@ -6242,7 +6385,7 @@ way|z16-[highway=cycleway][setting("highway_labels")] {
     text-position: line;
     text-halo-opacity: 1;
     text-halo-radius: 1.7;
-    tect-halo-color: black;
+    text-halo-color: black;
 }
 
 way|z16[highway=unclassified][setting("highway_labels")],
@@ -7085,6 +7228,10 @@ way[highway][setting("remove_names")] {
 /**************************************/
 /* Color Stylings Based on Check Sums */
 /**************************************/
+area[!highway][building].associatedStreet_style[prop(crc)<303] {
+    color: #8B864E;
+    fill-color: #8B864E;
+}
 
 way[highway][prop(crc)<303],
 way.checkme5[prop(crc)<303], 
@@ -7092,12 +7239,15 @@ way.checkme3[prop(crc)<303],
 way.checkme6[prop(crc)<303],
 way.checkme7[prop(crc)<303],
 way.checkme8[prop(crc)<303],
-way.associatedStreet_style[prop(crc)<303],
-area[building].associatedStreet_style[prop(crc)<303] {
+way.associatedStreet_style[prop(crc)<303] {
     casing-width: 1.5;
     casing-color: black;
-    color: #8B864E;
-    fill-color: #8B864E;
+    color: #8B864E
+}
+
+area[!highway][building].associatedStreet_style[prop(crc)>=303][prop(crc)<606] {
+    color: #b88142;
+    fill-color: #b88142;
 }
 
 way[highway][prop(crc)>=303][prop(crc)<606],
@@ -7106,12 +7256,15 @@ way.checkme3[prop(crc)>=303][prop(crc)<606],
 way.checkme6[prop(crc)>=303][prop(crc)<606],
 way.checkme7[prop(crc)>=303][prop(crc)<606],
 way.checkme8[prop(crc)>=303][prop(crc)<606],
-way.associatedStreet_style[prop(crc)>=303][prop(crc)<606],
-area[building].associatedStreet_style[prop(crc)>=303][prop(crc)<606] {
+way.associatedStreet_style[prop(crc)>=303][prop(crc)<606] {
     casing-width: 1.5;
     casing-color: black;
     color: #b88142;
-    fill-color: #b88142;
+}
+
+area[!highway][building].associatedStreet_style[prop(crc)>=606][prop(crc)<909] {
+    color: #a3fe8f;
+    fill-color: #a3fe8f;
 }
 
 way[highway][prop(crc)>=606][prop(crc)<909],
@@ -7120,12 +7273,15 @@ way.checkme3[prop(crc)>=606][prop(crc)<909],
 way.checkme6[prop(crc)>=606][prop(crc)<909],
 way.checkme7[prop(crc)>=606][prop(crc)<909],
 way.checkme8[prop(crc)>=606][prop(crc)<909],
-way.associatedStreet_style[prop(crc)>=606][prop(crc)<909],
-area[building].associatedStreet_style[prop(crc)>=606][prop(crc)<909] {
+way.associatedStreet_style[prop(crc)>=606][prop(crc)<909] {
     casing-width: 1.5;
     casing-color: black;
     color: #a3fe8f;
-    fill-color: #a3fe8f;
+}
+
+area[!highway][building].associatedStreet_style[prop(crc)>=909][prop(crc)<1212] {
+    color: #b8674c;
+    fill-color: #b8674c;
 }
 
 way[highway][prop(crc)>=909][prop(crc)<1212],
@@ -7134,12 +7290,15 @@ way.checkme3[prop(crc)>=909][prop(crc)<1212],
 way.checkme6[prop(crc)>=909][prop(crc)<1212], 
 way.checkme7[prop(crc)>=909][prop(crc)<1212],
 way.checkme8[prop(crc)>=909][prop(crc)<1212],
-way.associatedStreet_style[prop(crc)>=909][prop(crc)<1212],
-area[building].associatedStreet_style[prop(crc)>=909][prop(crc)<1212] {
+way.associatedStreet_style[prop(crc)>=909][prop(crc)<1212] {
     casing-width: 1.5;
     casing-color: black;
     color: #b8674c;
-    fill-color: #b8674c;
+}
+
+area[!highway][building].associatedStreet_style[prop(crc)>=1212][prop(crc)<1515] {
+    color: #f4ff6b;
+    fill-color: #f4ff6b;
 }
 
 way[highway][prop(crc)>=1212][prop(crc)<1515],
@@ -7148,12 +7307,15 @@ way.checkme3[prop(crc)>=1212][prop(crc)<1515],
 way.checkme6[prop(crc)>=1212][prop(crc)<1515], 
 way.checkme7[prop(crc)>=1212][prop(crc)<1515],
 way.checkme8[prop(crc)>=1212][prop(crc)<1515],
-way.associatedStreet_style[prop(crc)>=1212][prop(crc)<1515],
-area[building].associatedStreet_style[prop(crc)>=1212][prop(crc)<1515] {
+way.associatedStreet_style[prop(crc)>=1212][prop(crc)<1515] {
     casing-width: 1.5;
     casing-color: black;
     color: #f4ff6b;
-    fill-color: #f4ff6b;
+}
+
+area[!highway][building].associatedStreet_style[prop(crc)>=1515][prop(crc)<1818] {
+    color: #81c0ff;
+    fill-color: #81c0ff;
 }
 
 way[highway][prop(crc)>=1515][prop(crc)<1818],
@@ -7162,12 +7324,15 @@ way.checkme3[prop(crc)>=1515][prop(crc)<1818],
 way.checkme6[prop(crc)>=1515][prop(crc)<1818],
 way.checkme7[prop(crc)>=1515][prop(crc)<1818],
 way.checkme8[prop(crc)>=1515][prop(crc)<1818],
-way.associatedStreet_style[prop(crc)>=1515][prop(crc)<1818],
-area[building].associatedStreet_style[prop(crc)>=1515][prop(crc)<1818] {
+way.associatedStreet_style[prop(crc)>=1515][prop(crc)<1818] {
     casing-width: 1.5;
     casing-color: black;
     color: #81c0ff;
-    fill-color: #81c0ff;
+}
+
+area[!highway][building].associatedStreet_style[prop(crc)>=1818][prop(crc)<2121] {
+    color: #6b8e23;
+    fill-color: #6b8e23;
 }
 
 way[highway][prop(crc)>=1818][prop(crc)<2121],
@@ -7176,13 +7341,15 @@ way.checkme3[prop(crc)>=1818][prop(crc)<2121],
 way.checkme6[prop(crc)>=1818][prop(crc)<2121],
 way.checkme7[prop(crc)>=1818][prop(crc)<2121],
 way.checkme8[prop(crc)>=1818][prop(crc)<2121],
-way.associatedStreet_style[prop(crc)>=1818][prop(crc)<2121],
-area[building].associatedStreet_style[prop(crc)>=1818][prop(crc)<2121] {
+way.associatedStreet_style[prop(crc)>=1818][prop(crc)<2121] {
     casing-width: 1.5;
     casing-color: black;
     color: #6b8e23;
-    fill-color: #6b8e23;
+}
 
+area[!highway][building].associatedStreet_style[prop(crc)>=2121][prop(crc)<2424] {
+    color: #e1bd6a;
+    fill-color: #e1bd6a;
 }
 
 way[highway][prop(crc)>=2121][prop(crc)<2424],
@@ -7191,12 +7358,15 @@ way.checkme3[prop(crc)>=2121][prop(crc)<2424],
 way.checkme6[prop(crc)>=2121][prop(crc)<2424],
 way.checkme7[prop(crc)>=2121][prop(crc)<2424],
 way.checkme8[prop(crc)>=2121][prop(crc)<2424],
-way.associatedStreet_style[prop(crc)>=2121][prop(crc)<2424],
-area[building].associatedStreet_style[prop(crc)>=2121][prop(crc)<2424] {
+way.associatedStreet_style[prop(crc)>=2121][prop(crc)<2424] {
     casing-width: 1.5;
     casing-color: black;
     color: #e1bd6a;
-    fill-color: #e1bd6a;
+}
+
+area[!highway][building].associatedStreet_style[prop(crc)>=2424][prop(crc)<2727] {
+    color: #7fffd4;
+    fill-color: #7fffd4;
 }
 
 way[highway][prop(crc)>=2424][prop(crc)<2727],
@@ -7205,12 +7375,15 @@ way.checkme3[prop(crc)>=2424][prop(crc)<2727],
 way.checkme6[prop(crc)>=2424][prop(crc)<2727],
 way.checkme7[prop(crc)>=2424][prop(crc)<2727],
 way.checkme8[prop(crc)>=2424][prop(crc)<2727],
-way.associatedStreet_style[prop(crc)>=2424][prop(crc)<2727],
-area[building].associatedStreet_style[prop(crc)>=2424][prop(crc)<2727] {
+way.associatedStreet_style[prop(crc)>=2424][prop(crc)<2727] {
     casing-width: 1.5;
     casing-color: black;
     color: #7fffd4;
-    fill-color: #7fffd4;
+}
+
+area[!highway][building].associatedStreet_style[prop(crc)>=2727][prop(crc)<3030] {
+    color: #8a2be2;
+    fill-color: #8a2be2;
 }
 
 way[highway][prop(crc)>=2727][prop(crc)<3030],
@@ -7219,12 +7392,15 @@ way.checkme3[prop(crc)>=2727][prop(crc)<3030],
 way.checkme6[prop(crc)>=2727][prop(crc)<3030],
 way.checkme7[prop(crc)>=2727][prop(crc)<3030],
 way.checkme8[prop(crc)>=2727][prop(crc)<3030],
-way.associatedStreet_style[prop(crc)>=2727][prop(crc)<3030],
-area[building].associatedStreet_style[prop(crc)>=2727][prop(crc)<3030] {
+way.associatedStreet_style[prop(crc)>=2424][prop(crc)<2727] {
     casing-width: 1.5;
     casing-color: black;
     color: #8a2be2;
-    fill-color: #8a2be2;
+}
+
+area[!highway][building].associatedStreet_style[prop(crc)>=3030][prop(crc)<3333] {
+    color: #a52a2a;
+    fill-color: #a52a2a;
 }
 
 way[highway][prop(crc)>=3030][prop(crc)<3333],
@@ -7233,12 +7409,15 @@ way.checkme3[prop(crc)>=3030][prop(crc)<3333],
 way.checkme6[prop(crc)>=3030][prop(crc)<3333],
 way.checkme7[prop(crc)>=3030][prop(crc)<3333],
 way.checkme8[prop(crc)>=3030][prop(crc)<3333],
-way.associatedStreet_style[prop(crc)>=3030][prop(crc)<3333],
-area[building].associatedStreet_style[prop(crc)>=3030][prop(crc)<3333] {
+way.associatedStreet_style[prop(crc)>=3030][prop(crc)<3333] {
     casing-width: 1.5;
     casing-color: black;
     color: #a52a2a;
-    fill-color: #a52a2a;
+}
+
+area[!highway][building].associatedStreet_style[prop(crc)>=3333][prop(crc)<3636] {
+    color: #f0b9a6;
+    fill-color: #f0b9a6;
 }
 
 way[highway][prop(crc)>=3333][prop(crc)<3636],
@@ -7247,26 +7426,32 @@ way.checkme3[prop(crc)>=3333][prop(crc)<3636],
 way.checkme6[prop(crc)>=3333][prop(crc)<3636],
 way.checkme7[prop(crc)>=3333][prop(crc)<3636],
 way.checkme8[prop(crc)>=3333][prop(crc)<3636],
-way.associatedStreet_style[prop(crc)>=3333][prop(crc)<3636],
-area[building].associatedStreet_style[prop(crc)>=3333][prop(crc)<3636] {
+way.associatedStreet_style[prop(crc)>=3333][prop(crc)<3636] {
     casing-width: 1.5;
     casing-color: black;
     color: #f0b9a6;
-    fill-color: #f0b9a6;
+}
+
+area[!highway][building].associatedStreet_style[prop(crc)>=3636][prop(crc)<3939] {
+    color: #8fbc8f;
+    fill-color: #8fbc8f;
 }
 
 way[highway][prop(crc)>=3636][prop(crc)<3939],
-way.checkme5[prop(crc)>=3636][prop(crc)<3939], 
+way.checkme5[prop(crc)>=3636][prop(crc)<3939],
 way.checkme3[prop(crc)>=3636][prop(crc)<3939],
 way.checkme6[prop(crc)>=3636][prop(crc)<3939],
 way.checkme7[prop(crc)>=3636][prop(crc)<3939],
 way.checkme8[prop(crc)>=3636][prop(crc)<3939],
-way.associatedStreet_style[prop(crc)>=3636][prop(crc)<3939],
-area[building].associatedStreet_style[prop(crc)>=3636][prop(crc)<3939] {
+way.associatedStreet_style[prop(crc)>=3636][prop(crc)<3939] {
     casing-width: 1.5;
     casing-color: black;
     color: #8fbc8f;
-    fill-color: #8fbc8f;
+}
+
+area[!highway][building].associatedStreet_style[prop(crc)>=3939][prop(crc)<4242] {
+    color: #1b7777;
+    fill-color: #1b7777;
 }
 
 way[highway][prop(crc)>=3939][prop(crc)<4242],
@@ -7275,12 +7460,15 @@ way.checkme3[prop(crc)>=3939][prop(crc)<4242],
 way.checkme6[prop(crc)>=3939][prop(crc)<4242],
 way.checkme7[prop(crc)>=3939][prop(crc)<4242],
 way.checkme8[prop(crc)>=3939][prop(crc)<4242],
-way.associatedStreet_style[prop(crc)>=3939][prop(crc)<4242],
-area[building].associatedStreet_style[prop(crc)>=3939][prop(crc)<4242] {
+way.associatedStreet_style[prop(crc)>=3939][prop(crc)<4242] {
     casing-width: 1.5;
     casing-color: black;
     color: #1b7777;
-    fill-color: #1b7777;
+}
+
+area[!highway][building].associatedStreet_style[prop(crc)>=4242][prop(crc)<4545] {
+    color: #ff1493;
+    fill-color: #ff1493;
 }
 
 way[highway][prop(crc)>=4242][prop(crc)<4545],
@@ -7289,12 +7477,15 @@ way.checkme3[prop(crc)>=4242][prop(crc)<4545],
 way.checkme6[prop(crc)>=4242][prop(crc)<4545],
 way.checkme7[prop(crc)>=4242][prop(crc)<4545],
 way.checkme8[prop(crc)>=4242][prop(crc)<4545],
-way.associatedStreet_style[prop(crc)>=4242][prop(crc)<4545],
-area[building].associatedStreet_style[prop(crc)>=4242][prop(crc)<4545] {
+way.associatedStreet_style[prop(crc)>=4242][prop(crc)<4545] {
     casing-width: 1.5;
     casing-color: black;
     color: #ff1493;
-    fill-color: #ff1493;
+}
+
+area[!highway][building].associatedStreet_style[prop(crc)>=4545][prop(crc)<4848] {
+    color: #0072e2;
+    fill-color: #0072e2;
 }
 
 way[highway][prop(crc)>=4545][prop(crc)<4848],
@@ -7303,12 +7494,15 @@ way.checkme3[prop(crc)>=4545][prop(crc)<4848],
 way.checkme6[prop(crc)>=4545][prop(crc)<4848],
 way.checkme7[prop(crc)>=4545][prop(crc)<4848],
 way.checkme8[prop(crc)>=4545][prop(crc)<4848],
-way.associatedStreet_style[prop(crc)>=4545][prop(crc)<4848],
-area[building].associatedStreet_style[prop(crc)>=4545][prop(crc)<4848] {
+way.associatedStreet_style[prop(crc)>=4545][prop(crc)<4848] {
     casing-width: 1.5;
     casing-color: black;
     color: #0072e2;
-    fill-color: #0072e2;
+}
+
+area[!highway][building].associatedStreet_style[prop(crc)>=4848][prop(crc)<5151] {
+    color: #008f00;
+    fill-color: #008f00;
 }
 
 way[highway][prop(crc)>=4848][prop(crc)<5151],
@@ -7317,12 +7511,15 @@ way.checkme3[prop(crc)>=4848][prop(crc)<5151],
 way.checkme6[prop(crc)>=4848][prop(crc)<5151],
 way.checkme7[prop(crc)>=4848][prop(crc)<5151],
 way.checkme8[prop(crc)>=4848][prop(crc)<5151],
-way.associatedStreet_style[prop(crc)>=4848][prop(crc)<5151],
-area[building].associatedStreet_style[prop(crc)>=4848][prop(crc)<5151] {
+way.associatedStreet_style[prop(crc)>=4848][prop(crc)<5151] {
     casing-width: 1.5;
     casing-color: black;
     color: #008f00;
-    fill-color: #008f00;
+}
+
+area[!highway][building].associatedStreet_style[prop(crc)>=5151][prop(crc)<5454] {
+    color: #ffcc00;
+    fill-color: #ffcc00;
 }
 
 way[highway][prop(crc)>=5151][prop(crc)<5454],
@@ -7331,12 +7528,15 @@ way.checkme3[prop(crc)>=5151][prop(crc)<5454],
 way.checkme6[prop(crc)>=5151][prop(crc)<5454],
 way.checkme7[prop(crc)>=5151][prop(crc)<5454],
 way.checkme8[prop(crc)>=5151][prop(crc)<5454],
-way.associatedStreet_style[prop(crc)>=5151][prop(crc)<5454],
-area[building].associatedStreet_style[prop(crc)>=5151][prop(crc)<5454] {
+way.associatedStreet_style[prop(crc)>=5151][prop(crc)<5454] {
     casing-width: 1.5;
     casing-color: black;
     color: #ffcc00;
-    fill-color: #ffcc00;
+}
+
+area[!highway][building].associatedStreet_style[prop(crc)>=5454][prop(crc)<5757] {
+    color: #BF9017;
+    fill-color: #BF9017;
 }
 
 way[highway][prop(crc)>=5454][prop(crc)<5757],
@@ -7345,12 +7545,15 @@ way.checkme3[prop(crc)>=5454][prop(crc)<5757],
 way.checkme6[prop(crc)>=5454][prop(crc)<5757],
 way.checkme7[prop(crc)>=5454][prop(crc)<5757],
 way.checkme8[prop(crc)>=5454][prop(crc)<5757],
-way.associatedStreet_style[prop(crc)>=5454][prop(crc)<5757],
-area[building].associatedStreet_style[prop(crc)>=5454][prop(crc)<5757] {
+way.associatedStreet_style[prop(crc)>=5454][prop(crc)<5757] {
     casing-width: 1.5;
     casing-color: black;
     color: #BF9017;
-    fill-color: #BF9017;
+}
+
+area[!highway][building].associatedStreet_style[prop(crc)>=5757][prop(crc)<6060] {
+    color: #adff2f;
+    fill-color: #adff2f;
 }
 
 way[highway][prop(crc)>=5757][prop(crc)<6060],
@@ -7359,12 +7562,15 @@ way.checkme3[prop(crc)>=5757][prop(crc)<6060],
 way.checkme6[prop(crc)>=5757][prop(crc)<6060],
 way.checkme7[prop(crc)>=5757][prop(crc)<6060],
 way.checkme8[prop(crc)>=5757][prop(crc)<6060],
-way.associatedStreet_style[prop(crc)>=5757][prop(crc)<6060],
-area[building].associatedStreet_style[prop(crc)>=5757][prop(crc)<6060] {
+way.associatedStreet_style[prop(crc)>=5757][prop(crc)<6060] {
     casing-width: 1.5;
     casing-color: black;
     color: #adff2f;
-    fill-color: #adff2f;
+}
+
+area[!highway][building].associatedStreet_style[prop(crc)>=6060][prop(crc)<6363] {
+    color: #ff69b4;
+    fill-color: #ff69b4;
 }
 
 way[highway][prop(crc)>=6060][prop(crc)<6363],
@@ -7373,12 +7579,15 @@ way.checkme3[prop(crc)>=6060][prop(crc)<6363],
 way.checkme6[prop(crc)>=6060][prop(crc)<6363],
 way.checkme7[prop(crc)>=6060][prop(crc)<6363],
 way.checkme8[prop(crc)>=6060][prop(crc)<6363],
-way.associatedStreet_style[prop(crc)>=6060][prop(crc)<6363],
-area[building].associatedStreet_style[prop(crc)>=6060][prop(crc)<6363] {
+way.associatedStreet_style[prop(crc)>=6060][prop(crc)<6363] {
     casing-width: 1.5;
     casing-color: black;
     color: #ff69b4;
-    fill-color: #ff69b4;
+}
+
+area[!highway][building].associatedStreet_style[prop(crc)>=6363][prop(crc)<6666] {
+    color: #cd5c5c;
+    fill-color: #cd5c5c;
 }
 
 way[highway][prop(crc)>=6363][prop(crc)<6666],
@@ -7387,12 +7596,15 @@ way.checkme3[prop(crc)>=6363][prop(crc)<6666],
 way.checkme6[prop(crc)>=6363][prop(crc)<6666],
 way.checkme7[prop(crc)>=6363][prop(crc)<6666],
 way.checkme8[prop(crc)>=6363][prop(crc)<6666],
-way.associatedStreet_style[prop(crc)>=6363][prop(crc)<6666],
-area[building].associatedStreet_style[prop(crc)>=6363][prop(crc)<6666] {
+way.associatedStreet_style[prop(crc)>=6363][prop(crc)<6666] {
     casing-width: 1.5;
     casing-color: black;
     color: #cd5c5c;
-    fill-color: #cd5c5c;
+}
+
+area[!highway][building].associatedStreet_style[prop(crc)>=6666][prop(crc)<6969] {
+    color: #7d5a07;
+    fill-color: #7d5a07;
 }
 
 way[highway][prop(crc)>=6666][prop(crc)<6969],
@@ -7401,12 +7613,15 @@ way.checkme3[prop(crc)>=6666][prop(crc)<6969],
 way.checkme6[prop(crc)>=6666][prop(crc)<6969],
 way.checkme7[prop(crc)>=6666][prop(crc)<6969],
 way.checkme8[prop(crc)>=6666][prop(crc)<6969],
-way.associatedStreet_style[prop(crc)>=6666][prop(crc)<6969],
-area[building].associatedStreet_style[prop(crc)>=6666][prop(crc)<6969] {
+way.associatedStreet_style[prop(crc)>=6666][prop(crc)<6969] {
     casing-width: 1.5;
     casing-color: black;
     color: #7d5a07;
-    fill-color: #7d5a07;
+}
+
+area[!highway][building].associatedStreet_style[prop(crc)>=6969][prop(crc)<7272] {
+    color: #824600;
+    fill-color: #824600;
 }
 
 way[highway][prop(crc)>=6969][prop(crc)<7272],
@@ -7415,12 +7630,15 @@ way.checkme3[prop(crc)>=6969][prop(crc)<7272],
 way.checkme6[prop(crc)>=6969][prop(crc)<7272],
 way.checkme7[prop(crc)>=6969][prop(crc)<7272],
 way.checkme8[prop(crc)>=6969][prop(crc)<7272],
-way.associatedStreet_style[prop(crc)>=6969][prop(crc)<7272],
-area[building].associatedStreet_style[prop(crc)>=6969][prop(crc)<7272] {
+way.associatedStreet_style[prop(crc)>=6969][prop(crc)<7272] {
     casing-width: 1.5;
     casing-color: black;
     color: #824600;
-    fill-color: #824600;
+}
+
+area[!highway][building].associatedStreet_style[prop(crc)>=7272][prop(crc)<7575] {
+    color: #f08080;
+    fill-color: #f08080;
 }
 
 way[highway][prop(crc)>=7272][prop(crc)<7575],
@@ -7429,12 +7647,15 @@ way.checkme3[prop(crc)>=7272][prop(crc)<7575],
 way.checkme6[prop(crc)>=7272][prop(crc)<7575],
 way.checkme7[prop(crc)>=7272][prop(crc)<7575],
 way.checkme8[prop(crc)>=7272][prop(crc)<7575],
-way.associatedStreet_style[prop(crc)>=7272][prop(crc)<7575],
-area[building].associatedStreet_style[prop(crc)>=7272][prop(crc)<7575] {
+way.associatedStreet_style[prop(crc)>=7272][prop(crc)<7575] {
     casing-width: 1.5;
     casing-color: black;
     color: #f08080;
-    fill-color: #f08080;
+}
+
+area[!highway][building].associatedStreet_style[prop(crc)>=7575][prop(crc)<7878] {
+    color: #F75617;
+    fill-color: #F75617;
 }
 
 way[highway][prop(crc)>=7575][prop(crc)<7878],
@@ -7443,12 +7664,15 @@ way.checkme3[prop(crc)>=7575][prop(crc)<7878],
 way.checkme6[prop(crc)>=7575][prop(crc)<7878],
 way.checkme7[prop(crc)>=7575][prop(crc)<7878],
 way.checkme8[prop(crc)>=7575][prop(crc)<7878],
-way.associatedStreet_style[prop(crc)>=7575][prop(crc)<7878],
-area[building].associatedStreet_style[prop(crc)>=7575][prop(crc)<7878] {
+way.associatedStreet_style[prop(crc)>=7575][prop(crc)<7878] {
     casing-width: 1.5;
     casing-color: black;
     color: #F75617;
-    fill-color: #F75617;
+}
+
+area[!highway][building].associatedStreet_style[prop(crc)>=7878][prop(crc)<8181] {
+    color: #54d954;
+    fill-color: #54d954;
 }
 
 way[highway][prop(crc)>=7878][prop(crc)<8181],
@@ -7457,12 +7681,15 @@ way.checkme3[prop(crc)>=7878][prop(crc)<8181],
 way.checkme6[prop(crc)>=7878][prop(crc)<8181],
 way.checkme7[prop(crc)>=7878][prop(crc)<8181],
 way.checkme8[prop(crc)>=7878][prop(crc)<8181],
-way.associatedStreet_style[prop(crc)>=7878][prop(crc)<8181],
-area[building].associatedStreet_style[prop(crc)>=7878][prop(crc)<8181] {
+way.associatedStreet_style[prop(crc)>=7878][prop(crc)<8181] {
     casing-width: 1.5;
     casing-color: black;
     color: #54d954;
-    fill-color: #54d954;
+}
+
+area[!highway][building].associatedStreet_style[prop(crc)>=8181][prop(crc)<8484] {
+    color: #ba55d3;
+    fill-color: #ba55d3;
 }
 
 way[highway][prop(crc)>=8181][prop(crc)<8484],
@@ -7471,12 +7698,15 @@ way.checkme3[prop(crc)>=8181][prop(crc)<8484],
 way.checkme6[prop(crc)>=8181][prop(crc)<8484],
 way.checkme7[prop(crc)>=8181][prop(crc)<8484],
 way.checkme8[prop(crc)>=8181][prop(crc)<8484],
-way.associatedStreet_style[prop(crc)>=8181][prop(crc)<8484],
-area[building].associatedStreet_style[prop(crc)>=8181][prop(crc)<8484] {
+way.associatedStreet_style[prop(crc)>=8181][prop(crc)<8484] {
     casing-width: 1.5;
     casing-color: black;
     color: #ba55d3;
-    fill-color: #ba55d3;
+}
+
+area[!highway][building].associatedStreet_style[prop(crc)>=8484][prop(crc)<8787] {
+    color: #9370db;
+    fill-color: #9370db;
 }
 
 way[highway][prop(crc)>=8484][prop(crc)<8787],
@@ -7485,12 +7715,15 @@ way.checkme3[prop(crc)>=8484][prop(crc)<8787],
 way.checkme6[prop(crc)>=8484][prop(crc)<8787],
 way.checkme7[prop(crc)>=8484][prop(crc)<8787],
 way.checkme8[prop(crc)>=8484][prop(crc)<8787],
-way.associatedStreet_style[prop(crc)>=8484][prop(crc)<8787],
-area[building].associatedStreet_style[prop(crc)>=8484][prop(crc)<8787] {
+way.associatedStreet_style[prop(crc)>=8484][prop(crc)<8787] {
     casing-width: 1.5;
     casing-color: black;
     color: #9370db;
-    fill-color: #9370db;
+}
+
+area[!highway][building].associatedStreet_style[prop(crc)>=8787][prop(crc)<9090] {
+    color: #ff7c00;
+    fill-color: #ff7c00;
 }
 
 way[highway][prop(crc)>=8787][prop(crc)<9090],
@@ -7499,12 +7732,15 @@ way.checkme3[prop(crc)>=8787][prop(crc)<9090],
 way.checkme6[prop(crc)>=8787][prop(crc)<9090],
 way.checkme7[prop(crc)>=8787][prop(crc)<9090],
 way.checkme8[prop(crc)>=8787][prop(crc)<9090],
-way.associatedStreet_style[prop(crc)>=8787][prop(crc)<9090],
-area[building].associatedStreet_style[prop(crc)>=8787][prop(crc)<9090] {
+way.associatedStreet_style[prop(crc)>=8787][prop(crc)<9090] {
     casing-width: 1.5;
     casing-color: black;
     color: #ff7c00;
-    fill-color: #ff7c00;
+}
+
+area[!highway][building].associatedStreet_style[prop(crc)>=9090][prop(crc)<9393] {
+    color: #3cb371;
+    fill-color: #3cb371;
 }
 
 way[highway][prop(crc)>=9090][prop(crc)<9393],
@@ -7513,12 +7749,15 @@ way.checkme3[prop(crc)>=9090][prop(crc)<9393],
 way.checkme6[prop(crc)>=9090][prop(crc)<9393],
 way.checkme7[prop(crc)>=9090][prop(crc)<9393],
 way.checkme8[prop(crc)>=9090][prop(crc)<9393],
-way.associatedStreet_style[prop(crc)>=9090][prop(crc)<9393],
-area[building].associatedStreet_style[prop(crc)>=9090][prop(crc)<9393] {
+way.associatedStreet_style[prop(crc)>=9090][prop(crc)<9393] {
     casing-width: 1.5;
     casing-color: black;
     color: #3cb371;
-    fill-color: #3cb371;
+}
+
+area[!highway][building].associatedStreet_style[prop(crc)>=9393][prop(crc)<9696] {
+    color: #707000;
+    fill-color: #707000;
 }
 
 way[highway][prop(crc)>=9393][prop(crc)<9696],
@@ -7527,12 +7766,15 @@ way.checkme3[prop(crc)>=9393][prop(crc)<9696],
 way.checkme6[prop(crc)>=9393][prop(crc)<9696],
 way.checkme7[prop(crc)>=9393][prop(crc)<9696],
 way.checkme8[prop(crc)>=9393][prop(crc)<9696],
-way.associatedStreet_style[prop(crc)>=9393][prop(crc)<9696],
-area[building].associatedStreet_style[prop(crc)>=9393][prop(crc)<9696] {
+way.associatedStreet_style[prop(crc)>=9393][prop(crc)<9696] {
     casing-width: 1.5;
     casing-color: black;
     color: #707000;
-    fill-color: #707000;
+}
+
+area[!highway][building].associatedStreet_style[prop(crc)>=9696] {
+    color: #ff4444;
+    fill-color: #ff4444;        
 }
 
 way[highway][prop(crc)>=9696],
@@ -7541,14 +7783,11 @@ way.checkme3[prop(crc)>=9696],
 way.checkme6[prop(crc)>=9696],
 way.checkme7[prop(crc)>=9696],
 way.checkme8[prop(crc)>=9696],
-way.associatedStreet_style[prop(crc)>=9696],
-area[building].associatedStreet_style[prop(crc)>=9696] {
+way.associatedStreet_style[prop(crc)>=9696] {
     casing-width: 1.5;
     casing-color: black;
     color: #ff4444;
-    fill-color: #ff4444;        
 }
-
 
 /*----------------------------------------------------------------------------------------------------------------------*\
                                                     Inline Validation Checks
@@ -8208,6 +8447,8 @@ node|z20-24[addr:housenumber]::hn_casing {
 
 /* AREAS */
 
+/* Yellow */
+
 area:closed[admin_level=~/^(10|9|8|7)$/]:modified[setting("sensitive")],
 node:modified < area:closed[admin_level=~/^(10|9|8|7)$/][setting("sensitive")] {
     width: 10;
@@ -8222,6 +8463,59 @@ area:closed[admin_level=~/^(1|2|3|4|5|6)$/]:modified[setting("sensitive")],
 node:modified < area:closed[admin_level=~/^(1|2|3|4|5|6)$/][setting("sensitive")] {
     width: 15;
     color: red;
+    opacity: 0.7;
+    z-index: -5;
+}
+
+/* WAYS */
+
+/* Yellow */
+
+way[admin_level=~/^(10|9|8|7)$/]:modified[setting("sensitive")],
+node:modified < way[admin_level=~/^(10|9|8|7)$/][setting("sensitive")] {
+    width: 10;
+    color: yellow;
+    opacity: 0.6;
+    z-index: -5;
+}
+
+/* Red */
+
+way[admin_level=~/^(1|2|3|4|5|6)$/]:modified[setting("sensitive")],
+node:modified < way[admin_level=~/^(1|2|3|4|5|6)$/][setting("sensitive")] {
+    width: 15;
+    color: orange;
+    opacity: 0.7;
+    z-index: -5;
+}
+
+
+/* RELATIONS */
+
+/* Yellow */
+
+relation[admin_level=~/^(10|9|8|7)$/] > way
+{   set .way_members_admin2    }
+
+way.way_members_admin2:modified[setting("sensitive")],
+node:modified < way.way_members_admin2[setting("sensitive")]
+{
+    width: 10;
+    color: yellow;
+    opacity: 0.6;
+    z-index: -5;
+}
+
+/* Red */
+
+relation[admin_level=~/^(1|2|3|4|5|6)$/] > way
+{   set .way_members_admin1    }
+
+way.way_members_admin1:modified[setting("sensitive")],
+node:modified < way.way_members_admin1[setting("sensitive")]
+{
+    width: 15;
+    color: orange;
     opacity: 0.7;
     z-index: -5;
 }
@@ -8357,4 +8651,6 @@ way[highway][operator][/^ref/],
 way[highway][operator][/ref$/] {
   text: auto;
 }
+
+
 
