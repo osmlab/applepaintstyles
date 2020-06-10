@@ -58,8 +58,8 @@ meta {
     title: "Apple Paint Style";
     icon: "icons/mapicon.svg";
     description: "This map paint style was created to improve the visibility of the streets network for easier editing of ways, nodes, and relations in the JOSM editor.";
-    last_update: "04.24.2020";
-    version: "1.1";
+    last_update: "06.10.2020";
+    version: "1.2";
     link: "https://github.com/osmlab/applepaintstyles";
  }
 
@@ -906,6 +906,15 @@ way[highway=footway][footway=crossing] {
 way[highway=footway][footway=sidewalk] { 
     casing-color: gray;
     casing-width: 2;
+}
+area["area:highway"] {
+    fill-color: #b9b9b9;
+    color: #770000;
+    width: 3;
+    dashes: 9,9;
+    dashes-background-color: #E8E8E8;
+    fill-opacity: .3;
+    fill-extent: none;
 }
 
 /* Display path with bicycle/foot=designated/official as if it was cycleway/footway */
@@ -7789,6 +7798,107 @@ way.associatedStreet_style[prop(crc)>=9696] {
     color: #ff4444;
 }
 
+/********************************/
+/* Node Zoom Levels and Display */
+/********************************/
+
+/*
+Summary of different zoom levels:
+  (any zoom)    place=* and a few natural icons with their text is shown
+  |z-14         tagged way nodes are hidden completely
+  |z-15         untagged way nodes are hidden completely
+  |z16-         fixme=* and note=* symbols
+  |z17-         normal POI icons (without text),
+                street name along highway=* ways
+  |z18-         text for normal POI icons is shown
+  
+ * text size and node size is adapted according to zoom level (see style source below)
+ * all these zoom features are modifiable via style settings
+ * maxspeed icons should not be distinguishable from POIs with "icon-image" property
+*/
+
+node {
+    text: auto;
+}
+node|z-16[setting("hide_icons")],
+node|z17-[!is_prop_set("icon-image")][setting("hide_icons")]!.maxspeedclass,
+node[!is_prop_set("icon-image")][!setting("hide_icons")]!.maxspeedclass {
+    symbol-size: 2;
+    symbol-shape: square;
+    symbol-stroke-color: node_standard#ffff00;
+    major-z-index: 4.95; 
+}
+way > node|z-15!:tagged {
+    symbol-shape: none;
+}
+node:connection {
+    symbol-stroke-color: node_connection#ffff00;
+}
+node:tagged {
+    symbol-stroke-color: none;
+    symbol-fill-color: node_tagged#00ffff;
+}
+way > node|z-14[setting("hide_tagged_waynodes")]:tagged { 
+    symbol-shape: none; 
+}
+way > node|z16!:tagged {
+    symbol-size: 1; 
+}
+
+node|z17 {
+    symbol-size: 4;
+}
+way > node|z17 { 
+    symbol-size: 2; 
+}
+node|z17:connection { 
+    symbol-size: 4; 
+}
+
+node|z18 { 
+  symbol-size: 4; 
+}
+way > node|z18 { 
+    symbol-size: 3; 
+}
+node|z18:connection { 
+    symbol-size: 5; 
+}
+
+node|z19- { 
+    symbol-size: 4; 
+}
+way > node|z19- { 
+    symbol-size: 4; 
+}
+node|z19-:connection { 
+    symbol-size: 6; 
+}
+
+
+node:selected {
+    symbol-shape: square;
+    symbol-size: 6;
+    symbol-fill-color: node_selected#FF0000;
+    symbol-stroke-color: node_selected#FF0000;
+}
+
+node|z-16[setting("hide_icons")].icon_z17!.icon_z0,
+relation|z-16[type=restriction][setting("hide_icons")] {
+    icon-image: none;
+}
+node|z-17[setting("hide_icons")]!.text_z0 {
+    text: none;
+}
+
+
+node|z19,area|z19[!setting("Show_Landuse_Labels_setting")] { 
+    font-size: 9; 
+}
+node|z20-,area|z20-[!setting("Show_Landuse_Labels_setting")] { 
+    font-size: 10; 
+}
+
 /*----------------------------------------------------------------------------------------------------------------------*\
                                                     Inline Validation Checks
 \*----------------------------------------------------------------------------------------------------------------------*/
@@ -7871,6 +7981,64 @@ area:closed[building] ⧉ area:closed[building][setting("val_checks")] {
     font-weight: bold;
 }
 
+/******************************/
+/* Strange Character in Tags */
+/******************************/
+
+*[/(\+|\/|&|<|>|;|\'|\"|%|#|@|\\|,|\.|\{|\}|\?|\*|\^|\$)/][setting("val_checks")],
+*[/.*/ =~ /(\+|\/|&|<|>|%|#|\\|\{|\}|\?|\*|\^|\$)/][!/(?i)(amenity|shop|website|url|note|:conditional$)/][setting("val_checks")] {
+    color: red;
+    width: 5;
+    font-size: 15;
+    font-weight: bold;
+    text-halo-color: black;
+    text-halo-radius: 1;
+    symbol-shape: circle;
+    symbol-stroke-width: 5;
+    symbol-size: 10;
+    symbol-stroke-color: yellow;
+    symbol-fill-color: red;
+}
+
+/* Strange Character in Key */
+
+*[/(\+|\/|&|<|>|;|\'|\"|%|#|@|\\|,|\.|\{|\}|\?|\*|\^|\$)/][setting("val_checks")] {
+    set .strange_characters_key;
+}
+
+way|z16-.strange_characters_key {
+    text: tr("Strange character in tag [key]!");
+    text-position: line;
+}
+
+area|z15-.strange_characters_key:closed2 {
+    text: tr("Strange character in tag [key]!");
+    text-position: center;
+}
+
+node|z17-.strange_characters_key {
+    text: tr("Strange character in tag [key]!");
+}
+
+/* Strange Character in Value */
+
+*[/.*/ =~ /(\+|\/|&|<|>|%|#|\\|\{|\}|\?|\*|\^|\$)/][!/(?i)(amenity|shop|website|url|note|:conditional$)/][setting("val_checks")] {
+    set .strange_characters_values;
+}
+
+way|z16-.strange_characters_values {
+    text: tr("Strange character in tag [value]!");
+    text-position: line;
+}
+
+area|z15-.strange_characters_values:closed2 {
+    text: tr("Strange character in tag [value]!");
+    text-position: center;
+}
+
+node|z17-.strange_characters_values {
+    text: tr("Strange character in tag [value]!");
+}
 
 /************************/
 /* Floating Roads Check */
@@ -7992,16 +8160,13 @@ way["highway"=~/^(service|track)$/][setting("val_checks")] > node:connection[ent
 
 /* Buildings that are connected to highways (except for the excludes) are flagged */
 
-way[building][setting("val_checks")]:closed > node:connection.wayintersect!.wayexclude {
-    color: red;
-    fill-color: red;
-    fill-opacity: 0.7;
+way[building][setting("val_checks")]:closed > node|z17-:connection.wayintersect!.wayexclude {
     symbol-shape: triangle;
-    symbol-size: 25;
+    symbol-size: 15;
     symbol-fill-color: red;
-    symbol-fill-opacity: 0.6;
-    symbol-stroke-color: black;
-    symbol-stroke-width: 10;
+    symbol-fill-opacity: 0.8;
+    symbol-stroke-color: yellow;
+    symbol-stroke-width: 2;
     text: tr("Road Intersecting Building");
     font-size: 15;
     text-offset: 40;
@@ -8016,11 +8181,11 @@ way[building][setting("val_checks")]:closed > node:connection {
 node:selected.selectme {
     fill-opacity: 0.9;
     symbol-shape: triangle;
-    symbol-fill-color: yellow;
+    symbol-fill-color: black;
     symbol-fill-opacity: 1;
-    symbol-stroke-color: black;
+    symbol-stroke-color: red;
     symbol-stroke-opacity: 1;
-    symbol-stroke-width: 10;
+    symbol-stroke-width: 5;
 }
 
 /* Building inside of building Check */
@@ -8061,19 +8226,19 @@ way[highway] > node[!ford]:connection {
     set .highway_1;
 }
 
-node.building_1.water_1[setting("val_checks")],
-node.building_1.riverbank_1[setting("val_checks")],
-node.building_1.waterway_1[setting("val_checks")],
-node.waterway_1.highway_1[setting("val_checks")],
-node.water_1.highway_1[setting("val_checks")],
-node.riverbank_1.highway_1[setting("val_checks")],
-node.railway_1.waterway_1[setting("val_checks")],
-node.railway_1.riverbank_1[setting("val_checks")],
-node.railway_1.water_1[setting("val_checks")] {
+node|z17-.building_1.water_1[setting("val_checks")],
+node|z17-.building_1.riverbank_1[setting("val_checks")],
+node|z17-.building_1.waterway_1[setting("val_checks")],
+node|z17-.waterway_1.highway_1[setting("val_checks")],
+node|z17-.water_1.highway_1[setting("val_checks")],
+node|z17-.riverbank_1.highway_1[setting("val_checks")],
+node|z17-.railway_1.waterway_1[setting("val_checks")],
+node|z17-.railway_1.riverbank_1[setting("val_checks")],
+node|z17-.railway_1.water_1[setting("val_checks")] {
     symbol-size:15;
     symbol-fill-color: red;
     symbol-shape: circle;
-    symbol-stroke-width: 10;
+    symbol-stroke-width: 2;
 }
 
 /* Buildings within water */
@@ -8098,105 +8263,62 @@ area[natural=water] ⧉ area[building][setting("val_checks")] {
     font-size: 20;
 }
 
-/********************************/
-/* Node Zoom Levels and Display */
-/********************************/
+/*************************************/
+/* Invalid Multipolygon Checks  */
+/*************************************/
 
-/*
-Summary of different zoom levels:
-  (any zoom)    place=* and a few natural icons with their text is shown
-  |z-14         tagged way nodes are hidden completely
-  |z-15         untagged way nodes are hidden completely
-  |z16-         fixme=* and note=* symbols
-  |z17-         normal POI icons (without text),
-                street name along highway=* ways
-  |z18-         text for normal POI icons is shown
-  
- * text size and node size is adapted according to zoom level (see style source below)
- * all these zoom features are modifiable via style settings
- * maxspeed icons should not be distinguishable from POIs with "icon-image" property
-*/
-
-node {
-    text: auto;
-}
-node|z-16[setting("hide_icons")],
-node|z17-[!is_prop_set("icon-image")][setting("hide_icons")]!.maxspeedclass,
-node[!is_prop_set("icon-image")][!setting("hide_icons")]!.maxspeedclass {
-    symbol-size: 2;
-    symbol-shape: square;
-    symbol-stroke-color: node_standard#ffff00;
-    major-z-index: 4.95; 
-}
-way > node|z-15!:tagged {
-    symbol-shape: none;
-}
-node:connection {
-    symbol-stroke-color: node_connection#ffff00;
-}
-node:tagged {
-    symbol-stroke-color: none;
-    symbol-fill-color: node_tagged#00ffff;
-}
-way > node|z-14[setting("hide_tagged_waynodes")]:tagged { 
-    symbol-shape: none; 
-}
-way > node|z16!:tagged {
-    symbol-size: 1; 
+area:closed2[eval(JOSM_search("role:outer"))] ⧉ area:closed2[eval(JOSM_search("role:outer"))][setting("val_checks")] {
+    text: tr("Outer members overlapping");
+    font-size: 15;
+    color: #FF0000;
+    width: 1;
+    text-position: center;
+    font-weight: bold;
 }
 
-node|z17 {
-    symbol-size: 4;
-}
-way > node|z17 { 
-    symbol-size: 2; 
-}
-node|z17:connection { 
-    symbol-size: 4; 
-}
-
-node|z18 { 
-  symbol-size: 4; 
-}
-way > node|z18 { 
-    symbol-size: 3; 
-}
-node|z18:connection { 
-    symbol-size: 5; 
+area:closed2[eval(JOSM_search("role:outer"))] ⧉ area:closed2[eval(JOSM_search("role:inner"))][setting("val_checks")]  {
+    text: tr("Inner member intersects with an outer member");
+    font-size: 15;
+    color: #FF0000;
+    width: 1;
+    text-position: center;
+    font-weight: bold;
 }
 
-node|z19- { 
-    symbol-size: 4; 
-}
-way > node|z19- { 
-    symbol-size: 4; 
-}
-node|z19-:connection { 
-    symbol-size: 6; 
-}
-
-
-node:selected {
-    symbol-shape: square;
-    symbol-size: 6;
-    symbol-fill-color: node_selected#FF0000;
-    symbol-stroke-color: node_selected#FF0000;
+area:closed2[eval(JOSM_search("role:inner"))] ⊇ area:closed2[eval(JOSM_search("role:outer"))][setting("val_checks")] {
+  width: 10;
+  color: red;
+  text: tr("Outer member within an inner member");
+    font-size: 15;
+    color: #FF0000;
+    width: 1;
+    text-position: center;
+    font-weight: bold;
 }
 
-node|z-16[setting("hide_icons")].icon_z17!.icon_z0,
-relation|z-16[type=restriction][setting("hide_icons")] {
-    icon-image: none;
-}
-node|z-17[setting("hide_icons")]!.text_z0 {
-    text: none;
+/* Invalid Node Connection - This will flag when an inner member is connected to an
+out member (which is invalid), however it may flag some false positives as this does
+not evaluate the same relation, but all relations. False positives are more common with boundaries. */
+
+area[eval(JOSM_search("role:inner"))] > node:connection {
+    set .innernode;
 }
 
-
-node|z19,area|z19[!setting("Show_Landuse_Labels_setting")] { 
-    font-size: 9; 
+area[eval(JOSM_search("role:outer"))] > node:connection {
+    set .outernode;
 }
-node|z20-,area|z20-[!setting("Show_Landuse_Labels_setting")] { 
-    font-size: 10; 
+
+node|z12-.innernode.outernode[setting("val_checks")] {
+    symbol-size:8;
+    symbol-fill-color: red;
+    symbol-shape: circle;
+    symbol-stroke-width: 1;
+    text: tr("Possible error: Inner connected to Outer");
+        font-size: 12;
+        color: #FF0000;
+        width: 2;
+        text-position: center;
+        font-weight: bold;
 }
 
 /* Visible Nodes Style */
@@ -8537,21 +8659,26 @@ node[place]:modified::modified_layer {
 /* Military Base Styling */
 /*************************/
 
-* ∈ area[military][setting("sensitive")],
-* ∈ area[boundary=military][setting("sensitive")], 
-* ∈ area[landuse=military][setting("sensitive")] {
+area[military][setting("sensitive")],
+area[boundary=military][setting("sensitive")], 
+area[landuse=military][setting("sensitive")] {
     text:tr("WARNING");
     text-position: center;
     font-size: 20;
-    fill-color: #801515;
     color: #FFA500;
     width: 3;
-    fill-opacity: .5;
-    fill-extent: none;
 }
 
-area[military][building][setting("sensitive")],
-area[military=barracks][setting("sensitive")] {
+area[military][setting("sensitive")]::military,
+area[boundary=military][setting("sensitive")]::military, 
+area[landuse=military][setting("sensitive")]::military {
+    fill-color: #801515;
+    fill-opacity: .5;
+    fill-extent: none;
+    text-opacity: 0;
+}
+
+area[military][building][setting("sensitive")] {
     fill-color: #801515;
     color: building#cb9999;
     width: 2;
@@ -8651,6 +8778,3 @@ way[highway][operator][/^ref/],
 way[highway][operator][/ref$/] {
   text: auto;
 }
-
-
-
