@@ -59,7 +59,7 @@ meta {
     icon: "icons/mapicon.svg";
     description: "This map paint style was created to improve the visibility of the streets network for easier editing of ways, nodes, and relations in the JOSM editor.";
     last_update: "06.10.2020";
-    version: "1.2";
+    version: "1.2.1";
     link: "https://github.com/osmlab/applepaintstyles";
  }
 
@@ -7986,7 +7986,7 @@ area:closed[building] ⧉ area:closed[building][setting("val_checks")] {
 /******************************/
 
 *[/(\+|\/|&|<|>|;|\'|\"|%|#|@|\\|,|\.|\{|\}|\?|\*|\^|\$)/][setting("val_checks")],
-*[/.*/ =~ /(\+|\/|&|<|>|%|#|\\|\{|\}|\?|\*|\^|\$)/][!/(?i)(amenity|shop|website|url|note|:conditional$)/][setting("val_checks")] {
+*[/.*/ =~ /(\+|\/|&|<|>|%|#|\\|\{|\}|\?|\*|\^|\$)/][!/(?i)(addr|amenity|shop|website|url|note|:conditional$)/][setting("val_checks")] {
     color: red;
     width: 5;
     font-size: 15;
@@ -8022,7 +8022,7 @@ node|z17-.strange_characters_key {
 
 /* Strange Character in Value */
 
-*[/.*/ =~ /(\+|\/|&|<|>|%|#|\\|\{|\}|\?|\*|\^|\$)/][!/(?i)(amenity|shop|website|url|note|:conditional$)/][setting("val_checks")] {
+*[/.*/ =~ /(\+|\/|&|<|>|%|#|\\|\{|\}|\?|\*|\^|\$)/][!/(?i)(addr|amenity|shop|website|url|note|:conditional$)/][setting("val_checks")] {
     set .strange_characters_values;
 }
 
