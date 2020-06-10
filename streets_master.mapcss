@@ -7986,7 +7986,7 @@ area:closed[building] ⧉ area:closed[building][setting("val_checks")] {
 /******************************/
 
 *[/(\+|\/|&|<|>|;|\'|\"|%|#|@|\\|,|\.|\{|\}|\?|\*|\^|\$)/][setting("val_checks")],
-*[/.*/ =~ /(\+|\/|&|<|>|%|#|\\|\{|\}|\?|\*|\^|\$)/][!/(?i)(amenity|shop|website|url|note|:conditional$)/][setting("val_checks")] {
+*[/.*/ =~ /(\+|\/|&|<|>|%|#|\\|\{|\}|\?|\*|\^|\$)/][!/(?i)(addr|amenity|shop|website|url|note|:conditional$)/][setting("val_checks")] {
     color: red;
     width: 5;
     font-size: 15;
@@ -8022,7 +8022,7 @@ node|z17-.strange_characters_key {
 
 /* Strange Character in Value */
 
-*[/.*/ =~ /(\+|\/|&|<|>|%|#|\\|\{|\}|\?|\*|\^|\$)/][!/(?i)(amenity|shop|website|url|note|:conditional$)/][setting("val_checks")] {
+*[/.*/ =~ /(\+|\/|&|<|>|%|#|\\|\{|\}|\?|\*|\^|\$)/][!/(?i)(addr|amenity|shop|website|url|note|:conditional$)/][setting("val_checks")] {
     set .strange_characters_values;
 }
 
