@@ -59,7 +59,7 @@ meta {
     icon: "icons/mapicon.svg";
     description: "This map paint style was created to improve the visibility of the streets network for easier editing of ways, nodes, and relations in the JOSM editor.";
     last_update: "06.10.2020";
-    version: "1.2";
+    version: "1.2.1";
     link: "https://github.com/osmlab/applepaintstyles";
  }
 
