@@ -58,8 +58,8 @@ meta {
     title: "Apple Paint Style";
     icon: "icons/mapicon.svg";
     description: "This map paint style was created to improve the visibility of the streets network for easier editing of ways, nodes, and relations in the JOSM editor.";
-    last_update: "06.10.2020";
-    version: "1.2.1";
+    last_update: "06.11.2020";
+    version: "1.2.2";
     link: "https://github.com/osmlab/applepaintstyles";
  }
 
@@ -7982,11 +7982,10 @@ area:closed[building] ⧉ area:closed[building][setting("val_checks")] {
 }
 
 /******************************/
-/* Strange Character in Tags */
+/* Strange Character in Key */
 /******************************/
 
-*[/(\+|\/|&|<|>|;|\'|\"|%|#|@|\\|,|\.|\{|\}|\?|\*|\^|\$)/][setting("val_checks")],
-*[/.*/ =~ /(\+|\/|&|<|>|%|#|\\|\{|\}|\?|\*|\^|\$)/][!/(?i)(addr|amenity|shop|website|url|note|:conditional$)/][setting("val_checks")] {
+*[/(\+|\/|&|<|>|;|\'|\"|%|#|@|\\|,|\.|\{|\}|\?|\*|\^|\$)/][setting("val_checks")] {
     color: red;
     width: 5;
     font-size: 15;
@@ -7998,11 +7997,6 @@ area:closed[building] ⧉ area:closed[building][setting("val_checks")] {
     symbol-size: 10;
     symbol-stroke-color: yellow;
     symbol-fill-color: red;
-}
-
-/* Strange Character in Key */
-
-*[/(\+|\/|&|<|>|;|\'|\"|%|#|@|\\|,|\.|\{|\}|\?|\*|\^|\$)/][setting("val_checks")] {
     set .strange_characters_key;
 }
 
@@ -8018,26 +8012,6 @@ area|z15-.strange_characters_key:closed2 {
 
 node|z17-.strange_characters_key {
     text: tr("Strange character in tag [key]!");
-}
-
-/* Strange Character in Value */
-
-*[/.*/ =~ /(\+|\/|&|<|>|%|#|\\|\{|\}|\?|\*|\^|\$)/][!/(?i)(addr|amenity|shop|website|url|note|:conditional$)/][setting("val_checks")] {
-    set .strange_characters_values;
-}
-
-way|z16-.strange_characters_values {
-    text: tr("Strange character in tag [value]!");
-    text-position: line;
-}
-
-area|z15-.strange_characters_values:closed2 {
-    text: tr("Strange character in tag [value]!");
-    text-position: center;
-}
-
-node|z17-.strange_characters_values {
-    text: tr("Strange character in tag [value]!");
 }
 
 /************************/
