@@ -34,7 +34,7 @@ REPRODUCTION, MODIFICATION AND/OR DISTRIBUTION OF THE APPLE STYLE SHEET, HOWEVER
 AND WHETHER UNDER THEORY OF CONTRACT, TORT (INCLUDING NEGLIGENCE), STRICT LIABILITY OR
 OTHERWISE, EVEN IF APPLE HAS BEEN ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
-Copyright (C) 2019 Apple Inc. All Rights Reserved.
+Copyright (C) 2020 Apple Inc. All Rights Reserved.
 
 ---------------------- 
 
@@ -58,8 +58,8 @@ meta {
     title: "Apple Paint Style";
     icon: "icons/mapicon.svg";
     description: "This map paint style was created to improve the visibility of the streets network for easier editing of ways, nodes, and relations in the JOSM editor.";
-    last_update: "06.11.2020";
-    version: "1.2.2";
+    last_update: "08.11.2020";
+    version: "1.2.3";
     link: "https://github.com/osmlab/applepaintstyles";
  }
 
@@ -367,7 +367,7 @@ way|z17-["highway"=~/^(motorway|trunk|primary|secondary|tertiary|motorway_link|t
     z-index: 1;
 }
 
-way|z17-[access=yes] {  
+way|z17-[highway][access=yes] {  
     repeat-image: "presets/vehicle/restriction/vehicles_allowed.svg";
     repeat-image-spacing: 350;
     repeat-image-width: 23;
@@ -431,7 +431,6 @@ node|z17-["barrier"=~/^(fence|wall|gate|hedge|bollard|retaining_wall|stile|cycle
     z-index: -15;
 }
 
-node|z17-[barrier]["access"=~/^(yes|permissive|public)$/]::core_access,
 node|z17-[barrier]["access"=~/^(yes|permissive|public)$/]["motor_vehicle"=~/^(yes|permissive|designated)$/]::core_access,
 node|z17-[barrier]["access"=~/^(yes|permissive|public)$/]["motorcar"=~/^(yes|permissive|designated)$/]::core_access,
 node|z17-[barrier]["access"=~/^(yes|permissive|public)$/]["vehicle"=~/^(yes|permissive|designated)$/]::core_access {
@@ -445,9 +444,9 @@ node|z17-[barrier]["access"=~/^(yes|permissive|public)$/]["vehicle"=~/^(yes|perm
 }
 
 node|z17-[barrier]["access"=~/^(no|private)$/]::node_no_access,
-node|z17-[barrier][motor_vehicle=no]::node_no_access,
-node|z17-[barrier][vehicle=no]::node_no_access,
-node|z17-[barrier][motorcar=no]::node_no_access {
+node|z17-[barrier]["motor_vehicle"=~/^(no|destination)$/]::node_no_access,
+node|z17-[barrier]["vehicle"=~/^(no|destination)$/]::node_no_access,
+node|z17-[barrier]["motorcar"=~/^(no|destination)$/]::node_no_access {
     symbol-shape: square;
     symbol-size: 23;
     symbol-stroke-color: red;
@@ -892,6 +891,11 @@ way[highway=footway][area?], relation[type=multipolygon][highway=footway] {
 way[highway=footway][!area?] {
     width: 3;
     color: foot#FF6644;
+}
+way[highway=footway][area] {
+    width: 3;
+    color: foot#FF6644;
+    fill-color:#FF6644;
 }
 way[highway=path][bicycle!=designated][bicycle!=official][foot!=designated][foot!=official] {
     width: 3;
@@ -1519,74 +1523,93 @@ way|z16-[highway=cycleway] {
 
 way[highway=motorway][junction=roundabout] {
     z-index: 8;
-    width: 4;
-    casing-width: 2;
-    casing-color: #E46D31;
-    color: #000000;
-    dashes: 15, 15;
+    width: 7;
+    casing-width: 1.5;
+    casing-color: #1e375a;
+    color: #E46D31;
+    dashes: 25, 15;
+    dashes-background-color: #191919;
+    dashes-background-opacity: 0.9;
 }
 way[highway=trunk][junction=roundabout] {
     z-index: 7;
-    width: 3.7;
-    casing-width: 2;
-    casing-color: #809BC0; 
-    color: #000000;
-    dashes: 15, 15;
+    width: 6;
+    casing-width: 1.5;
+    casing-color: #1e375a; 
+    color: #809BC0;
+    dashes: 25, 15;
+    dashes-background-color: #191919;
+    dashes-background-opacity: 0.9;
 }
 way[highway=primary][junction=roundabout] {
     z-index: 6;
-    width: 3.1;
-    casing-width: 2;
-    casing-color: #CF8C8F;
-    color: #000000;
-    dashes: 15, 15;
+    width: 5;
+    casing-width: 1;
+    casing-color: #b80006;
+    color: #CF8C8F;
+    dashes: 25,15;
+    dashes-background-color: #191919;
+    dashes-background-opacity: 0.9;
 }
 way[highway=secondary][junction=roundabout] {
     z-index: 5;
-    width: 3;
-    casing-width: 2;
-    casing-color: #f2bd79;
-    color: #000000;
-    dashes: 15, 15;
+    width: 4.5;
+    casing-width: 1.5;
+    casing-color: #9B5B00;
+    color: #f2bd79;
+    dashes: 25,15;
+    dashes-background-color: #191919;
+    dashes-background-opacity: 0.9;
 }
 way[highway=tertiary][junction=roundabout] {
     z-index: 4;
-    width: 3;
-    casing-width: 2;
-    casing-color: #FFFDA6;
-    color: #000000;
-    dashes: 15, 15;
+    width: 4;
+    casing-width: 1.4;
+    casing-color: #757500;
+    color: #FFFDA6;
+    dashes: 25,15;
+    dashes-background-color: #191919;
+    dashes-background-opacity: 0.9;
 }
 way[highway=residential][junction=roundabout] {
     z-index: 3;
-    width: 2.8;
-    casing-width: 1;
-    casing-color: #E8E8E8;
-    color: #000000;
-    dashes: 15, 15;
+    width: 4;
+    casing-width: .5;
+    casing-color: #000000;
+    color: #E8E8E8;
+    dashes: 25,15;
+    dashes-background-color: #191919;
+    dashes-background-opacity: 0.9;
 }
 way[highway=service][junction=roundabout] {
     z-index: 3;
-    width: 2.8;
-    casing-width: 1.3;
-    casing-color: #45588c;
-    color: #000000;
-    dashes: 15, 15;
+    width: 4;
+    casing-width: .2;
+    casing-color: #443d3e;
+    color: #45588c;
+    dashes: 25,15;
+    dashes-background-color: #191919;
+    dashes-background-opacity: 0.9;
 }
 way[highway=unclassified][junction=roundabout] {
     z-index: 3;
     width: 4;
-    casing-width: 2;
-    casing-color: #b9b9b9;
-    color: #000000;
-    dashes: 15, 15;
+    casing-width: 1.3;
+    casing-color: #443d3e;
+    color: #b9b9b9;
+    dashes: 25,15;
+    dashes-background-color: #191919;
+    dashes-background-opacity: 0.9;
 }
 way[highway=track][junction=roundabout] {
     z-index: 3; 
-    width: 4;
+    width: 3;
+    casing-width:.3;
     dashes-background-color: rndtrack#000000;
     color: track#6e541c;
-    dashes: 15,15;
+    dashes: 25,15;
+    dashes-background-color: #191919;
+    dashes-background-opacity: 0.9;
 }
 
 area[junction=roundabout][highway=motorway_link][setting("val_checks")],
@@ -3967,8 +3990,10 @@ node[historic=tomb] {
 way[route=ski]::core_piste {
     z-index: -1;
     modifier: false;
-    width: 6;
-    color: ski#809bc0;
+    width: 4;
+    color: ski#6f778c;
+    casing-width: .7;
+    casing-color: white;
 }
 area[piste:difficulty=easy][!highway][area=yes]::core_piste {
     fill-color: piste_easy#54A73D;
@@ -3976,8 +4001,10 @@ area[piste:difficulty=easy][!highway][area=yes]::core_piste {
 way[piste:difficulty=easy]::core_piste {
     z-index: -1;
     modifier: false;
-    width: 6;
+    width: 4;
     color: piste_easy#54A73D;
+    casing-width: .7;
+    casing-color: white;
 }
 area[piste:difficulty=intermediate][!highway][area=yes]::core_piste {
     fill-color: piste_intermediate#015597;
@@ -3985,8 +4012,10 @@ area[piste:difficulty=intermediate][!highway][area=yes]::core_piste {
 way[piste:difficulty=intermediate]::core_piste {
     z-index: -1;
     modifier: false;
-    width: 6;
+    width: 4;
     color: piste_intermediate#015597;
+    casing-width: .7;
+    casing-color: white;
 }
 area[piste:difficulty=advanced][!highway][area=yes]::core_piste {
     fill-color: piste_advanced#606060;
@@ -3994,7 +4023,7 @@ area[piste:difficulty=advanced][!highway][area=yes]::core_piste {
 way[piste:difficulty=advanced]::core_piste {
     z-index: -1;
     modifier: false;
-    width: 6;
+    width: 4;
     color: piste_advanced#606060;
     casing-width: .7;
     casing-color: white;
@@ -4005,7 +4034,7 @@ area[piste:difficulty=expert][!highway][area=yes]::core_piste {
 way[piste:difficulty=expert]::core_piste {
     z-index: -1;
     modifier: false;
-    width: 6;
+    width: 4;
     color: piste_expert#000000;
     casing-width: .7;
     casing-color: white;
@@ -4016,8 +4045,10 @@ area[piste:difficulty=freeride][!highway][area=yes]::core_piste {
 way[piste:difficulty=freeride]::core_piste {
     z-index: -1;
     modifier: false;
-    width: 6;
+    width: 4;
     color: piste_freeride#ffff00;
+    casing-width: .7;
+    casing-color: white;
 }
 area[piste:difficulty=novice][!highway][area=yes]::core_piste {
     fill-color: piste_novice#00ff00;
@@ -4025,8 +4056,10 @@ area[piste:difficulty=novice][!highway][area=yes]::core_piste {
 way[piste:difficulty=novice]::core_piste {
     z-index: -1;
     modifier: false;
-    width: 6;
+    width: 4;
     color: piste_novice#00ff00;
+    casing-width: .7;
+    casing-color: white;
 }
 node[piste:type=downhill],
 node[piste:type=nordic],
@@ -5375,7 +5408,8 @@ way[railway=construction][construction=tram][!highway] {
 /****************/
 
 area[aeroway=aerodrome] {
-    fill-color: aeroway#660000;
+    color: aeroway#cc3300;
+    fill-color: aeroway#7653bd;
     width: 2;
     dashes: 9,9;
 }
@@ -5385,36 +5419,56 @@ node[aeroway=aerodrome][military!=airfield] {
     set icon_z17;
 }
 area[aeroway=terminal] {
-    fill-color: terminal#bb0000;
+    fill-color: terminal#cc3300;
 }
 node[aeroway=terminal] {
     icon-image: "presets/transport/airport/terminal.svg";
     set icon_z17;
 }
 area[aeroway=helipad] {
-    fill-color: aeroway_dark#330000;
+    fill-color: aeroway_dark#cc0000;
 }
 node[aeroway=helipad] {
     icon-image: "presets/transport/airport/helipad.svg";
     set icon_z17;
 }
-area[aeroway=runway]:closed {
-    fill-color: aeroway_dark#330000;
+way[aeroway=taxiway] {
+    width: 2;
+    color: aeroway#ffa31a;
+    dashes: 20,10;
+    dashes-background-color: brown;
+}
+area[aeroway=taxiway]:closed {
+    color: aeroway#ffa31a;
+    fill-color: #e68a00;
+}
+relation[type=multipolygon][area:aeroway=taxiway] >[role=inner] way ,
+relation[type=multipolygon][area:aeroway=taxiway] >[role=outer] way {
+    width: 2;
+    color: aeroway#ffa31a;
+    dashes: 10,20;
 }
 way[aeroway=runway] {
     width: 3;
-    color: aeroway_dark#330000;
+    color: aeroway#262626;
 }
-area[aeroway=taxiway]:closed {
-    fill-color: aeroway#660000;
+area[aeroway=runway]:closed {
+    color: aeroway#262626;
+    fill-color: #262626;
 }
-way[aeroway=taxiway] {
-    width: 2;
-    color: aeroway#660000;
+relation[type=multipolygon][area:aeroway=runway] >[role=inner] way ,
+relation[type=multipolygon][area:aeroway=runway] >[role=outer] way {
+    width: 3;
+    color: aeroway#262626;
+    dashes: 20,20;
+    casing-width: 1;
+    casing-color: #ffa31a;
+    casing-dashes: 20,20;
+    casing-linecap: round;
 }
 way[aeroway=parking_position] {
     width: 1;
-    color: aeroway#660000;
+    color: aeroway#e67300;
 }
 node[aeroway=parking_position] {
     icon-image: "presets/transport/airport/parking_position.svg";
@@ -5422,7 +5476,7 @@ node[aeroway=parking_position] {
 }
 area[aeroway=apron],
 area[aeroway=hangar] {
-    fill-color: aeroway_light#990000;
+    fill-color: aeroway_light#ffcc80;
 }
 node[aeroway=apron],
 node[aeroway=runway],
@@ -5730,8 +5784,6 @@ relation[admin_level=8] > way::core_boundary {
     dashes: 9,9;
     dashes-background-color: black;
 }
-way[admin_level=5]::core_boundary,
-relation[admin_level=5] > way::core_boundary,
 way[admin_level=6]::core_boundary,
 relation[admin_level=6] > way::core_boundary {
     z-index: 2;
@@ -5741,6 +5793,17 @@ relation[admin_level=6] > way::core_boundary {
     dashes: 9,9;
     dashes-background-color: black;
 }
+way[admin_level=5]::core_boundary,
+relation[admin_level=5] > way::core_boundary {
+    z-index: 2;
+    modifier: false;
+    width: 3;
+    color: yellow;
+    dashes: 9,9;
+    dashes-background-color: black;
+    casing-width: 2;
+    casing-color: red;
+}
 way[admin_level=3]::core_boundary,
 relation[admin_level=3] > way::core_boundary,
 way[admin_level=4]::core_boundary,
@@ -5748,9 +5811,11 @@ relation[admin_level=4] > way::core_boundary {
     z-index: 2;
     modifier: false;
     width: 4;
-    color: #DE3C00;
-    dashes: 10,20;
+    color: yellow;
+    dashes: 13,20;
     dashes-background-color: black;
+    casing-width: 3;
+    casing-color: red;
 }
 way[admin_level=1]::core_boundary,
 relation[admin_level=1] > way::core_boundary,
@@ -5758,10 +5823,12 @@ way[admin_level=2]::core_boundary,
 relation[admin_level=2] > way::core_boundary {
     z-index: 2;
     modifier: false;
-    width: 6;
-    color: #3F3D42;
+    width: 7;
+    color: yellow;
     dashes: 25,15,15,25;
-    dashes-background-color: red;
+    dashes-background-color: black;
+    casing-width: 5;
+    casing-color: red;
     text: name;
     font-size: 12;
     text-offset: 10;
@@ -5879,11 +5946,16 @@ area[place=isolated_dwelling],
 area[place=neighbourhood],
 area[place=suburb],
 area[place=locality],
-area[place=island],
 area[place=plot],
-area[place=city_block],
+area[place=city_block] {
+    fill-color: place#E6E6FA;
+    color: #9370DB;
+    width: 2;
+}
+
+area[place=island],
 area[place=islet] {
-    fill-color: place#8de3cb;
+  fill-color: place#8de3cb;
     color: darkorange;
     width: 2;
 }
@@ -7228,11 +7300,6 @@ way[highway][oneway=no][setting("one_2")] {
     text: tr("Oneway = No");
 }
 
-/* Remove street names from ways */
-
-way[highway][setting("remove_names")] {
-    text: none;
-}
 
 /**************************************/
 /* Color Stylings Based on Check Sums */
@@ -7911,7 +7978,7 @@ way[highway^=motorway],
 way[highway^=trunk],
 way[highway^=primary],
 way[highway^=secondary],
-way[highway^=tertiary] {
+way[highway^=tertiary]{
     set .roundabout_missing;
 }
 
@@ -7920,10 +7987,10 @@ way.roundabout_missing:closed[!junction][setting("val_checks")] {
     dashes-background-color: red;
     dashes: 4,12;
     opacity: 1;
-    width: 8;
-    text: tr("Missing Roundabout");
+    width: 6;
+    text: tr("Junction tag?");
     text-color: #460096;
-    font-size: 20;
+    font-size: 18;
     text-halo-color: white;
     text-halo-radius: 2;
     casing-width: 1;
@@ -8567,21 +8634,21 @@ node:modified < area:closed[admin_level=~/^(1|2|3|4|5|6)$/][setting("sensitive")
 
 /* Yellow */
 
-way[admin_level=~/^(10|9|8|7)$/]:modified[setting("sensitive")],
-node:modified < way[admin_level=~/^(10|9|8|7)$/][setting("sensitive")] {
+way[admin_level=~/^(10|9|8|7)$/]:modified[setting("sensitive")]::admin_underlay,
+node:modified < way[admin_level=~/^(10|9|8|7)$/][setting("sensitive")]::admin_underlay {
     width: 10;
     color: yellow;
-    opacity: 0.6;
+    opacity: 0.4;
     z-index: -5;
 }
 
 /* Red */
 
-way[admin_level=~/^(1|2|3|4|5|6)$/]:modified[setting("sensitive")],
-node:modified < way[admin_level=~/^(1|2|3|4|5|6)$/][setting("sensitive")] {
+way[admin_level=~/^(1|2|3|4|5|6)$/]:modified[setting("sensitive")]::admin_underlay,
+node:modified < way[admin_level=~/^(1|2|3|4|5|6)$/][setting("sensitive")]::admin_underlay {
     width: 15;
     color: orange;
-    opacity: 0.7;
+    opacity: 0.4;
     z-index: -5;
 }
 
@@ -8590,29 +8657,19 @@ node:modified < way[admin_level=~/^(1|2|3|4|5|6)$/][setting("sensitive")] {
 
 /* Yellow */
 
-relation[admin_level=~/^(10|9|8|7)$/] > way
-{   set .way_members_admin2    }
-
-way.way_members_admin2:modified[setting("sensitive")],
-node:modified < way.way_members_admin2[setting("sensitive")]
-{
-    width: 10;
-    color: yellow;
-    opacity: 0.6;
+relation[admin_level=~/^(10|9|8|7)$/] > way:modified[setting("sensitive")]::admin_underlay {
+    width: 15;
+    color: orange;
+    opacity: 0.4;
     z-index: -5;
 }
 
 /* Red */
 
-relation[admin_level=~/^(1|2|3|4|5|6)$/] > way
-{   set .way_members_admin1    }
-
-way.way_members_admin1:modified[setting("sensitive")],
-node:modified < way.way_members_admin1[setting("sensitive")]
-{
+relation[admin_level=~/^(1|2|3|4|5|6)$/] > way:modified[setting("sensitive")]::admin_underlay {
     width: 15;
     color: orange;
-    opacity: 0.7;
+    opacity: 0.4;
     z-index: -5;
 }
 
@@ -8664,81 +8721,82 @@ area[military][building][setting("sensitive")] {
                                                       Admin Casing
 \*----------------------------------------------------------------------------------------------------------------------*/
 
-/********* First display class Admin 5-10 **********/
+/********* First display class Admin 5-1 *************/
 
-way[highway][admin_level=10][setting("sensitive")]::adminHighwayP1,
-relation[admin_level=10] > way[highway][setting("sensitive")]::adminHighwayP1,
-way[highway][admin_level=9][setting("sensitive")]::adminHighwayP1,
-relation[admin_level=9] > way[highway][setting("sensitive")]::adminHighwayP1,
-way[highway][admin_level=8][setting("sensitive")]::adminHighwayP1,
-relation[admin_level=8] > way[highway][setting("sensitive")]::adminHighwayP1,
-way[highway][admin_level=7][setting("sensitive")]::adminHighwayP1,
-relation[admin_level=7] > way[highway][setting("sensitive")]::adminHighwayP1,
-way[highway][admin_level=6][setting("sensitive")]::adminHighwayP1,
-relation[admin_level=6] > way[highway][setting("sensitive")]::adminHighwayP1,
 way[highway][admin_level=5][setting("sensitive")]::adminHighwayP1,
-relation[admin_level=5] > way[highway][setting("sensitive")]::adminHighwayP1 {
+relation[admin_level=5] > way[highway][setting("sensitive")]::adminHighwayP1,
+way[highway][admin_level=4][setting("sensitive")]::adminHighwayP1,
+relation[admin_level=4] > way[highway][setting("sensitive")]::adminHighwayP1,
+way[highway][admin_level=3][setting("sensitive")]::adminHighwayP1,
+relation[admin_level=3] > way[highway][setting("sensitive")]::adminHighwayP1,
+way[highway][admin_level=2][setting("sensitive")]::adminHighwayP1,
+relation[admin_level=2] > way[highway][setting("sensitive")]::adminHighwayP1,
+way[highway][admin_level=1][setting("sensitive")]::adminHighwayP1,
+relation[admin_level=1] > way[highway][setting("sensitive")]::adminHighwayP1 {
     z-index: -2;
     casing-offset: 12;
-    casing-width: 1.6;
-    casing-color: boundary#FF6600;
+    casing-width: 2;
+    casing-color: yellow;
     casing-dashes: 9,9;
     casing-dashes-background-color: black;
 }
-way[highway][admin_level=10][setting("sensitive")]::adminHighwayP2,
-relation[admin_level=10] > way[highway][setting("sensitive")]::adminHighwayP2,
-way[highway][admin_level=9][setting("sensitive")]::adminHighwayP2,
-relation[admin_level=9] > way[highway][setting("sensitive")]::adminHighwayP2,
-way[highway][admin_level=8][setting("sensitive")]::adminHighwayP2,
-relation[admin_level=8] > way[highway][setting("sensitive")]::adminHighwayP2,
-way[highway][admin_level=7][setting("sensitive")]::adminHighwayP2,
-relation[admin_level=7] > way[highway][setting("sensitive")]::adminHighwayP2,
-way[highway][admin_level=6][setting("sensitive")]::adminHighwayP2,
-relation[admin_level=6] > way[highway][setting("sensitive")]::adminHighwayP2,
+
+
 way[highway][admin_level=5][setting("sensitive")]::adminHighwayP2,
-relation[admin_level=5] > way[highway][setting("sensitive")]::adminHighwayP2 {
-    z-index: -2;
-    casing-offset: -12;
-    casing-width: 1.6;
-    casing-color: boundary#FF6600;
-    casing-dashes: 9,9;
-    casing-dashes-background-color: black;
-}
-
-/********* Second display class Admin 4-1 *************/
-
-way[highway][admin_level=4][setting("sensitive")]::adminHighwayP3,
-relation[admin_level=4] > way[highway][setting("sensitive")]::adminHighwayP3,
-way[highway][admin_level=3][setting("sensitive")]::adminHighwayP3,
-relation[admin_level=3] > way[highway][setting("sensitive")]::adminHighwayP3,
-way[highway][admin_level=2][setting("sensitive")]::adminHighwayP3,
-relation[admin_level=2] > way[highway][setting("sensitive")]::adminHighwayP3,
-way[highway][admin_level=1][setting("sensitive")]::adminHighwayP3,
-relation[admin_level=1] > way[highway][setting("sensitive")]::adminHighwayP3 {
-    z-index: -2;
-    casing-offset: 12;
-    casing-width: 2;
-    casing-color: boundary#FF6600;
-    casing-dashes: 9,9;
-    casing-dashes-background-color: black;
-}
-
-
-way[highway][admin_level=4][setting("sensitive")]::adminHighwayP4,
-relation[admin_level=4] > way[highway][setting("sensitive")]::adminHighwayP4,
-way[highway][admin_level=3][setting("sensitive")]::adminHighwayP4,
-relation[admin_level=3] > way[highway][setting("sensitive")]::adminHighwayP4,
-way[highway][admin_level=2][setting("sensitive")]::adminHighwayP4,
-relation[admin_level=2] > way[highway][setting("sensitive")]::adminHighwayP4,
-way[highway][admin_level=1][setting("sensitive")]::adminHighwayP4,
-relation[admin_level=1] > way[highway][setting("sensitive")]::adminHighwayP4 {
+relation[admin_level=5] > way[highway][setting("sensitive")]::adminHighwayP2,
+way[highway][admin_level=4][setting("sensitive")]::adminHighwayP2,
+relation[admin_level=4] > way[highway][setting("sensitive")]::adminHighwayP2,
+way[highway][admin_level=3][setting("sensitive")]::adminHighwayP2,
+relation[admin_level=3] > way[highway][setting("sensitive")]::adminHighwayP2,
+way[highway][admin_level=2][setting("sensitive")]::adminHighwayP2,
+relation[admin_level=2] > way[highway][setting("sensitive")]::adminHighwayP2,
+way[highway][admin_level=1][setting("sensitive")]::adminHighwayP2,
+relation[admin_level=1] > way[highway][setting("sensitive")]::adminHighwayP2 {
     z-index: -2;
     casing-offset: -12;
     casing-width: 2;
-    casing-color: boundary#FF6600;
+    casing-color: yellow;
     casing-dashes: 9,9 ;
     casing-dashes-background-color: black;
 }
+
+/********* Second display class Admin 6-10 **********/
+
+way[highway][admin_level=10][setting("sensitive")]::adminHighwayP3,
+relation[admin_level=10] > way[highway][setting("sensitive")]::adminHighwayP3,
+way[highway][admin_level=9][setting("sensitive")]::adminHighwayP3,
+relation[admin_level=9] > way[highway][setting("sensitive")]::adminHighwayP3,
+way[highway][admin_level=8][setting("sensitive")]::adminHighwayP3,
+relation[admin_level=8] > way[highway][setting("sensitive")]::adminHighwayP3,
+way[highway][admin_level=7][setting("sensitive")]::adminHighwayP3,
+relation[admin_level=7] > way[highway][setting("sensitive")]::adminHighwayP3,
+way[highway][admin_level=6][setting("sensitive")]::adminHighwayP3,
+relation[admin_level=6] > way[highway][setting("sensitive")]::adminHighwayP3 {
+    z-index: -2;
+    casing-offset: 12;
+    casing-width: 1.6;
+    casing-color: boundary#FF6600;
+    casing-dashes: 9,9;
+    casing-dashes-background-color: black;
+}
+way[highway][admin_level=10][setting("sensitive")]::adminHighwayP4,
+relation[admin_level=10] > way[highway][setting("sensitive")]::adminHighwayP4,
+way[highway][admin_level=9][setting("sensitive")]::adminHighwayP4,
+relation[admin_level=9] > way[highway][setting("sensitive")]::adminHighwayP4,
+way[highway][admin_level=8][setting("sensitive")]::adminHighwayP4,
+relation[admin_level=8] > way[highway][setting("sensitive")]::adminHighwayP4,
+way[highway][admin_level=7][setting("sensitive")]::adminHighwayP4,
+relation[admin_level=7] > way[highway][setting("sensitive")]::adminHighwayP4,
+way[highway][admin_level=6][setting("sensitive")]::adminHighwayP4,
+relation[admin_level=6] > way[highway][setting("sensitive")]::adminHighwayP4 {
+    z-index: -2;
+    casing-offset: -12;
+    casing-width: 1.6;
+    casing-color: boundary#FF6600;
+    casing-dashes: 9,9;
+    casing-dashes-background-color: black;
+}
+
 
 /* Remove operator from rendering */
 
@@ -8751,4 +8809,13 @@ way[highway][operator][/name$/],
 way[highway][operator][/^ref/],
 way[highway][operator][/ref$/] {
   text: auto;
+}
+
+/* Remove street names from ways */
+
+way[highway][setting("remove_names")] {
+    text: none;
+}
+node[setting("remove_names")] {
+    text: none;
 }
