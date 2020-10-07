@@ -31,8 +31,8 @@ Various settings and inline validation errors were added to better identify data
 2. Open JOSM preferences and navigate to Map Paint Styles (third icon down, second over):
   - "+" under Active styles.
   - Name the style.
-  - Add zipped paint-master repo link to 'URL / File'. 
-      - ```https://github.com/osmlab/applepaintstyles/archive/master.zip```
+  - Add zipped paint-main repo link to 'URL / File'. 
+      - ```https://github.com/osmlab/applepaintstyles/archive/main.zip```
   - Ok.
 
 3. Installed! You should now see the paint style in the 'Map Paint Styles' window.
