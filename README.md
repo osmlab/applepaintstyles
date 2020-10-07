@@ -26,13 +26,13 @@ Various settings and inline validation errors were added to better identify data
 
 There are two ways to install the paint style -- link to the paint style on this repository, or download it to your computer. Linking to it on this repository is preferred, it will ensure that any updates to the paint style will carry over to you in JOSM, but if you are mapping offline or with a slow internet connection, or wish to tweak the paint style, downloading it may be better.
 
-1. To link directly to this repo: click 'Clone or download' then right-click 'Download ZIP' and copy the URL, which is ```https://github.com/osmlab/applepaintstyles/archive/master.zip```
+1. To link directly to this repo: click 'Clone or download' then right-click 'Download ZIP' and copy the URL, which is ```https://github.com/osmlab/applepaintstyles/archive/main.zip```
 Or to download it to your computer: click 'Clone or download' then click 'Download ZIP' and save the ZIP file somewhere on your computer.
 
 2. Open JOSM preferences and navigate to Map Paint Styles (third icon down, 'Settings for the map projection and data integration' then the second tab over):
   - Click "+" next to 'Active styles'
   - Name the style something you will remember
-  - Under 'URL / File' either paste the direct link: ```https://github.com/osmlab/applepaintstyles/archive/master.zip``` or navigate to where you saved the ZIP file on your computer
+  - Under 'URL / File' either paste the direct link: ```https://github.com/osmlab/applepaintstyles/archive/main.zip``` or navigate to where you saved the ZIP file on your computer
   - Click 'Ok'
 
 3. Installed! You should now see the paint style qith the name you gave it in the 'Map Paint Styles' window.
