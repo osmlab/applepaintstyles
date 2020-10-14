@@ -8123,7 +8123,7 @@ way["highway"=~/^(motorway|motorway_link|trunk|trunk_link|primary|primary_link|s
 /* Bad Building Values */
 /***********************/
 
-area["building"=~/^(slurry_tank|apartments|farm|hotel|house|detached|residential|dormitory|terrace|houseboat|bungalow|static_caravan|cabin|commercial|office|industrial|retail|supermarket|warehouse|kiosk|religious|cathedral|chapel|church|mosque|temple|synagogue|shrine|bakehouse|kindergarten|civic|government|hospital|school|stadium|train_station|transportation|university|grandstand|public|toilets|barn|bridge|bunker|carport|conservatory|construction|cowshed|digester|farm_auxiliary|garage|garages|garbage_shed|greenhouse|hangar|hut|pavilion|parking|riding_hall|roof|shed|sports_hall|stable|sty|transformer_tower|service|ruins|water_tower|yes)$/] {
+area["building"=~/^(fire_station|ger|stilt_house|slurry_tank|apartments|farm|hotel|house|detached|residential|dormitory|terrace|houseboat|bungalow|static_caravan|cabin|commercial|office|industrial|retail|supermarket|warehouse|kiosk|religious|cathedral|chapel|church|mosque|temple|synagogue|shrine|bakehouse|kindergarten|civic|government|hospital|school|stadium|train_station|transportation|university|grandstand|public|toilets|barn|bridge|bunker|carport|conservatory|construction|cowshed|digester|farm_auxiliary|garage|garages|garbage_shed|greenhouse|hangar|hut|pavilion|parking|riding_hall|roof|shed|sports_hall|stable|sty|transformer_tower|service|ruins|water_tower|yes)$/] {
     set .normal_building;
 }
 
