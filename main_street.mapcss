@@ -34,7 +34,7 @@ REPRODUCTION, MODIFICATION AND/OR DISTRIBUTION OF THE APPLE STYLE SHEET, HOWEVER
 AND WHETHER UNDER THEORY OF CONTRACT, TORT (INCLUDING NEGLIGENCE), STRICT LIABILITY OR
 OTHERWISE, EVEN IF APPLE HAS BEEN ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
-Copyright (C) 2020 Apple Inc. All Rights Reserved.
+Copyright (C) 2021 Apple Inc. All Rights Reserved.
 
 ---------------------- 
 
@@ -58,8 +58,8 @@ meta {
     title: "Apple Paint Style";
     icon: "icons/mapicon.svg";
     description: "This map paint style was created to improve the visibility of the streets network for easier editing of ways, nodes, and relations in the JOSM editor.";
-    last_update: "08.11.2020";
-    version: "1.2.3";
+    last_update: "01.13.2021";
+    version: "1.3";
     link: "https://github.com/osmlab/applepaintstyles";
  }
 
@@ -142,12 +142,6 @@ settings::tag_check_group {
 
 /* Tag Check Settings */
 
-setting::val_checks {
-  type: boolean;
-  label: tr("Inline validation checks");
-  default: true;
-  group: "tag_check_group";
-}
 setting::check_ref {
   type: boolean;
   label: tr("Highlight highways by ref tag");
@@ -233,6 +227,164 @@ setting::Alt_Highways_setting {
   label: tr("Alternative highways");
   default: false;
   group: "alt_group";
+}
+
+/* Create Validation Setting Group */
+
+settings::validation_group {
+    label: tr("4) Validation Settings");
+}
+
+/* Validation Settings */
+
+setting::roundabout_check {
+  type: boolean;
+  label: tr("Roundabout check");
+  default: true;
+  group: "validation_group";
+} 
+
+setting::motor_oneway {
+  type: boolean;
+  label: tr("Motorway oneway checks");
+  default: true;
+  group: "validation_group";
+} 
+
+setting::sus_roundabout {
+  type: boolean;
+  label: tr("Suspicious roundabout check");
+  default: true;
+  group: "validation_group";
+} 
+
+setting::float_road {
+  type: boolean;
+  label: tr("Floating roads check");
+  default: true;
+  group: "validation_group";
+} 
+
+setting::de_onway {
+  type: boolean;
+  label: tr("Deadend onways");
+  default: true;
+  group: "validation_group";
+} 
+
+setting::land_cross_road {
+  type: boolean;
+  label: tr("Landuse/Natural snapped to road");
+  default: false;
+  group: "validation_group";
+} 
+
+setting::water_road_snap {
+  type: boolean;
+  label: tr("Water snapped to roads and buildings");
+  default: true;
+  group: "validation_group";
+} 
+
+setting::sus_char {
+  type: boolean;
+  label: tr("Strange character in tag");
+  default: true;
+  group: "validation_group";
+} 
+
+setting::invalid_multi {
+  type: boolean;
+  label: tr("Invalid multipolygon check");
+  default: true;
+  group: "validation_group";
+}
+
+setting::water_road {
+  type: boolean;
+  label: tr("Highway with water tag");
+  default: true;
+  group: "validation_group";
+} 
+
+
+
+/* Create Building Validation Setting Group */
+
+settings::building_validation {
+    label: tr("5) Building Validation Settings");
+}
+
+/* Building Validation Settings */
+
+setting::water_cross_building {
+  type: boolean;
+  label: tr("Water crossing building");
+  default: true;
+  group: "building_validation";
+} 
+
+setting::build_in_water {
+  type: boolean;
+  label: tr("Building within water");
+  default: true;
+  group: "building_validation";
+} 
+
+setting::build_in_build {
+  type: boolean;
+  label: tr("Building within building");
+  default: true;
+  group: "building_validation";
+} 
+
+setting::bad_build_value {
+  type: boolean;
+  label: tr("Suspicious building value");
+  default: true;
+  group: "building_validation";
+} 
+
+setting::bad_build {
+  type: boolean;
+  label: tr("Building as water or road");
+  default: true;
+  group: "building_validation";
+} 
+
+setting::building_cross_road {
+  type: boolean;
+  label: tr("Building intersecting road");
+  default: true;
+  group: "building_validation";
+} 
+
+setting::lg_building {
+  type: boolean;
+  label: tr("Large building");
+  default: true;
+  group: "building_validation";
+} 
+
+setting::build_cross_build {
+  type: boolean;
+  label: tr("Building crossing building");
+  default: true;
+  group: "building_validation";
+} 
+
+setting::building_without_yes {
+  type: boolean;
+  label: tr("Building!=yes");
+  default: false;
+  group: "building_validation";
+} 
+
+setting::building_shared_nodes {
+  type: boolean;
+  label: tr("Highlight nodes shared by buildings");
+  default: false;
+  group: "building_validation";
 }
 
 /*****************************************************/
@@ -490,13 +642,25 @@ way[barrier=kerb] {
     width: 2;
     color: barrier#F0F050;
 }
+way[barrier=hedge][area?], relation[type=multipolygon][barrier=hedge],
+way[barrier=wall][area?], relation[type=multipolygon][barrier=wall],
+way[barrier=city_wall][area?], relation[type=multipolygon][barrier=city_wall] {
+  fill-color: barrier#F0F050; 
+}
+way[barrier=city_wall][two_sided!=yes] {
+    repeat-image: "presets/barrier/barrier_pattern.svg";
+    repeat-image-align: top;
+    repeat-image-offset: 0.5;
+}
 way[barrier=retaining_wall] {
     repeat-image: "presets/misc/cliff_pattern.svg";
     repeat-image-align: top;
+    repeat-image-offset: 0.5;
 }
 way[barrier=kerb] {
     repeat-image: "presets/barrier/kerb_pattern.svg";
     repeat-image-align: top;
+    repeat-image-offset: 0.5;
 }
 node[barrier=hedge],
 node[barrier=wall],
@@ -579,9 +743,12 @@ node[barrier=jersey_barrier] {
     icon-image: "presets/barrier/jersey_barrier.svg";
     set icon_z17;
 }
+node[barrier=bus_trap] {
+    icon-image: "presets/barrier/bus_trap.svg";
+    set icon_z17;
+}
 node[barrier=kissing_gate][!is_prop_set(icon-image)],
 node[barrier=bump_gate][!is_prop_set(icon-image)],
-node[barrier=bus_trap][!is_prop_set(icon-image)],
 node[barrier=hampshire_gate][!is_prop_set(icon-image)] {
     icon-image: "presets/misc/no_icon.svg";
     set icon_z17;
@@ -1612,11 +1779,11 @@ way[highway=track][junction=roundabout] {
     dashes-background-opacity: 0.9;
 }
 
-area[junction=roundabout][highway=motorway_link][setting("val_checks")],
-area[junction=roundabout][highway=trunk_link][setting("val_checks")],
-area[junction=roundabout][highway=primary_link][setting("val_checks")],
-area[junction=roundabout][highway=secondary_link][setting("val_checks")],
-area[junction=roundabout][highway=tertiary_link][setting("val_checks")] {
+area[junction=roundabout][highway=motorway_link][setting("roundabout_check")],
+area[junction=roundabout][highway=trunk_link][setting("roundabout_check")],
+area[junction=roundabout][highway=primary_link][setting("roundabout_check")],
+area[junction=roundabout][highway=secondary_link][setting("roundabout_check")],
+area[junction=roundabout][highway=tertiary_link][setting("roundabout_check")] {
     color: orange;
     dashes-background-color: red;
     dashes: 4,9;
@@ -1855,6 +2022,7 @@ way.pedestrian_access[setting("pedestrian")][!sidewalk][!foot] {
 /* Man_made Tags */
 /*****************/
 
+area[man_made=street_cabinet][street_cabinet!=power],
 area[man_made=beacon],
 area[man_made=bridge],
 area[bridge:support],
@@ -1865,8 +2033,13 @@ area[man_made=storage_tank],
 area[man_made=bunker_silo],
 area[man_made=lighthouse],
 area[man_made=monitoring_station],
+area[man_made=pumping_station],
 area[man_made=mineshaft] {
     fill-color: manmade#d8d8d8;
+}
+node[man_made=street_cabinet][street_cabinet!=power] {
+    icon-image: "presets/misc/street_cabinet.svg";
+    set icon_z17;
 }
 node[man_made=beacon] {
     icon-image: "presets/landmark/beacon.svg";
@@ -1941,6 +2114,10 @@ node[man_made=monitoring_station] {
     icon-image: "presets/misc/monitoring_station.svg";
     set icon_z17;
 }
+node[man_made=pumping_station] {
+    icon-image: "presets/misc/pumping_station.svg";
+    set icon_z17;
+}
 node[man_made=mineshaft] {
     icon-image: "presets/landmark/mine.svg";
     set icon_z17;
@@ -1955,6 +2132,10 @@ way[man_made=crane] {
 node[man_made=crane] {
     icon-image: "presets/landmark/crane.svg";
     set icon_z17;
+}
+way[man_made=goods_conveyor] {
+    width: 2;
+    color: manmade#d8d8d8;
 }
 node[man_made=adit] {
     icon-image: "presets/landmark/adit.svg";
@@ -1992,26 +2173,35 @@ node[man_made=pier] {
 }
 way[embankment?][!highway][!railway][!waterway],
 way[man_made=embankment][!highway][!railway][!waterway] {
-    repeat-image: "presets/misc/embankment-pattern.png";
+    repeat-image: "presets/misc/embankment-pattern.svg";
     repeat-image-align: top;
+    repeat-image-offset: 0.5;
     width: 1;
     color: embankment#c14d00;
 }
 way[embankment?][highway]::embankment_layer,
 way[embankment?][railway]::embankment_layer,
 way[embankment?][waterway]::embankment_layer {
-    repeat-image: "presets/misc/embankment-pattern-centered.png";
+    repeat-image: "presets/misc/embankment-pattern-centered.svg";
+    repeat-image-offset: 0.5;
 }
 way[man_made=embankment][highway]::embankment_layer,
 way[man_made=embankment][railway]::embankment_layer,
 way[man_made=embankment][waterway]::embankment_layer {
-    repeat-image: "presets/misc/embankment-pattern.png";
+    repeat-image: "presets/misc/embankment-pattern.svg";
     repeat-image-align: top;
-    repeat-image-offset: -1;
+    repeat-image-offset: 0.5;
 }
 way[man_made=pipeline][!waterway] {
     width: 2;
     color: pipeline#660000;
+}
+area[pipeline=substation] {
+    fill-color: pipeline_substation#eeeeee;
+}
+node[pipeline=substation] { 
+    icon-image: "presets/misc/pipeline_substation.svg";
+    set icon_z17; 
 }
 node[marker] {
     icon-image: "presets/misc/pipeline_marker.svg";
@@ -2037,10 +2227,8 @@ node[man_made=petroleum_well][!is_prop_set(icon-image)] {
     set icon_z17;
 }
 area[man_made=reservoir_covered],
-area[man_made=tower],
 area[man_made=wastewater_plant],
 area[man_made=watermill],
-area[man_made=water_tower],
 area[man_made=water_well],
 area[man_made=windmill],
 area[man_made=works],
@@ -2059,20 +2247,12 @@ node[man_made=survey_point] {
     icon-image: "presets/landmark/survey_point.svg";
     set icon_z17;
 }
-node[man_made=tower] {
-    icon-image: "presets/landmark/tower.svg";
-    set icon_z17;
-}
 node[man_made=wastewater_plant] {
     icon-image: "presets/landmark/wastewater_plant.svg";
     set icon_z17;
 }
 node[man_made=watermill] {
     icon-image: "presets/landmark/watermill.svg";
-    set icon_z17;
-}
-node[man_made=water_tower] {
-    icon-image: "presets/landmark/water_tower.svg";
     set icon_z17;
 }
 node[man_made=water_well] {
@@ -2100,13 +2280,87 @@ node[man_made=cutline] {
     set icon_z17;
 }
 
+area[man_made=water_tower],
+area[man_made=telescope],
+area[man_made=antenna],
+area[man_made=mast],
+area[man_made=tower],
+area[man_made=communications_tower] {
+    fill-color: manmade#d8d8d8;
+}
+node[man_made=water_tower] {
+    icon-image: "presets/tower/water_tower.svg";
+    set icon_z17;
+}
+node[man_made=telescope] {
+    icon-image: "presets/tower/telescope_dish.svg";
+    set icon_z17;
+}
+node[man_made=telescope][telescope:type=optical] {
+    icon-image: "presets/tower/telescope_dome.svg";
+    set icon_z17;
+}
+node[man_made=antenna] {
+    icon-image: "presets/tower/antenna.svg";
+    set icon_z17;
+}
+node[man_made=mast] {
+    icon-image: "presets/tower/mast.svg";
+    set icon_z17;
+}
+node[man_made=mast][tower:type=communication] {
+    icon-image: "presets/tower/mast_communication.svg";
+    set icon_z17;
+}
+node[man_made=mast][tower:type=lighting] {
+    icon-image: "presets/tower/mast_lighting.svg";
+    set icon_z17;
+}
+node[man_made=tower] {
+    icon-image: "presets/tower/tower.svg";
+    set icon_z17;
+}
+node[man_made=tower][tower:type=bell_tower] {
+    icon-image: "presets/tower/bell_tower.svg";
+    set icon_z17;
+}
+node[man_made=tower][tower:type=communication] {
+    icon-image: "presets/tower/communication.svg";
+    set icon_z17;
+}
+node[man_made=tower][tower:type=cooling] {
+    icon-image: "presets/tower/cooling.svg";
+    set icon_z17;
+}
+node[man_made=tower][tower:type=defensive] {
+    icon-image: "presets/tower/defensive.svg";
+    set icon_z17;
+}
+node[man_made=tower][tower:type=lighting] {
+    icon-image: "presets/tower/lighting.svg";
+    set icon_z17;
+}
+node[man_made=tower][tower:type=observation] {
+    icon-image: "presets/tower/observation.svg";
+    set icon_z17;
+}
+node[man_made=tower][tower:type=watchtower] {
+    icon-image: "presets/tower/observation.svg";
+    set icon_z17;
+}
+node[man_made=communications_tower] {
+    icon-image: "presets/tower/communications_tower.svg";
+    set icon_z17;
+}
+
 /****************/
 /* telecom tags */
 /****************/
  
 area[telecom=exchange],
 area[telecom=connection_point],
-area[telecom=service_device] {
+area[telecom=service_device],
+area[man_made=street_cabinet][street_cabinet=telecom] {
     fill-color: telecom#d8d8d8;
 }
 node[telecom=exchange] {
@@ -2143,6 +2397,7 @@ area[office=company],
 area[office=educational_institution],
 area[office=employment_agency],
 area[office=estate_agent],
+area[office=diplomatic],
 area[office=foundation],
 area[office=government],
 area[office=insurance],
@@ -2252,6 +2507,18 @@ node[office=government] {
     set icon_z17;
 }
 
+/*************/
+/* club tags */
+/*************/
+
+area[club] {
+    fill-color: club#a3e5f1;
+}
+node[club] {
+    icon-image: "presets/leisure/club.svg";
+    set icon_z17;
+}
+
 /****************/
 /* Leisure Tags */
 /****************/
@@ -2260,6 +2527,8 @@ area[leisure=sports_centre],
 area[leisure=fitness_centre],
 area[leisure=stadium],
 area[leisure=horse_riding],
+area[leisure=amusement_arcade],
+area[leisure=adult_gaming_centre],
 area[leisure=beach_resort],
 area[leisure=resort],
 area[leisure=water_park] {
@@ -2279,6 +2548,14 @@ node[leisure=stadium] {
 }
 node[leisure=horse_riding] {
     icon-image: "presets/leisure/horse_riding.svg";
+    set icon_z17;
+}
+node[leisure=amusement_arcade] {
+    icon-image: "presets/leisure/amusement_arcade.svg";
+    set icon_z17;
+}
+node[leisure=adult_gaming_centre] {
+    icon-image: "presets/leisure/adult_gaming_centre.svg";
     set icon_z17;
 }
 node[leisure=resort] {
@@ -2373,6 +2650,17 @@ area[leisure=swimming_pool] {
 }
 node[leisure=swimming_pool] {
     icon-image: "presets/sport/swimming.svg";
+    set icon_z17;
+}
+area[playground]:closed {
+    fill-color: playground#c7f1a3;
+}
+way[playground] {
+    width: 2;
+    color: playground#c7f1a3;
+}
+node[playground] {
+    icon-image: "presets/leisure/playground_device.svg";
     set icon_z17;
 }
 area[leisure=fitness_center],
@@ -2520,6 +2808,7 @@ area[shop=hardware],
 area[shop=hearing_aids],
 area[shop=hifi],
 area[shop=houseware],
+area[shop=pottery],
 area[shop=jewelry],
 area[shop=kitchen],
 area[shop=mall],
@@ -2547,6 +2836,7 @@ area[shop=toys],
 area[shop=vacuum_cleaner],
 area[shop=variety_store],
 area[shop=charity],
+area[shop=second_hand],
 area[shop=video],
 area[shop=bookmaker],
 area[shop=lottery],
@@ -2566,6 +2856,7 @@ area[shop=perfumery],
 area[shop=tea],
 area[shop=coffee],
 area[shop=antiques],
+area[shop=storage_rental],
 area[shop=music],
 area[shop=weapons],
 area[shop=funeral_directors],
@@ -2573,6 +2864,10 @@ area[shop=wine],
 area[shop=farm],
 area[shop=tattoo],
 area[shop=art],
+area[shop=lighting],
+area[shop=security],
+area[shop=wholesale],
+area[shop=trade],
 area[shop=bag] {
     fill-color: shop#00005f;
 }
@@ -2753,6 +3048,10 @@ node[shop=houseware] {
     icon-image: "presets/shop/houseware.svg";
     set icon_z17;
 }
+node[shop=pottery] {
+    icon-image: "presets/shop/pottery.svg";
+    set icon_z17;
+}
 node[shop=jewelry] {
     icon-image: "presets/shop/jewelry.svg";
     set icon_z17;
@@ -2861,6 +3160,10 @@ node[shop=charity] {
     icon-image: "presets/shop/charity.svg";
     set icon_z17;
 }
+node[shop=second_hand] {
+    icon-image: "presets/shop/second_hand.svg";
+    set icon_z17;
+}
 node[shop=video] {
     icon-image: "presets/shop/video.svg";
     set icon_z17;
@@ -2937,6 +3240,10 @@ node[shop=antiques] {
     icon-image: "presets/shop/antique.svg";
     set icon_z17;
 }
+node[shop=storage_rental] {
+    icon-image: "presets/shop/storage_rental.svg";
+    set icon_z17;
+}
 node[shop=music] {
     icon-image: "presets/shop/music.svg";
     set icon_z17;
@@ -2965,6 +3272,22 @@ node[shop=art] {
     icon-image: "presets/shop/art.svg";
     set icon_z17;
 }
+node[shop=lighting] {
+    icon-image: "presets/shop/lighting.svg";
+    set icon_z17;
+}
+node[shop=security] {
+    icon-image: "presets/shop/security.svg";
+    set icon_z17;
+}
+node[shop=wholesale] {
+    icon-image: "presets/shop/wholesale.svg";
+    set icon_z17;
+}
+node[shop=trade] {
+    icon-image: "presets/shop/trade.svg";
+    set icon_z17;
+}
 node[shop=bag] {
     icon-image: "presets/shop/bag.svg";
     set icon_z17;
@@ -2984,6 +3307,10 @@ node[emergency=ambulance_station] {
 }
 node[emergency=water_tank] {
     icon-image: "presets/emergency/water_tank.svg";
+    set icon_z17;
+}
+node[emergency=suction_point] {
+    icon-image: "presets/emergency/suction_point.svg";
     set icon_z17;
 }
 node[emergency=emergency_ward_entrance] {
@@ -3049,6 +3376,17 @@ node[police=yes] {
     set icon_z17;
 }
 
+/*******************/
+/* healthcare tags */
+/*******************/
+
+area[healthcare=laboratory] {
+    fill-color: healthcare#3771c8;
+}
+node[healthcare=laboratory] {
+    icon-image: "presets/health/laboratory.svg";
+    set icon_z17;
+}
 
 /****************/
 /* Amenity Tags */
@@ -3057,6 +3395,7 @@ node[police=yes] {
 area[amenity=pub],
 area[amenity=biergarten],
 area[amenity=nightclub],
+area[amenity=gambling],
 area[amenity=stripclub],
 area[amenity=casino],
 area[amenity=brothel],
@@ -3078,6 +3417,10 @@ node[amenity=biergarten] {
 }
 node[amenity=nightclub] {
     icon-image: "presets/leisure/nightclub.svg";
+    set icon_z17;
+}
+node[amenity=gambling] {
+    icon-image: "presets/leisure/gambling.svg";
     set icon_z17;
 }
 node[amenity=stripclub] {
@@ -3489,6 +3832,7 @@ node[amenity=veterinary] {
     set icon_z17;
 }
 area[amenity=library],
+area[amenity=public_bookcase],
 area[amenity=police],
 area[amenity=ranger_station],
 area[amenity=fire_station],
@@ -3496,6 +3840,8 @@ area[amenity=bus_station],
 area[amenity=ferry_terminal],
 area[amenity=theatre],
 area[amenity=cinema],
+area[amenity=dive_centre],
+area[amenity=public_bath],
 area[amenity=arts_centre],
 area[amenity=courthouse],
 area[amenity=prison],
@@ -3508,6 +3854,10 @@ area[amenity=watering_place] {
 }
 node[amenity=library] {
     icon-image: "presets/education/library.svg";
+    set icon_z17;
+}
+node[amenity=public_bookcase] {
+    icon-image: "presets/education/public_bookcase.svg";
     set icon_z17;
 }
 node[amenity=police] {
@@ -3537,6 +3887,14 @@ node[amenity=theatre] {
 }
 node[amenity=cinema] {
     icon-image: "presets/leisure/cinema.svg";
+    set icon_z17;
+}
+node[amenity=dive_centre] {
+    icon-image: "presets/leisure/dive_centre.svg";
+    set icon_z17;
+}
+node[amenity=public_bath] {
+    icon-image: "presets/leisure/public_bath.svg";
     set icon_z17;
 }
 node[amenity=arts_centre] {
@@ -3672,8 +4030,8 @@ node[craft=shoemaker][!is_prop_set(icon-image)] {
     icon-image: "presets/misc/no_icon.svg";
     set icon_z17;
 }
-node[craft=photographer][!is_prop_set(icon-image)] {
-    icon-image: "presets/misc/no_icon.svg";
+node[craft=photographer] {
+    icon-image: "presets/craft/photographer.svg";
     set icon_z17;
 }
 node[craft=metal_construction] {
@@ -3684,8 +4042,8 @@ node[craft=electrician][!is_prop_set(icon-image)] {
     icon-image: "presets/misc/no_icon.svg";
     set icon_z17;
 }
-node[craft=brewery][!is_prop_set(icon-image)] {
-    icon-image: "presets/misc/no_icon.svg";
+node[craft=brewery] {
+    icon-image: "presets/craft/brewery.svg";
     set icon_z17;
 }
 node[craft=plumber] {
@@ -3700,8 +4058,8 @@ node[craft=gardener][!is_prop_set(icon-image)] {
     icon-image: "presets/misc/no_icon.svg";
     set icon_z17;
 }
-node[craft=winery][!is_prop_set(icon-image)] {
-    icon-image: "presets/misc/no_icon.svg";
+node[craft=winery] {
+    icon-image: "presets/craft/winery.svg";
     set icon_z17;
 }
 node[craft=hvac] {
@@ -3716,8 +4074,8 @@ node[craft=stonemason][!is_prop_set(icon-image)] {
     icon-image: "presets/misc/no_icon.svg";
     set icon_z17;
 }
-node[craft=handicraft][!is_prop_set(icon-image)] {
-    icon-image: "presets/misc/no_icon.svg";
+node[craft=handicraft] {
+    icon-image: "presets/craft/handicraft.svg";
     set icon_z17;
 }
 node[craft=pottery] {
@@ -3728,8 +4086,8 @@ node[craft=key_cutter] {
     icon-image: "presets/craft/key_cutter.svg";
     set icon_z17;
 }
-node[craft=caterer][!is_prop_set(icon-image)] {
-    icon-image: "presets/misc/no_icon.svg";
+node[craft=caterer] {
+    icon-image: "presets/craft/caterer.svg";
     set icon_z17;
 }
 node[craft=roofer] {
@@ -3894,6 +4252,14 @@ node[tourism=information][information=guidepost] {
     icon-image: "presets/misc/information/guidepost.svg";
     set icon_z17;
 }
+node[tourism=information][information=route_marker] {
+    icon-image: "presets/misc/information/route_marker.svg";
+    set icon_z17;
+}
+node[tourism=information][information=audioguide] {
+    icon-image: "presets/misc/information/audioguide.svg";
+    set icon_z17;
+}
 area[tourism=information][information=office] {
     fill-color: tourism#e180a2;
 }
@@ -3915,16 +4281,26 @@ node[tourism=information][information=board] {
 /*****************/
 
 area[historic=castle],
+area[historic=fort],
 area[historic=monument],
 area[historic=memorial],
+area[historic=tomb],
 area[historic=archaeological_site],
 area[historic=ruins],
 area[historic=battlefield],
 area[geological=palaeontological_site],
+area[historic=city_gate],
+area[historic=manor],
+area[historic=church],
+area[historic=monastery],
+area[historic=charcoal_pile],
+area[historic=mine],
+area[historic=mine_shaft],
+area[historic=shieling],
 area[historic=wayside_cross],
 area[historic=wayside_shrine],
 area[historic=boundary_stone],
-area[cemetery=grave] {
+area[historic=milestone] {
     fill-color: historic#663300;
 }
 node[historic=castle] {
@@ -3955,6 +4331,42 @@ node[geological=palaeontological_site] {
     icon-image: "presets/historic/palaeontological_site.svg";
     set icon_z17;
 }
+area[historic=citywalls]:closed {
+    fill-color: historic#663300;
+}
+way[historic=citywalls] {
+    width: 2;
+    color: historic#663300;
+}
+node[historic=city_gate] {
+    icon-image: "presets/sightseeing/city_gate.svg";
+    set icon_z17;
+}
+node[historic=manor] {
+    icon-image: "presets/sightseeing/manor.svg";
+    set icon_z17;
+}
+node[historic=church] {
+    icon-image: "presets/religion/historic_church.svg";
+    set icon_z17;
+}
+node[historic=monastery] {
+    icon-image: "presets/sightseeing/monastery.svg";
+    set icon_z17;
+}
+node[historic=charcoal_pile] {
+    icon-image: "presets/misc/charcoal_pile.svg";
+    set icon_z17;
+}
+node[historic=mine],
+node[historic=mine_shaft] {
+    icon-image: "presets/landmark/historic_mine.svg";
+    set icon_z17;
+}
+node[historic=shieling] {
+    icon-image: "presets/landmark/shieling.svg";
+    set icon_z17;
+}
 node[historic=wayside_cross] {
     icon-image: "presets/religion/wayside_cross.svg";
     set icon_z17;
@@ -3965,6 +4377,10 @@ node[historic=wayside_shrine] {
 }
 node[historic=boundary_stone] {
     icon-image: "presets/landmark/boundary_stone.svg";
+    set icon_z17;
+}
+node[historic=milestone] {
+    icon-image: "presets/landmark/milestone.svg";
     set icon_z17;
 }
 node[cemetery=grave] {
@@ -4126,7 +4542,8 @@ area[power=substation],
 area[power=compensator],
 area[power=converter],
 area[power=switchgear],
-area[power=generator] {
+area[power=generator],
+area[man_made=street_cabinet][street_cabinet=power] {
     fill-color: power#eeeeee;
 }
 node[man_made=street_cabinet][street_cabinet=power] {
@@ -4331,6 +4748,7 @@ area[sport=golf],
 area[sport=gymnastics],
 area[sport=field_hockey],
 area[sport=ice_hockey],
+area[sport=curling],
 area[sport=horse_racing],
 area[sport=karting][highway!=raceway],
 area[sport=karting][highway=raceway][area=yes],
@@ -4366,6 +4784,10 @@ node[sport=field_hockey] {
 }
 node[sport=ice_hockey] {
     icon-image: "presets/sport/ice_hockey.svg";
+    set icon_z17;
+}
+node[sport=curling] {
+    icon-image: "presets/sport/curling.svg";
     set icon_z17;
 }
 node[sport=horse_racing] {
@@ -4585,6 +5007,7 @@ area[natural=cliff]:closed {
 way[natural=cliff] {
     repeat-image: "presets/misc/cliff_pattern.svg";
     repeat-image-align: top;
+    repeat-image-offset: 0.5;
     width: 1;
     color: #b2b2b2;
 }
@@ -4679,15 +5102,41 @@ node[natural=bay] {
     icon-image: "presets/nautical/bay.svg";
     set icon_z17;
 }
+area[natural=cape],
+area[natural=sinkhole],
 area[natural=cave_entrance] {
     fill-color: natural#002f00;
 }
-node[natural=cave_entrance] {
-    icon-image: "presets/landmark/cave_entrance.svg";
-    set icon_z17;
-}
 node[natural=cape] {
     icon-image: "presets/nautical/cape.svg";
+    set icon_z17;
+}
+node[natural=sinkhole] {
+    icon-image: "presets/landmark/sinkhole.svg";
+    set icon_z17;
+}
+node[natural=sinkhole][sinkhole=bluehole] {
+    icon-image: "presets/landmark/bluehole.svg";
+    set icon_z17;
+}
+node[natural=sinkhole][sinkhole=doline] {
+    icon-image: "presets/landmark/doline.svg";
+    set icon_z17;
+}
+node[natural=sinkhole][sinkhole=estavelle] {
+    icon-image: "presets/landmark/estavelle.svg";
+    set icon_z17;
+}
+node[natural=sinkhole][sinkhole=pit] {
+    icon-image: "presets/landmark/pit.svg";
+    set icon_z17;
+}
+node[natural=sinkhole][sinkhole=ponor] {
+    icon-image: "presets/landmark/ponor.svg";
+    set icon_z17;
+}
+node[natural=cave_entrance] {
+    icon-image: "presets/landmark/cave_entrance.svg";
     set icon_z17;
 }
 area[natural=strait]:closed {
@@ -4977,10 +5426,7 @@ area[landuse=railway] {
 }
 area[landuse=construction] {
     fill-color: construction#ffff00;
-}
-way[landuse=construction] {
     width: 1;
-    color: construction#ffff00;
     dashes: 9,9;
 }
 area[landuse=military] {
@@ -7982,7 +8428,7 @@ way[highway^=tertiary]{
     set .roundabout_missing;
 }
 
-way.roundabout_missing:closed[!junction][setting("val_checks")] {
+way.roundabout_missing:closed[!junction][setting("roundabout_check")] {
     color: white;
     dashes-background-color: red;
     dashes: 4,12;
@@ -8001,8 +8447,8 @@ way.roundabout_missing:closed[!junction][setting("val_checks")] {
 /* Motorway Oneway Checks */
 /**************************/
 
-way[highway=motorway][!oneway][setting("val_checks")], 
-way[highway=motorway_link][!oneway][setting("val_checks")] {
+way[highway=motorway][!oneway][setting("motor_oneway")], 
+way[highway=motorway_link][!oneway][setting("motor_oneway")] {
     dashes-background-color: red;
     dashes: 4,9;
     opacity: 1;
@@ -8020,17 +8466,28 @@ way[highway=motorway_link][!oneway][setting("val_checks")] {
 /* Suspicious Roundabout Check */
 /*******************************/
 
-way[junction=roundabout][setting("val_checks")]:righthandtraffic:clockwise,
-way[junction=roundabout][setting("val_checks")]!:righthandtraffic:anticlockwise {
+way[junction=roundabout][setting("sus_roundabout")]:righthandtraffic:clockwise,
+way[junction=roundabout][setting("sus_roundabout")]!:righthandtraffic:anticlockwise {
     text: tr("Suspicious Roundabout Direction");
     casing-color: red;
+}
+
+/******************************/
+/* Building Without Yes Value */
+/******************************/
+
+area:closed[building][building!=yes][setting("building_without_yes")] {
+    fill-color: orange;
+    color: orange;
+    text: tr("Warning: building != yes");
+    text-position: center;
 }
 
 /**********************************/
 /* Large Building (area > 520000) */
 /**********************************/
 
-area:closed[building][building!=no][eval(areasize()) > 520000][setting("val_checks")] {
+area:closed[building][building!=no][eval(areasize()) > 520000][setting("lg_building")] {
     text: tr("Large Building");
     font-size: 20;
     text-decoration-color: orange;
@@ -8040,7 +8497,7 @@ area:closed[building][building!=no][eval(areasize()) > 520000][setting("val_chec
 /* Building Crossing Building */
 /******************************/
 
-area:closed[building] ⧉ area:closed[building][setting("val_checks")] {
+area:closed[building] ⧉ area:closed[building][setting("build_cross_build")] {
     text: tr("Overlapping Buildings");
     color: #FF0000;
     width: 1;
@@ -8048,11 +8505,11 @@ area:closed[building] ⧉ area:closed[building][setting("val_checks")] {
     font-weight: bold;
 }
 
-/******************************/
+/****************************/
 /* Strange Character in Key */
-/******************************/
+/****************************/
 
-*[/(\+|\/|&|<|>|;|\'|\"|%|#|@|\\|,|\.|\{|\}|\?|\*|\^|\$)/][setting("val_checks")] {
+*[/(\+|\/|&|<|>|;|\'|\"|%|#|@|\\|,|\.|\{|\}|\?|\*|\^|\$)/][setting("sus_char")] {
     color: red;
     width: 5;
     font-size: 15;
@@ -8094,7 +8551,7 @@ node!:in-downloaded-area <[index=-1] way[highway]  {
     set .outside_area;
 }
 
-way["highway"=~/^(motorway|motorway_link|trunk|trunk_link|primary|primary_link|secondary|secondary_link|tertiary|tertiary_link|unclassified|residential|living_street|service)$/]!:new!.has_connection!.outside_area[setting("val_checks")] {
+way["highway"=~/^(motorway|motorway_link|trunk|trunk_link|primary|primary_link|secondary|secondary_link|tertiary|tertiary_link|unclassified|residential|living_street|service)$/]!:new!.has_connection!.outside_area[setting("float_road")] {
     color: #F20000;
     text: tr("Floating Highway");
     dashes: none;
@@ -8106,8 +8563,8 @@ way["highway"=~/^(motorway|motorway_link|trunk|trunk_link|primary|primary_link|s
 /* Dead-End Oneways */
 /********************/
 
-way["highway"=~/^(motorway|motorway_link|trunk|trunk_link|primary|primary_link|secondary|secondary_link|tertiary|tertiary_link|unclassified|residential|living_street|service|track)$/]["oneway"=~/^(yes|-1)$/]!:closed!.outside_area >[index=1] node[!amenity]!:connection:in-downloaded-area[setting("val_checks")]::under,
-way["highway"=~/^(motorway|motorway_link|trunk|trunk_link|primary|primary_link|secondary|secondary_link|tertiary|tertiary_link|unclassified|residential|living_street|service|track)$/]["oneway"=~/^(yes|-1)$/]!:closed!.outside_area >[index=-1] node[!amenity]!:connection:in-downloaded-area[setting("val_checks")]::under {
+way["highway"=~/^(motorway|motorway_link|trunk|trunk_link|primary|primary_link|secondary|secondary_link|tertiary|tertiary_link|unclassified|residential|living_street|service|track)$/]["oneway"=~/^(yes|-1)$/]!:closed!.outside_area >[index=1] node[!amenity]!:connection:in-downloaded-area[setting("de_onway")]::under,
+way["highway"=~/^(motorway|motorway_link|trunk|trunk_link|primary|primary_link|secondary|secondary_link|tertiary|tertiary_link|unclassified|residential|living_street|service|track)$/]["oneway"=~/^(yes|-1)$/]!:closed!.outside_area >[index=-1] node[!amenity]!:connection:in-downloaded-area[setting("de_onway")]::under {
     symbol-stroke-color: orange;
     symbol-fill-color: red;
     symbol-shape: circle;
@@ -8123,11 +8580,11 @@ way["highway"=~/^(motorway|motorway_link|trunk|trunk_link|primary|primary_link|s
 /* Bad Building Values */
 /***********************/
 
-area["building"=~/^(fire_station|ger|stilt_house|slurry_tank|apartments|farm|hotel|house|detached|residential|dormitory|terrace|houseboat|bungalow|static_caravan|cabin|commercial|office|industrial|retail|supermarket|warehouse|kiosk|religious|cathedral|chapel|church|mosque|temple|synagogue|shrine|bakehouse|kindergarten|civic|government|hospital|school|stadium|train_station|transportation|university|grandstand|public|toilets|barn|bridge|bunker|carport|conservatory|construction|cowshed|digester|farm_auxiliary|garage|garages|garbage_shed|greenhouse|hangar|hut|pavilion|parking|riding_hall|roof|shed|sports_hall|stable|sty|transformer_tower|service|ruins|water_tower|yes)$/] {
+area["building"=~/^(semi|semidetached_house|fire_station|ger|stilt_house|slurry_tank|apartments|farm|hotel|house|detached|residential|dormitory|terrace|houseboat|bungalow|static_caravan|cabin|commercial|office|industrial|retail|supermarket|warehouse|kiosk|religious|cathedral|chapel|church|mosque|temple|synagogue|shrine|bakehouse|kindergarten|civic|government|hospital|school|stadium|train_station|transportation|university|grandstand|public|toilets|barn|bridge|bunker|carport|conservatory|construction|cowshed|digester|farm_auxiliary|garage|garages|garbage_shed|greenhouse|hangar|hut|pavilion|parking|riding_hall|roof|shed|sports_hall|stable|sty|transformer_tower|service|ruins|water_tower|yes)$/] {
     set .normal_building;
 }
 
-area[building]!.normal_building[setting("val_checks")] {
+area[building]!.normal_building[setting("bad_build_value")] {
     fill-color: red;
     color: red;
     text: tr("Suspicious Building Value");
@@ -8138,10 +8595,10 @@ area[building]!.normal_building[setting("val_checks")] {
 /* Buildings as Water or Roads */
 /*******************************/
 
-area[building][highway][setting("val_checks")],
-area[building][waterway][setting("val_checks")],
-way[building][waterway]:closed[setting("val_checks")],
-way[building][highway]:closed[setting("val_checks")] {
+area[building][highway][setting("bad_build")],
+area[building][waterway][setting("bad_build")],
+way[building][waterway]:closed[setting("bad_build")],
+way[building][highway]:closed[setting("bad_build")] {
     fill-color: red;
     color: red;
     text: tr("Bad Tag Combination");
@@ -8157,7 +8614,7 @@ way[building][highway]:closed[setting("val_checks")] {
 /* Water as Roads */
 /******************/
 
-way[waterway][highway][setting("val_checks")] {
+way[waterway][highway][setting("water_road")] {
     color: red;
     casing-color: red;
     text: tr("Highway with waterway tag");
@@ -8186,22 +8643,22 @@ way[highway]!:closed >[index=-1] node|z15-!:connection!:tagged[setting("Unconnec
 /*************************************/
 
 /* Create highway class for highways that have a connection node */
-way[highway][setting("val_checks")] > node:connection {
+way[highway][setting("building_cross_road")] > node:connection {
     set .wayintersect;
 }
 
 /* Create class in order to exclude these scenarios */
 
-way["highway"=~/^(pedestrian|footway|steps|path|cycleway|bridleway)$/][setting("val_checks")] > node:connection,
-way[highway]["covered"=~/^(yes|no|arcade|booth)$/][setting("val_checks")] > node:connection,
-way[highway]["tunnel"=~/^(building_passage|culvert)$/][setting("val_checks")] > node:connection,
-way["highway"=~/^(service|track)$/][setting("val_checks")] > node:connection[entrance] {
+way["highway"=~/^(pedestrian|footway|steps|path|cycleway|bridleway)$/][setting("building_cross_road")] > node:connection,
+way[highway]["covered"=~/^(yes|no|arcade|booth)$/][setting("building_cross_road")] > node:connection,
+way[highway]["tunnel"=~/^(building_passage|culvert)$/][setting("building_cross_road")] > node:connection,
+way["highway"=~/^(service|track)$/][setting("building_cross_road")] > node:connection[entrance] {
     set .wayexclude;
 }
 
 /* Buildings that are connected to highways (except for the excludes) are flagged */
 
-way[building][setting("val_checks")]:closed > node|z17-:connection.wayintersect!.wayexclude {
+way[building][setting("building_cross_road")]:closed > node|z17-:connection.wayintersect!.wayexclude {
     symbol-shape: triangle;
     symbol-size: 15;
     symbol-fill-color: red;
@@ -8213,9 +8670,76 @@ way[building][setting("val_checks")]:closed > node|z17-:connection.wayintersect!
     text-offset: 40;
 }
 
+/***************************/
+/* Buildings Sharing Nodes */
+/***************************/
+
+way[!building][setting("building_shared_nodes")] > node:connection {
+    set .nonbuildingnodes
+}
+
+way[building]!.wayexclude[setting("building_shared_nodes")]:closed > node:connection!.nonbuildingnodes {
+    set .selectme;
+}
+
+node|z17-.selectme[setting("building_shared_nodes")] {
+    symbol-shape: triangle;
+    symbol-size: 15;
+    symbol-fill-color: red;
+    symbol-fill-opacity: 0.8;
+    symbol-stroke-color: yellow;
+    symbol-stroke-width: 2;
+}
+
+/*************************************/
+/* Landuse or Natural Intersecting Road Checks */
+/*************************************/
+
+/* Create highway class for highways that have a connection node */
+way[highway][setting("land_cross_road")] > node:connection {
+    set .wayintersect;
+}
+
+/* Create class in order to exclude these scenarios */
+
+way["highway"=~/^(pedestrian|footway|steps|path|cycleway|bridleway)$/][setting("land_cross_road")] > node:connection,
+way[highway]["covered"=~/^(yes|no|arcade|booth)$/][setting("land_cross_road")] > node:connection,
+way[highway]["tunnel"=~/^(building_passage|culvert)$/][setting("land_cross_road")] > node:connection,
+way["highway"=~/^(service|track)$/][setting("land_cross_road")] > node:connection[entrance] {
+    set .wayexclude;
+}
+
+/* Natural features that are connected to highways (except for the excludes) are flagged */
+
+way[natural][natural!~/water/][setting("land_cross_road")]:closed > node|z17-:connection.wayintersect!.wayexclude {
+    symbol-shape: hexagon;
+    symbol-size: 15;
+    symbol-fill-color: red;
+    symbol-fill-opacity: 0.8;
+    symbol-stroke-color: yellow;
+    symbol-stroke-width: 2;
+    text: tr("Road Intersecting Natural");
+    font-size: 15;
+    text-offset: 40;
+}
+
+/* Landuse features that are connected to highways (except for the excludes) are flagged */
+
+way[landuse][setting("land_cross_road")]:closed > node|z17-:connection.wayintersect!.wayexclude {
+    symbol-shape: hexagon;
+    symbol-size: 15;
+    symbol-fill-color: red;
+    symbol-fill-opacity: 0.8;
+    symbol-stroke-color: yellow;
+    symbol-stroke-width: 2;
+    text: tr("Road Intersecting Landuse");
+    font-size: 15;
+    text-offset: 40;
+}
+
 /* Node Styles once Selected */
 
-way[building][setting("val_checks")]:closed > node:connection {
+way[building][setting("land_cross_road")]:closed > node:connection {
     set .selectme;
 }
 
@@ -8229,9 +8753,11 @@ node:selected.selectme {
     symbol-stroke-width: 5;
 }
 
+/*************************************/
 /* Building inside of building Check */
+/*************************************/
 
-*[building][building!~/no|entrance/][any(tag("layer"),"0") = any(parent_tag("layer"),"0")] ∈ *[building][building!~/no|entrance/][setting("val_checks")] {
+*[building][building!~/no|entrance/][any(tag("layer"),"0") = any(parent_tag("layer"),"0")] ∈ *[building][building!~/no|entrance/][setting("build_in_build")] {
     text: tr("Building Inside Building");
     font-size: 15;
     width: 2;
@@ -8241,7 +8767,9 @@ node:selected.selectme {
     font-weight: bold;
 }
 
+/****************************************************/
 /* Water (ways only) snapped to roads and buildings */
+/****************************************************/
 
 way[natural=water] > node[!ford]:connection {
     set .water_1;
@@ -8267,26 +8795,28 @@ way[highway] > node[!ford]:connection {
     set .highway_1;
 }
 
-node|z17-.building_1.water_1[setting("val_checks")],
-node|z17-.building_1.riverbank_1[setting("val_checks")],
-node|z17-.building_1.waterway_1[setting("val_checks")],
-node|z17-.waterway_1.highway_1[setting("val_checks")],
-node|z17-.water_1.highway_1[setting("val_checks")],
-node|z17-.riverbank_1.highway_1[setting("val_checks")],
-node|z17-.railway_1.waterway_1[setting("val_checks")],
-node|z17-.railway_1.riverbank_1[setting("val_checks")],
-node|z17-.railway_1.water_1[setting("val_checks")] {
+node|z17-.building_1.water_1[setting("water_road_snap")],
+node|z17-.building_1.riverbank_1[setting("water_road_snap")],
+node|z17-.building_1.waterway_1[setting("water_road_snap")],
+node|z17-.waterway_1.highway_1[setting("water_road_snap")],
+node|z17-.water_1.highway_1[setting("water_road_snap")],
+node|z17-.riverbank_1.highway_1[setting("water_road_snap")],
+node|z17-.railway_1.waterway_1[setting("water_road_snap")],
+node|z17-.railway_1.riverbank_1[setting("water_road_snap")],
+node|z17-.railway_1.water_1[setting("water_road_snap")] {
     symbol-size:15;
     symbol-fill-color: red;
     symbol-shape: circle;
     symbol-stroke-width: 2;
 }
 
+/**************************/
 /* Buildings within water */
+/**************************/
 
-area[natural=water] ∈ area[building][setting("val_checks")],
-area[building] ∈ area[natural=water][setting("val_checks")],
-area[building] ∈ area[waterway=riverbank][setting("val_checks")] {
+area[natural=water] ∈ area[building][setting("build_in_water")],
+area[building] ∈ area[natural=water][setting("build_in_water")],
+area[building] ∈ area[waterway=riverbank][setting("build_in_water")] {
     color: red;
     width: 10;
     text: tr("Building Inside Water");
@@ -8294,9 +8824,11 @@ area[building] ∈ area[waterway=riverbank][setting("val_checks")] {
     font-size: 20;
 }
 
+/*************************************/
 /* Waterways crossing with buildings */
+/*************************************/
 
-area[natural=water] ⧉ area[building][setting("val_checks")] {
+area[natural=water] ⧉ area[building][setting("water_cross_building")] {
     color: red;
     width: 10;
     text: tr("Building Crossing Water");
@@ -8304,11 +8836,11 @@ area[natural=water] ⧉ area[building][setting("val_checks")] {
     font-size: 20;
 }
 
-/*************************************/
+/********************************/
 /* Invalid Multipolygon Checks  */
-/*************************************/
+/********************************/
 
-area:closed2[eval(JOSM_search("role:outer"))] ⧉ area:closed2[eval(JOSM_search("role:outer"))][setting("val_checks")] {
+area:closed2[eval(JOSM_search("role:outer"))] ⧉ area:closed2[eval(JOSM_search("role:outer"))][setting("invalid_multi")] {
     text: tr("Outer members overlapping");
     font-size: 15;
     color: #FF0000;
@@ -8317,7 +8849,7 @@ area:closed2[eval(JOSM_search("role:outer"))] ⧉ area:closed2[eval(JOSM_search(
     font-weight: bold;
 }
 
-area:closed2[eval(JOSM_search("role:outer"))] ⧉ area:closed2[eval(JOSM_search("role:inner"))][setting("val_checks")]  {
+area:closed2[eval(JOSM_search("role:outer"))] ⧉ area:closed2[eval(JOSM_search("role:inner"))][setting("invalid_multi")]  {
     text: tr("Inner member intersects with an outer member");
     font-size: 15;
     color: #FF0000;
@@ -8326,7 +8858,7 @@ area:closed2[eval(JOSM_search("role:outer"))] ⧉ area:closed2[eval(JOSM_search(
     font-weight: bold;
 }
 
-area:closed2[eval(JOSM_search("role:inner"))] ⊇ area:closed2[eval(JOSM_search("role:outer"))][setting("val_checks")] {
+area:closed2[eval(JOSM_search("role:inner"))] ⊇ area:closed2[eval(JOSM_search("role:outer"))][setting("invalid_multi")] {
   width: 10;
   color: red;
   text: tr("Outer member within an inner member");
@@ -8335,31 +8867,6 @@ area:closed2[eval(JOSM_search("role:inner"))] ⊇ area:closed2[eval(JOSM_search(
     width: 1;
     text-position: center;
     font-weight: bold;
-}
-
-/* Invalid Node Connection - This will flag when an inner member is connected to an
-out member (which is invalid), however it may flag some false positives as this does
-not evaluate the same relation, but all relations. False positives are more common with boundaries. */
-
-area[eval(JOSM_search("role:inner"))] > node:connection {
-    set .innernode;
-}
-
-area[eval(JOSM_search("role:outer"))] > node:connection {
-    set .outernode;
-}
-
-node|z12-.innernode.outernode[setting("val_checks")] {
-    symbol-size:8;
-    symbol-fill-color: red;
-    symbol-shape: circle;
-    symbol-stroke-width: 1;
-    text: tr("Possible error: Inner connected to Outer");
-        font-size: 12;
-        color: #FF0000;
-        width: 2;
-        text-position: center;
-        font-weight: bold;
 }
 
 /* Visible Nodes Style */
@@ -8716,6 +9223,32 @@ area[military][building][setting("sensitive")] {
     text: none;
 }
 
+/*************************/
+/* Diplomatic Facilities Styling */
+/*************************/
+
+node[amenity=embassy][setting("sensitive")]::government,
+node[office=diplomatic][setting("sensitive")]::government,
+node[diplomatic=~/embassy|consulate/][setting("sensitive")]::government {
+    symbol-shape: circle;
+    symbol-size: 23;
+    symbol-stroke-color: red;
+    symbol-stroke-width: 2;
+    symbol-fill-color: #457585;
+    symbol-fill-opacity: .7;
+    z-index: -15;
+    text-offset: 40;
+}
+
+area[amenity=embassy][setting("sensitive")],
+area[office=diplomatic][setting("sensitive")],
+area[diplomatic=~/embassy|consulate/][setting("sensitive")] {
+    text:tr("DIPLOMATIC BUILDING");
+    text-position: center;
+    font-size: 20;
+    color: #FFA500;
+    width: 3;
+}
 
 /*----------------------------------------------------------------------------------------------------------------------*\
                                                       Admin Casing
