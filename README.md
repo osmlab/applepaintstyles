@@ -1,5 +1,7 @@
 # JOSM Paint Style
 
+![GeneralInterchange2](./assets/GeneralInterchange2.png)
+
 ## Description
 
 This map paint style improves the visibility of the highway network for easier editing of ways and nodes. All supported OSM tags render in this custom base style; no need to stack styles. 
