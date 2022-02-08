@@ -1,6 +1,6 @@
 # JOSM Paint Style
 
-![GeneralInterchange2](./assets/GeneralInterchange2.png)
+![GeneralInterchange2](https://github.com/osmlab/applepaintstyles/blob/images/images/GeneralInterchange2.png)
 
 ## Description
 
