@@ -1,4 +1,4 @@
-# JOSM Paint Style
+# Apple Paint Style
 
 ![GeneralInterchange2](https://github.com/osmlab/applepaintstyles/blob/images/images/GeneralInterchange2.png)
 
