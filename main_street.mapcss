@@ -2743,11 +2743,11 @@ area[leisure=water_park] {
     fill-color: leisure#c7f1a3;
 }
 node[leisure=bandstand] {
-    icon-image: "presets/sport/bandstand.svg";
+    icon-image: "presets/leisure/bandstand.svg";
     set icon_z17;
 }
 node[leisure=bleachers] {
-    icon-image: "presets/sport/bleachers.svg";
+    icon-image: "presets/leisure/bleachers.svg";
     set icon_z17;
 }
 node[leisure=sports_centre] {
@@ -3204,7 +3204,7 @@ node[shop=curtain] {
     set icon_z17;
 }
 node[shop=cycle_repair] {
-    icon-image: "presets/sport/bicycle.svg";
+    icon-image: "presets/vehicle/bicycle_repair_station.svg";
     set icon_z17;
 }
 node[shop=department_store] {
@@ -3468,7 +3468,7 @@ node[shop=perfumery] {
     set icon_z17;
 }
 node[shop=herbalist] {
-    icon-image: "presets/shop/herbalist.svg";
+    icon-image: "presets/shop/groceries/herbalist.svg";
     set icon_z17;
 }
 node[shop=tea] {
@@ -4502,7 +4502,7 @@ node[tourism=artwork] {
     set icon_z17;
 }
 node[tourism=gallery] {
-    icon-image: "presets/leisure/gallery.svg";
+    icon-image: "presets/sightseeing/gallery.svg";
     set icon_z17;
 }
 node[tourism=museum] {
@@ -4622,7 +4622,7 @@ node[historic=battlefield] {
     set icon_z17;
 }
 node[geological=palaeontological_site] {
-    icon-image: "presets/historic/palaeontological_site.svg";
+    icon-image: "presets/sightseeing/palaeontological_site.svg";
     set icon_z17;
 }
 area[historic=citywalls]:closed {
@@ -5781,7 +5781,7 @@ node|z14-[mountain_pass?] {
 /* Traffic Signs */
 
 node[traffic_sign][access?!] {
-    icon-image: "presets/vehicle/restriction/access.svg";
+    icon-image: "presets/vehicle/restriction/restrictions.svg";
     set icon_z17;
 }
 node[traffic_sign][access=permissive][!is_prop_set(icon-image)],
@@ -6489,7 +6489,7 @@ node[military=danger_area] {
     set icon_z17;
 }
 node[military=range] {
-    icon-image: "presets/landmark/range.svg";
+    icon-image: "presets/sport/range.svg";
     set icon_z17;
 }
 
