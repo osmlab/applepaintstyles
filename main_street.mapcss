@@ -1110,7 +1110,7 @@ way[highway=bridleway] {
     width: 1;
     casing-width: .2;
     casing-color: #443d3e;
-    color: horse#a18559;
+    color: horse#ebb434;
 }
 way[highway=cycleway] {
     z-index: 3;
@@ -1153,6 +1153,15 @@ area["area:highway"] {
     dashes-background-color: #E8E8E8;
     fill-opacity: .3;
     fill-extent: none;
+}
+
+relation[type=multipolygon][highway] > way {
+    fill-color: #b9b9b9;
+    color: #770000;
+    width: 3;
+    dashes: 9,9;
+    dashes-background-color: #E8E8E8;
+    fill-opacity: .3;
 }
 
 /* Display path with bicycle/foot=designated/official as if it was cycleway/footway */
@@ -1266,7 +1275,7 @@ way[highway=bus_guideway] {
     dashes: 9,9;
 }
 way[highway=busway] {
-	width: 1;
+	width: 4;
     color: bus#89cbeb;
 }
 way[highway=busway][area?], relation[type=multipolygon][highway=busway] {
@@ -1275,6 +1284,13 @@ way[highway=busway][area?], relation[type=multipolygon][highway=busway] {
 way[highway=raceway] {
     width: 1;
     color: raceway#ff80ff;
+}
+way[highway=raceway][sport=motor] {
+    width: 1;
+    color: raceway#ff80ff;
+    dashes: 7, 15;
+    dashes-background-color: raceway#ff80ff;
+    color: service#052457;
 }
 way[highway=raceway][area?], relation[type=multipolygon][highway=raceway] {
     fill-color: raceway#ff80ff;
@@ -1439,6 +1455,11 @@ node[highway=passing_place] {
 }
 area[highway=elevator] {
     fill-color: elevator#a6bace;
+}
+way[highway=elevator][access=yes] {
+    width: 2;
+    color: elevator#a6bace;
+    z-index: 2;
 }
 node[highway=elevator] {
     icon-image: "presets/service/elevator.svg";
@@ -5671,6 +5692,9 @@ area[natural],
 area[man_made] {
     z-index: -2; 
 }
+area[landuse=greenery] {
+    fill-color: greenery#89ad82;
+}
 area[landuse=farmland] {
     fill-color: farmland#b8e0b1;
 }
@@ -5759,6 +5783,9 @@ area[landuse=village_green] {
 }
 area[landuse=recreation_ground] {
     fill-color: green#b1e0c2;
+}
+area[landuse=winter_sports] {
+    fill-color: blue#a7d2f2;
 }
 node[landuse] {
     icon-image: "presets/misc/deprecated.svg";
@@ -8903,7 +8930,7 @@ way["highway"=~/^(motorway|motorway_link|trunk|trunk_link|primary|primary_link|s
 /* Bad Building Values */
 /***********************/
 
-area["building"=~/^(semi|semidetached_house|fire_station|ger|stilt_house|slurry_tank|apartments|farm|hotel|house|detached|residential|dormitory|terrace|houseboat|bungalow|static_caravan|cabin|commercial|office|industrial|retail|supermarket|warehouse|kiosk|religious|cathedral|chapel|church|mosque|temple|synagogue|shrine|bakehouse|kindergarten|civic|government|hospital|school|stadium|train_station|transportation|university|grandstand|public|toilets|barn|bridge|bunker|carport|conservatory|construction|cowshed|digester|farm_auxiliary|garage|garages|garbage_shed|greenhouse|hangar|hut|pavilion|parking|riding_hall|roof|shed|sports_hall|stable|sty|transformer_tower|service|ruins|water_tower|yes)$/] {
+area["building"=~/^(semi|semidetached_house|triumphal_arch|fire_station|ger|stilt_house|slurry_tank|apartments|farm|hotel|house|detached|residential|dormitory|terrace|houseboat|bungalow|static_caravan|cabin|commercial|office|industrial|retail|supermarket|warehouse|kiosk|religious|cathedral|chapel|church|mosque|temple|synagogue|shrine|bakehouse|kindergarten|civic|government|hospital|school|stadium|train_station|transportation|university|grandstand|public|toilets|barn|bridge|bunker|carport|conservatory|construction|cowshed|digester|farm_auxiliary|garage|garages|garbage_shed|greenhouse|hangar|hut|pavilion|parking|riding_hall|roof|shed|sports_hall|stable|sty|transformer_tower|service|ruins|water_tower|yes)$/] {
     set .normal_building;
 }
 
