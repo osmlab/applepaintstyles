@@ -876,7 +876,7 @@ node[building:part] {
     set icon_z17;
 }
 area[area=yes] {
-    fill-color: #7F0020;
+    fill-color: #fcfcfc;
     width: 2;
     dashes: 5,5;
 }
@@ -941,7 +941,7 @@ way[highway=trunk] {
     casing-width: 1.5;
     casing-color: #1e375a;
     color: trunk#809BC0;
-    
+
 }
 way[highway=trunk_link] {
     z-index: 7;
@@ -1032,7 +1032,7 @@ way[highway=track] {
     color: highway_track#6e541c;
 }
 way[highway=residential] {
-    z-index: 3; 
+    z-index: 3;
     width: 4;
     casing-width: .5;
     casing-color: #000000;
@@ -1047,9 +1047,13 @@ way[highway=living_street] {
     dashes-background-color: livingdashed#00ff00;
     color: street#c0c0c0;
 }
-way[highway=service][area?], 
+way[highway=service][area?],
 relation[type=multipolygon][highway=service] {
-    fill-color: service#847e6b;
+    fill-color: #45588c;
+    width: 4;
+    casing-width: .5;
+    casing-color: #000000;
+    color: service#45588c;
 }
 way[highway=service][!area?] {
     z-index: 3;
@@ -1058,6 +1062,7 @@ way[highway=service][!area?] {
     casing-color: #443d3e;
     color: service#45588c;
 }
+
 way[highway=service][service=alley]
 {
     z-index: 3;
@@ -1120,7 +1125,7 @@ way[highway=cycleway] {
     color: bicycle#b100ff;
 }
 way[highway=footway][area?], relation[type=multipolygon][highway=footway] {
-    fill-color: foot#aaee55;
+    fill-color: foot#FF6644;
 }
 way[highway=footway][!area?] {
     width: 3;
@@ -1136,12 +1141,12 @@ way[highway=path][bicycle!=designated][bicycle!=official][foot!=designated][foot
     dashes: 9,9;
     color: foot#FF6644;
 }
-way[highway=footway][footway=crossing] { 
-    casing-dashes: 2,2; 
+way[highway=footway][footway=crossing] {
+    casing-dashes: 2,2;
     casing-color: white;
     casing-width: .5;
 }
-way[highway=footway][footway=sidewalk] { 
+way[highway=footway][footway=sidewalk] {
     casing-color: gray;
     casing-width: 2;
 }
@@ -1161,7 +1166,33 @@ relation[type=multipolygon][highway] > way {
     width: 3;
     dashes: 9,9;
     dashes-background-color: #E8E8E8;
-    fill-opacity: .3;
+}
+
+relation[type=multipolygon][highway] > way::multipolygon_highway_layer {
+    fill-color: #b9b9b9;
+    color: #770000;
+    width: 3;
+    dashes: 9,9;
+    dashes-background-color: #E8E8E8;
+    major-z-index: 10; /* Render below main features */
+}
+
+relation[type=multipolygon][highway] > way[role=outer]::multipolygon_highway_layer {
+    fill-color: #b9b9b9;
+    color: #770000;
+    width: 3;
+    dashes: 9,9;
+    dashes-background-color: #E8E8E8;
+    major-z-index: 10;
+}
+
+relation[type=multipolygon][highway] > way[role=inner]::multipolygon_highway_layer {
+    fill-color: #b9b9b9;
+    color: #770000;
+    width: 3;
+    dashes: 9,9;
+    dashes-background-color: #E8E8E8;
+    major-z-index: 10;
 }
 
 /* Display path with bicycle/foot=designated/official as if it was cycleway/footway */
@@ -1195,59 +1226,59 @@ way[highway=path][bicycle=official][foot=official] {
 way[highway=footway][bicycle=yes],
 way[highway=footway][bicycle=designated],
 way[highway=path][bicycle=yes][foot=designated],
-way[highway=path][bicycle=yes][foot=official] { 
-    z-index: -30; 
-    color: walk#FF6644; 
-    width: 2;  
+way[highway=path][bicycle=yes][foot=official] {
+    z-index: -30;
+    color: walk#FF6644;
+    width: 2;
 }
 
 way[highway=footway][bicycle=yes]::one,
 way[highway=footway][bicycle=designated]::one,
 way[highway=path][bicycle=yes][foot=designated]::one,
-way[highway=path][bicycle=yes][foot=official]::one { 
+way[highway=path][bicycle=yes][foot=official]::one {
     z-index: -10;
-    color: bike#b100ff; 
-    width: 4;  
-    dashes: 7, 30 ; 
+    color: bike#b100ff;
+    width: 4;
+    dashes: 7, 30 ;
     linecap: round;
 }
 way[highway=footway][bicycle=yes]::two,
 way[highway=footway][bicycle=designated]::two,
 way[highway=path][bicycle=yes][foot=designated]::two,
-way[highway=path][bicycle=yes][foot=official]::two { 
+way[highway=path][bicycle=yes][foot=official]::two {
     z-index: -20;
-    color: white; 
-    width: 6;  
-    dashes: 7, 30 ; 
+    color: white;
+    width: 6;
+    dashes: 7, 30 ;
     linecap: round;
 }
 way[highway=cycleway][foot=yes],
 way[highway=cycleway][foot=designated],
 way[highway=path][bicycle=designated][foot=yes],
-way[highway=path][bicycle=official][foot=yes] { 
-    z-index: -30; 
-    color: bike#b100ff; 
-    width: 2;  
+way[highway=path][bicycle=official][foot=yes] {
+    z-index: -30;
+    color: bike#b100ff;
+    width: 2;
 }
 
 way[highway=cycleway][foot=yes]::twoo,
 way[highway=cycleway][foot=designated]::twoo,
 way[highway=path][bicycle=designated][foot=yes]::twoo,
-way[highway=path][bicycle=official][foot=yes]::twoo { 
+way[highway=path][bicycle=official][foot=yes]::twoo {
     z-index: -10;
-    color: walk#FF6644; 
-    width: 4;  
-    dashes: 7, 30 ; 
+    color: walk#FF6644;
+    width: 4;
+    dashes: 7, 30 ;
     linecap: round;
 }
 way[highway=cycleway][foot=yes]::threee,
 way[highway=cycleway][foot=designated]::threee,
 way[highway=path][bicycle=designated][foot=yes]::threee,
-way[highway=path][bicycle=official][foot=yes]::threee { 
+way[highway=path][bicycle=official][foot=yes]::threee {
     z-index: -20;
-    color: white; 
-    width: 6;  
-    dashes: 7, 30 ; 
+    color: white;
+    width: 6;
+    dashes: 7, 30 ;
     linecap: round;
 }
 way[highway=pedestrian][area?], relation[type=multipolygon][highway=pedestrian] {
@@ -1262,7 +1293,7 @@ way[highway=pedestrian] {
 way[highway=steps] {
     width: 3;
     color: foot#FF6644;
-    dashes: 2,2; 
+    dashes: 2,2;
 }
 
 way[value] {
@@ -1506,8 +1537,8 @@ node[highway=platform] {
     set icon_z17;
 }
 
-/************************/ 
-/* Traffic_calming Tags */ 
+/************************/
+/* Traffic_calming Tags */
 /************************/
 
 node[traffic_calming] {
@@ -1734,7 +1765,7 @@ way[highway=secondary][setting("Alt_Highways_setting")] {
     width: 4;
     casing-width: 0;
     casing-color: #FDBF6F;
-    color: #FDBF6F;  
+    color: #FDBF6F;
 }
 way[highway=secondary_link][setting("Alt_Highways_setting")] {
     z-index: 5;
@@ -1752,7 +1783,7 @@ way[highway=tertiary][setting("Alt_Highways_setting")] {
 }
 way[highway=tertiary_link][setting("Alt_Highways_setting")] {
     z-index: 4;
-    width: 3; 
+    width: 3;
     dashes: 9,9;
     dashes-background-color: tertiarydashed#FFFFFF;
     color: tertiary#DEC143;
@@ -1810,7 +1841,7 @@ way[highway=trunk][junction=roundabout] {
     z-index: 7;
     width: 6;
     casing-width: 1.5;
-    casing-color: #1e375a; 
+    casing-color: #1e375a;
     color: #809BC0;
     dashes: 25, 15;
     dashes-background-color: #191919;
@@ -1877,7 +1908,7 @@ way[highway=unclassified][junction=roundabout] {
     dashes-background-opacity: 0.9;
 }
 way[highway=track][junction=roundabout] {
-    z-index: 3; 
+    z-index: 3;
     width: 3;
     casing-width:.3;
     dashes-background-color: rndtrack#000000;
@@ -1942,7 +1973,7 @@ way[highway=trunk][junction=circular] {
     z-index: 7;
     width: 3.7;
     casing-width: 2;
-    casing-color: #809BC0; 
+    casing-color: #809BC0;
     color: #EA004F;
     dashes: 15, 15;
 }
@@ -1995,7 +2026,7 @@ way[highway=unclassified][junction=circular] {
     dashes: 15, 15;
 }
 way[highway=track][junction=circular] {
-    z-index: 3; 
+    z-index: 3;
     width: 4;
     dashes-background-color: rndtrack#EA004F;
     color: track#6e541c;
@@ -2032,7 +2063,7 @@ way[highway][setting("pedestrian")] {
   width: 3;
 }
 way|z15-["highway"=~/^(motorway|motorway_link)$/][setting("pedestrian")]  {
-    casing-color: #cf142b; 
+    casing-color: #cf142b;
     casing-width: 3;
     casing-opacity: 0.5;
 }
@@ -2044,7 +2075,7 @@ way|z15-["highway"=~/^(motorway|motorway_link)$/][setting("pedestrian")]::motorw
     major-z-index: 5;
 }
 way|z15-[highway=cycleway][foot!~/yes|designated|official|permissive|destination/][setting("pedestrian")]  {
-    casing-color: #cf142b; 
+    casing-color: #cf142b;
     casing-width: 3;
     casing-opacity: 0.5;
 }
@@ -2056,34 +2087,34 @@ way|z15-[highway=cycleway][foot!~/yes|designated|official|permissive|destination
     major-z-index: 5;
 }
 /* Sidewalk Styling */
-way.pedestrian_access["sidewalk"=~/^(yes|both|separate)$/][setting("pedestrian")] { 
-    casing-color: #00ab66; 
+way.pedestrian_access["sidewalk"=~/^(yes|both|separate)$/][setting("pedestrian")] {
+    casing-color: #00ab66;
     casing-width: 4;
     casing-dashes: 2,7,2,3 ;
-    casing-opacity: 0.6;  
+    casing-opacity: 0.6;
 }
-way.pedestrian_access[sidewalk=right][setting("pedestrian")] { 
-    casing-color: #00ab66; 
+way.pedestrian_access[sidewalk=right][setting("pedestrian")] {
+    casing-color: #00ab66;
     casing-width: 4;
     casing-dashes: 2,7,2,3 ;
     casing-offset: -4;
-    casing-opacity: 0.6; 
+    casing-opacity: 0.6;
 }
-way.pedestrian_access[sidewalk=left][setting("pedestrian")] { 
-    casing-color: #00ab66; 
+way.pedestrian_access[sidewalk=left][setting("pedestrian")] {
+    casing-color: #00ab66;
     casing-width: 4;
     casing-dashes: 2,7,2,3 ;
     casing-offset: 4;
-    casing-opacity: 0.6;  
+    casing-opacity: 0.6;
 }
 /* Foot=* Styling */
 way|z15-[highway=cycleway]["foot"=~/^(yes|designated|official|permissive|destination)$/][setting("pedestrian")]  {
-    casing-color: #00ab66; 
+    casing-color: #00ab66;
     casing-width: 4;
     casing-opacity: 0.3;
 }
 way.pedestrian_access["foot"=~/^(no|none|private)$/][setting("pedestrian")] {
-    casing-color: #cf142b; 
+    casing-color: #cf142b;
     casing-width: 4;
     casing-opacity: 0.4;
 }
@@ -2092,27 +2123,27 @@ way["foot"=~/^(no|none|private)$/][setting("pedestrian")]::imagelayer {
     repeat-image-spacing: 200;
     repeat-image-width: 20;
     repeat-image-phase: 40;
-    major-z-index: 5; 
+    major-z-index: 5;
 }
-way.pedestrian_access["foot"=~/^(yes|designated|official|permissive|destination)$/][setting("pedestrian")] { 
-    casing-color: #00ab66; 
+way.pedestrian_access["foot"=~/^(yes|designated|official|permissive|destination)$/][setting("pedestrian")] {
+    casing-color: #00ab66;
     casing-width: 4;
     casing-opacity: 0.3;
 }
-way["foot"=~/^(yes|designated|official|permissive|destination)$/][setting("pedestrian")]::imagelayer2 { 
+way["foot"=~/^(yes|designated|official|permissive|destination)$/][setting("pedestrian")]::imagelayer2 {
     repeat-image: "presets/ped_access_allowed.png";
     repeat-image-spacing: 200;
     repeat-image-width: 20;
     repeat-image-phase: 40;
     major-z-index: 5;
 }
-way.pedestrian_access["foot"=~/^(yes|designated|official|permissive|destination)$/][sidewalk][setting("pedestrian")] { 
-    casing-color: #00ab66; 
+way.pedestrian_access["foot"=~/^(yes|designated|official|permissive|destination)$/][sidewalk][setting("pedestrian")] {
+    casing-color: #00ab66;
     casing-width: 4;
     casing-opacity: 0.6;
 }
-way.pedestrian_access[setting("pedestrian")][!sidewalk][!foot] { 
-    casing-color: #00ab66; 
+way.pedestrian_access[setting("pedestrian")][!sidewalk][!foot] {
+    casing-color: #00ab66;
     casing-width: 4;
     casing-opacity: 0.3;
 }
@@ -2122,7 +2153,7 @@ way.pedestrian_access[setting("pedestrian")][!sidewalk][!foot] {
 \*----------------------------------------------------------------------------------------------------------------------*/
 
 /*---------------*\
-        POI 
+        POI
 \*---------------*/
 
 
@@ -2309,13 +2340,13 @@ area[man_made=pump],
 area[pipeline=substation] {
     fill-color: pipeline_substation#eeeeee;
 }
-node[pipeline=substation] { 
+node[pipeline=substation] {
     icon-image: "presets/misc/pipeline_substation.svg";
-    set icon_z17; 
+    set icon_z17;
 }
 node[marker] {
     icon-image: "presets/misc/pipeline_marker.svg";
-    set icon_z17;   
+    set icon_z17;
 }
 node[pipeline=valve] {
     icon-image: "presets/misc/valve.svg";
@@ -2579,7 +2610,7 @@ node[man_made=utility_pole][utility~=street_lighting] {
 /****************/
 /* telecom tags */
 /****************/
- 
+
 area[telecom=exchange],
 area[telecom=connection_point],
 area[telecom=service_device],
@@ -2874,7 +2905,7 @@ node[leisure=common] {
     icon-image: "presets/misc/deprecated.svg";
     set icon_z17;
 }
-node[leisure=firepit] { 
+node[leisure=firepit] {
     icon-image: "presets/leisure/firepit.svg";
     set icon_z17;
 }
@@ -3841,7 +3872,7 @@ node[amenity=clock] {
 }
 node[amenity=photo_booth] {
     icon-image: "presets/service/photo_booth.svg";
-    set icon_z17; 
+    set icon_z17;
 }
 area[amenity=toilets],
 area[amenity=shower],
@@ -3854,7 +3885,7 @@ node[amenity=toilets] {
     icon-image: "presets/service/toilets.svg";
     set icon_z17;
 }
-node[amenity=shower] { 
+node[amenity=shower] {
     icon-image: "presets/service/shower.svg";
     set icon_z17;
 }
@@ -4476,8 +4507,8 @@ node[tourism=caravan_site] {
     icon-image: "presets/accommodation/caravan.svg";
     set icon_z17;
 }
-area[tourism=attraction]:closed { 
-    fill-color: tourism#e180a2; 
+area[tourism=attraction]:closed {
+    fill-color: tourism#e180a2;
 }
 way[tourism=attraction] {
     width: 2;
@@ -5560,7 +5591,7 @@ way[waterway=stream] {
     width: 1;
     color: stream#6600cc;
 }
-way[waterway=ditch], 
+way[waterway=ditch],
 way[waterway=drain] {
     width: 1;
     color: water#0000ff;
@@ -5690,7 +5721,7 @@ area[amenity],
 area[place],
 area[natural],
 area[man_made] {
-    z-index: -2; 
+    z-index: -2;
 }
 area[landuse=greenery] {
     fill-color: greenery#89ad82;
@@ -5899,12 +5930,12 @@ node[traffic_sign][toll][!is_prop_set(icon-image)] {
 
 area[changing_table=yes],
 area[changing_table=limited] {
-    fill-color: changing_table#f7efb7; 
+    fill-color: changing_table#f7efb7;
 }
 node[changing_table=yes],
 node[changing_table=limited] {
     icon-image: "presets/service/changing_table.svg";
-    set icon_z17; 
+    set icon_z17;
 }
 
 /* Public transport */
@@ -6036,10 +6067,10 @@ way[railway=rail][service=spur] {
     color: railyard#552200;
 }
 
-way[highway][railway=tram]::core_railway, 
+way[highway][railway=tram]::core_railway,
 way[!highway][railway=tram] {
     object-z-index: 1;
-    modifier: false; 
+    modifier: false;
     width: 1;
     color: railover#202020;
     dashes: 9,9;
@@ -6275,7 +6306,7 @@ node[aeroway=taxiway] {
 }
 node[aeroway=holding_position] {
     icon-image: "presets/transport/airport/holding_position.svg";
-    set icon_z17; 
+    set icon_z17;
 }
 way[aeroway=holding_position] {
 	width: 1;
@@ -6392,19 +6423,19 @@ way[route=ferry] {
     font-size: 15;
 }
 
-relation[type=route][route=ferry] > way { 
-  width: 2; 
-  color: ferry#809bc0; 
-  casing-width: 5; 
-  casing-color: eval(cond(tag("name"),#680BAB,lightblue)); 
-  dashes: 9,9; 
-  casing-opacity: 0.3; 
-  casing-dashes: 3,3; 
-  text: eval(cond( tag("name"), concat("Name(w) = ", tag("name"), " & ", "Ref(w) = ", tag("ref")," | ","Name(r) = ", parent_tag("name"), " & ", "Ref(r) = ", parent_tag("ref")),concat("Name = ", parent_tag("name"), " | ", "Ref = ", parent_tag("ref")) )); 
-  text-halo-radius: 1.2; 
-  text-halo-color: black; 
-  text-color: white; 
-  font-size: 15; 
+relation[type=route][route=ferry] > way {
+  width: 2;
+  color: ferry#809bc0;
+  casing-width: 5;
+  casing-color: eval(cond(tag("name"),#680BAB,lightblue));
+  dashes: 9,9;
+  casing-opacity: 0.3;
+  casing-dashes: 3,3;
+  text: eval(cond( tag("name"), concat("Name(w) = ", tag("name"), " & ", "Ref(w) = ", tag("ref")," | ","Name(r) = ", parent_tag("name"), " & ", "Ref(r) = ", parent_tag("ref")),concat("Name = ", parent_tag("name"), " | ", "Ref = ", parent_tag("ref")) ));
+  text-halo-radius: 1.2;
+  text-halo-color: black;
+  text-color: white;
+  font-size: 15;
 }
 
 node[route=bus],
@@ -6533,7 +6564,7 @@ way[boundary]::core_boundary {
     dashes: 9,9;
     casing-opacity: 0.5;
     dashes-background-color: white;
-} 
+}
 
 relation[boundary=protected_area] > way::core_boundary,
 relation[boundary=administrative] > way::core_boundary,
@@ -7028,13 +7059,13 @@ way[highway][setting("continuous_roads")] {
 
 way[bridge=~/^(yes|aqueduct|cantilever|covered|low_water_crossing|trestle|boardwalk|viaduct|movable)$/][!railway][!layer],
 way[bridge=~/^(yes|aqueduct|cantilever|covered|low_water_crossing|trestle|boardwalk|viaduct|movable)$/][!railway]["layer"=~/^(-9|-8|-7|-6|-5|-4|-3|-2|-1)$/],
-way[embankment=yes][!railway]["layer"=~/^(-9|-8|-7|-6|-5|-4|-3|-2|-1)$/], 
+way[embankment=yes][!railway]["layer"=~/^(-9|-8|-7|-6|-5|-4|-3|-2|-1)$/],
 way[tunnel=~/^(yes|culvert|avalanch_protector)$/][!railway][!layer],
 way[tunnel=yes][!railway]["layer"=~/^(9|8|7|6|5|4|3|2|1)$/] {
     set .missl;
 }
 
-way.missl {  
+way.missl {
     color: orange;
     dashes-background-color: red;
     dashes: 4,12;
@@ -7079,7 +7110,7 @@ way!.layer[layer] {
 /**************************/
 
 relation[type=associatedStreet][setting("associatedStreet_setting")] > way {
-    text: none; 
+    text: none;
 }
 
 relation[type=associatedStreet][setting("associatedStreet_setting")] > way[highway]::address {
@@ -7172,7 +7203,7 @@ relation[type=destination_sign][setting("destination_setting")] >[role=intersect
 /* Way Text Labels */
 /*******************/
 
-way|z15-[highway^=motorway][setting("highway_labels")], 
+way|z15-[highway^=motorway][setting("highway_labels")],
 way|z15-[highway^=trunk][setting("highway_labels")] {
     text: auto;
     text-color: white;
@@ -7200,8 +7231,8 @@ way|z20-[highway^=motorway][setting("highway_labels")], way|z20-[highway^=trunk]
     font-size: 22;
 }
 
-way|z15-[highway^=primary][setting("highway_labels")], 
-way|z15-[highway^=secondary][setting("highway_labels")], 
+way|z15-[highway^=primary][setting("highway_labels")],
+way|z15-[highway^=secondary][setting("highway_labels")],
 way|z15-[highway^=tertiary][setting("highway_labels")] {
     text: auto;
     text-color: white;
@@ -7214,33 +7245,33 @@ way|z15-[highway^=tertiary][setting("highway_labels")] {
 }
 
 
-way|z16[highway^=primary][setting("highway_labels")], 
-way|z16[highway^=secondary][setting("highway_labels")], 
+way|z16[highway^=primary][setting("highway_labels")],
+way|z16[highway^=secondary][setting("highway_labels")],
 way|z16[highway^=tertiary][setting("highway_labels")] {
     font-size: 12;
 }
-way|z17[highway^=primary][setting("highway_labels")], 
-way|z17[highway^=secondary][setting("highway_labels")], 
+way|z17[highway^=primary][setting("highway_labels")],
+way|z17[highway^=secondary][setting("highway_labels")],
 way|z17[highway^=tertiary][setting("highway_labels")] {
     font-size: 13;
 }
-way|z18[highway^=primary][setting("highway_labels")], 
-way|z18[highway^=secondary][setting("highway_labels")], 
+way|z18[highway^=primary][setting("highway_labels")],
+way|z18[highway^=secondary][setting("highway_labels")],
 way|z18[highway^=tertiary][setting("highway_labels")] {
     font-size: 16;
 }
-way|z19[highway^=primary][setting("highway_labels")], 
-way|z19[highway^=secondary][setting("highway_labels")], 
+way|z19[highway^=primary][setting("highway_labels")],
+way|z19[highway^=secondary][setting("highway_labels")],
 way|z19[highway^=tertiary][setting("highway_labels")] {
     font-size: 16;
 }
-way|z20[highway^=primary][setting("highway_labels")], 
-way|z20[highway^=secondary][setting("highway_labels")], 
+way|z20[highway^=primary][setting("highway_labels")],
+way|z20[highway^=secondary][setting("highway_labels")],
 way|z20[highway^=tertiary][setting("highway_labels")] {
     font-size: 18;
 }
-way|z21-[highway^=primary][setting("highway_labels")], 
-way|z21-[highway^=secondary][setting("highway_labels")], 
+way|z21-[highway^=primary][setting("highway_labels")],
+way|z21-[highway^=secondary][setting("highway_labels")],
 way|z21-[highway^=tertiary][setting("highway_labels")] {
     font-size: 18;
 }
@@ -7309,7 +7340,7 @@ way|z19[highway=service][setting("highway_labels")],
 way|z19[highway=track][setting("highway_labels")],
 way|z19[highway=footway][setting("highway_labels")],
 way|z19[highway=path][setting("highway_labels")],
-way|z19[highway=road][setting("highway_labels")], 
+way|z19[highway=road][setting("highway_labels")],
 way|z19[highway=cycleway][setting("highway_labels")] {
     font-size: 16;
 }
@@ -7321,7 +7352,7 @@ way|z20[highway=service][setting("highway_labels")],
 way|z20[highway=track][setting("highway_labels")],
 way|z20[highway=footway][setting("highway_labels")],
 way|z20[highway=path][setting("highway_labels")],
-way|z20[highway=road][setting("highway_labels")], 
+way|z20[highway=road][setting("highway_labels")],
 way|z20[highway=cycleway][setting("highway_labels")] {
     font-size: 18;
 }
@@ -7586,7 +7617,7 @@ way|z18-24.low_classification {
 
 relation[route=bus][setting("bus_setting")] > way[highway] {
     text: none;
-    
+
 }
 
 relation[route=bus][setting("bus_setting")] > way[highway]::parent_ref {
@@ -7668,7 +7699,7 @@ way|z15-.reftext_default[highway=~/^(track|service|pedestrian|living_street|resi
 way|z16-.reftext_default[highway=~/^(motorway|trunk|primary|tertiary|secondary|track|service|pedestrian|living_street|residential|unclassified|tertiary|secondary)$/][setting("ref_labels")] {
     text: eval(cond(waylength()>=600,tag(ref),""));
 }
- 
+
 
 /* Increase size of highway labels at even higher zoom */
 
@@ -7708,7 +7739,7 @@ relation|z15-.relationreftext_default[type=route][route=road][ref] > way[highway
 relation|z16-.relationreftext_default[type=route][route=road][ref] > way[highway=~/^(motorway|trunk|primary|tertiary|secondary|track|service|pedestrian|living_street|residential|unclassified|tertiary|secondary)$/][setting("ref_labels")] {
   text: eval(cond(waylength()>=600,tag(ref),""));
 }
- 
+
 
 /* Show refs on relations at close zoom */
 
@@ -8046,7 +8077,7 @@ way["layer"=~/^(9|8|7|6|5)$/][setting("Z_Index_Check")]::layer {
 way.layer[setting("Z_Index_Check")]::layer {
     opacity: 0.9;
     width: 30;
-    major-z-index: 1.9; 
+    major-z-index: 1.9;
 }
 
 
@@ -8106,7 +8137,7 @@ area[!highway][building].associatedStreet_style[prop(crc)<303] {
 }
 
 way[highway][prop(crc)<303],
-way.checkme5[prop(crc)<303], 
+way.checkme5[prop(crc)<303],
 way.checkme3[prop(crc)<303],
 way.checkme6[prop(crc)<303],
 way.checkme7[prop(crc)<303],
@@ -8123,7 +8154,7 @@ area[!highway][building].associatedStreet_style[prop(crc)>=303][prop(crc)<606] {
 }
 
 way[highway][prop(crc)>=303][prop(crc)<606],
-way.checkme5[prop(crc)>=303][prop(crc)<606], 
+way.checkme5[prop(crc)>=303][prop(crc)<606],
 way.checkme3[prop(crc)>=303][prop(crc)<606],
 way.checkme6[prop(crc)>=303][prop(crc)<606],
 way.checkme7[prop(crc)>=303][prop(crc)<606],
@@ -8140,7 +8171,7 @@ area[!highway][building].associatedStreet_style[prop(crc)>=606][prop(crc)<909] {
 }
 
 way[highway][prop(crc)>=606][prop(crc)<909],
-way.checkme5[prop(crc)>=606][prop(crc)<909], 
+way.checkme5[prop(crc)>=606][prop(crc)<909],
 way.checkme3[prop(crc)>=606][prop(crc)<909],
 way.checkme6[prop(crc)>=606][prop(crc)<909],
 way.checkme7[prop(crc)>=606][prop(crc)<909],
@@ -8157,9 +8188,9 @@ area[!highway][building].associatedStreet_style[prop(crc)>=909][prop(crc)<1212] 
 }
 
 way[highway][prop(crc)>=909][prop(crc)<1212],
-way.checkme5[prop(crc)>=909][prop(crc)<1212], 
+way.checkme5[prop(crc)>=909][prop(crc)<1212],
 way.checkme3[prop(crc)>=909][prop(crc)<1212],
-way.checkme6[prop(crc)>=909][prop(crc)<1212], 
+way.checkme6[prop(crc)>=909][prop(crc)<1212],
 way.checkme7[prop(crc)>=909][prop(crc)<1212],
 way.checkme8[prop(crc)>=909][prop(crc)<1212],
 way.associatedStreet_style[prop(crc)>=909][prop(crc)<1212] {
@@ -8174,9 +8205,9 @@ area[!highway][building].associatedStreet_style[prop(crc)>=1212][prop(crc)<1515]
 }
 
 way[highway][prop(crc)>=1212][prop(crc)<1515],
-way.checkme5[prop(crc)>=1212][prop(crc)<1515], 
+way.checkme5[prop(crc)>=1212][prop(crc)<1515],
 way.checkme3[prop(crc)>=1212][prop(crc)<1515],
-way.checkme6[prop(crc)>=1212][prop(crc)<1515], 
+way.checkme6[prop(crc)>=1212][prop(crc)<1515],
 way.checkme7[prop(crc)>=1212][prop(crc)<1515],
 way.checkme8[prop(crc)>=1212][prop(crc)<1515],
 way.associatedStreet_style[prop(crc)>=1212][prop(crc)<1515] {
@@ -8191,7 +8222,7 @@ area[!highway][building].associatedStreet_style[prop(crc)>=1515][prop(crc)<1818]
 }
 
 way[highway][prop(crc)>=1515][prop(crc)<1818],
-way.checkme5[prop(crc)>=1515][prop(crc)<1818], 
+way.checkme5[prop(crc)>=1515][prop(crc)<1818],
 way.checkme3[prop(crc)>=1515][prop(crc)<1818],
 way.checkme6[prop(crc)>=1515][prop(crc)<1818],
 way.checkme7[prop(crc)>=1515][prop(crc)<1818],
@@ -8208,7 +8239,7 @@ area[!highway][building].associatedStreet_style[prop(crc)>=1818][prop(crc)<2121]
 }
 
 way[highway][prop(crc)>=1818][prop(crc)<2121],
-way.checkme5[prop(crc)>=1818][prop(crc)<2121], 
+way.checkme5[prop(crc)>=1818][prop(crc)<2121],
 way.checkme3[prop(crc)>=1818][prop(crc)<2121],
 way.checkme6[prop(crc)>=1818][prop(crc)<2121],
 way.checkme7[prop(crc)>=1818][prop(crc)<2121],
@@ -8225,7 +8256,7 @@ area[!highway][building].associatedStreet_style[prop(crc)>=2121][prop(crc)<2424]
 }
 
 way[highway][prop(crc)>=2121][prop(crc)<2424],
-way.checkme5[prop(crc)>=2121][prop(crc)<2424], 
+way.checkme5[prop(crc)>=2121][prop(crc)<2424],
 way.checkme3[prop(crc)>=2121][prop(crc)<2424],
 way.checkme6[prop(crc)>=2121][prop(crc)<2424],
 way.checkme7[prop(crc)>=2121][prop(crc)<2424],
@@ -8242,7 +8273,7 @@ area[!highway][building].associatedStreet_style[prop(crc)>=2424][prop(crc)<2727]
 }
 
 way[highway][prop(crc)>=2424][prop(crc)<2727],
-way.checkme5[prop(crc)>=2424][prop(crc)<2727], 
+way.checkme5[prop(crc)>=2424][prop(crc)<2727],
 way.checkme3[prop(crc)>=2424][prop(crc)<2727],
 way.checkme6[prop(crc)>=2424][prop(crc)<2727],
 way.checkme7[prop(crc)>=2424][prop(crc)<2727],
@@ -8259,7 +8290,7 @@ area[!highway][building].associatedStreet_style[prop(crc)>=2727][prop(crc)<3030]
 }
 
 way[highway][prop(crc)>=2727][prop(crc)<3030],
-way.checkme5[prop(crc)>=2727][prop(crc)<3030], 
+way.checkme5[prop(crc)>=2727][prop(crc)<3030],
 way.checkme3[prop(crc)>=2727][prop(crc)<3030],
 way.checkme6[prop(crc)>=2727][prop(crc)<3030],
 way.checkme7[prop(crc)>=2727][prop(crc)<3030],
@@ -8276,7 +8307,7 @@ area[!highway][building].associatedStreet_style[prop(crc)>=3030][prop(crc)<3333]
 }
 
 way[highway][prop(crc)>=3030][prop(crc)<3333],
-way.checkme5[prop(crc)>=3030][prop(crc)<3333], 
+way.checkme5[prop(crc)>=3030][prop(crc)<3333],
 way.checkme3[prop(crc)>=3030][prop(crc)<3333],
 way.checkme6[prop(crc)>=3030][prop(crc)<3333],
 way.checkme7[prop(crc)>=3030][prop(crc)<3333],
@@ -8293,7 +8324,7 @@ area[!highway][building].associatedStreet_style[prop(crc)>=3333][prop(crc)<3636]
 }
 
 way[highway][prop(crc)>=3333][prop(crc)<3636],
-way.checkme5[prop(crc)>=3333][prop(crc)<3636], 
+way.checkme5[prop(crc)>=3333][prop(crc)<3636],
 way.checkme3[prop(crc)>=3333][prop(crc)<3636],
 way.checkme6[prop(crc)>=3333][prop(crc)<3636],
 way.checkme7[prop(crc)>=3333][prop(crc)<3636],
@@ -8327,7 +8358,7 @@ area[!highway][building].associatedStreet_style[prop(crc)>=3939][prop(crc)<4242]
 }
 
 way[highway][prop(crc)>=3939][prop(crc)<4242],
-way.checkme5[prop(crc)>=3939][prop(crc)<4242], 
+way.checkme5[prop(crc)>=3939][prop(crc)<4242],
 way.checkme3[prop(crc)>=3939][prop(crc)<4242],
 way.checkme6[prop(crc)>=3939][prop(crc)<4242],
 way.checkme7[prop(crc)>=3939][prop(crc)<4242],
@@ -8344,7 +8375,7 @@ area[!highway][building].associatedStreet_style[prop(crc)>=4242][prop(crc)<4545]
 }
 
 way[highway][prop(crc)>=4242][prop(crc)<4545],
-way.checkme5[prop(crc)>=4242][prop(crc)<4545], 
+way.checkme5[prop(crc)>=4242][prop(crc)<4545],
 way.checkme3[prop(crc)>=4242][prop(crc)<4545],
 way.checkme6[prop(crc)>=4242][prop(crc)<4545],
 way.checkme7[prop(crc)>=4242][prop(crc)<4545],
@@ -8361,7 +8392,7 @@ area[!highway][building].associatedStreet_style[prop(crc)>=4545][prop(crc)<4848]
 }
 
 way[highway][prop(crc)>=4545][prop(crc)<4848],
-way.checkme5[prop(crc)>=4545][prop(crc)<4848], 
+way.checkme5[prop(crc)>=4545][prop(crc)<4848],
 way.checkme3[prop(crc)>=4545][prop(crc)<4848],
 way.checkme6[prop(crc)>=4545][prop(crc)<4848],
 way.checkme7[prop(crc)>=4545][prop(crc)<4848],
@@ -8378,7 +8409,7 @@ area[!highway][building].associatedStreet_style[prop(crc)>=4848][prop(crc)<5151]
 }
 
 way[highway][prop(crc)>=4848][prop(crc)<5151],
-way.checkme5[prop(crc)>=4848][prop(crc)<5151], 
+way.checkme5[prop(crc)>=4848][prop(crc)<5151],
 way.checkme3[prop(crc)>=4848][prop(crc)<5151],
 way.checkme6[prop(crc)>=4848][prop(crc)<5151],
 way.checkme7[prop(crc)>=4848][prop(crc)<5151],
@@ -8395,7 +8426,7 @@ area[!highway][building].associatedStreet_style[prop(crc)>=5151][prop(crc)<5454]
 }
 
 way[highway][prop(crc)>=5151][prop(crc)<5454],
-way.checkme5[prop(crc)>=5151][prop(crc)<5454], 
+way.checkme5[prop(crc)>=5151][prop(crc)<5454],
 way.checkme3[prop(crc)>=5151][prop(crc)<5454],
 way.checkme6[prop(crc)>=5151][prop(crc)<5454],
 way.checkme7[prop(crc)>=5151][prop(crc)<5454],
@@ -8412,7 +8443,7 @@ area[!highway][building].associatedStreet_style[prop(crc)>=5454][prop(crc)<5757]
 }
 
 way[highway][prop(crc)>=5454][prop(crc)<5757],
-way.checkme5[prop(crc)>=5454][prop(crc)<5757], 
+way.checkme5[prop(crc)>=5454][prop(crc)<5757],
 way.checkme3[prop(crc)>=5454][prop(crc)<5757],
 way.checkme6[prop(crc)>=5454][prop(crc)<5757],
 way.checkme7[prop(crc)>=5454][prop(crc)<5757],
@@ -8429,7 +8460,7 @@ area[!highway][building].associatedStreet_style[prop(crc)>=5757][prop(crc)<6060]
 }
 
 way[highway][prop(crc)>=5757][prop(crc)<6060],
-way.checkme5[prop(crc)>=5757][prop(crc)<6060], 
+way.checkme5[prop(crc)>=5757][prop(crc)<6060],
 way.checkme3[prop(crc)>=5757][prop(crc)<6060],
 way.checkme6[prop(crc)>=5757][prop(crc)<6060],
 way.checkme7[prop(crc)>=5757][prop(crc)<6060],
@@ -8446,7 +8477,7 @@ area[!highway][building].associatedStreet_style[prop(crc)>=6060][prop(crc)<6363]
 }
 
 way[highway][prop(crc)>=6060][prop(crc)<6363],
-way.checkme5[prop(crc)>=6060][prop(crc)<6363], 
+way.checkme5[prop(crc)>=6060][prop(crc)<6363],
 way.checkme3[prop(crc)>=6060][prop(crc)<6363],
 way.checkme6[prop(crc)>=6060][prop(crc)<6363],
 way.checkme7[prop(crc)>=6060][prop(crc)<6363],
@@ -8463,7 +8494,7 @@ area[!highway][building].associatedStreet_style[prop(crc)>=6363][prop(crc)<6666]
 }
 
 way[highway][prop(crc)>=6363][prop(crc)<6666],
-way.checkme5[prop(crc)>=6363][prop(crc)<6666], 
+way.checkme5[prop(crc)>=6363][prop(crc)<6666],
 way.checkme3[prop(crc)>=6363][prop(crc)<6666],
 way.checkme6[prop(crc)>=6363][prop(crc)<6666],
 way.checkme7[prop(crc)>=6363][prop(crc)<6666],
@@ -8480,7 +8511,7 @@ area[!highway][building].associatedStreet_style[prop(crc)>=6666][prop(crc)<6969]
 }
 
 way[highway][prop(crc)>=6666][prop(crc)<6969],
-way.checkme5[prop(crc)>=6666][prop(crc)<6969], 
+way.checkme5[prop(crc)>=6666][prop(crc)<6969],
 way.checkme3[prop(crc)>=6666][prop(crc)<6969],
 way.checkme6[prop(crc)>=6666][prop(crc)<6969],
 way.checkme7[prop(crc)>=6666][prop(crc)<6969],
@@ -8497,7 +8528,7 @@ area[!highway][building].associatedStreet_style[prop(crc)>=6969][prop(crc)<7272]
 }
 
 way[highway][prop(crc)>=6969][prop(crc)<7272],
-way.checkme5[prop(crc)>=6969][prop(crc)<7272], 
+way.checkme5[prop(crc)>=6969][prop(crc)<7272],
 way.checkme3[prop(crc)>=6969][prop(crc)<7272],
 way.checkme6[prop(crc)>=6969][prop(crc)<7272],
 way.checkme7[prop(crc)>=6969][prop(crc)<7272],
@@ -8514,7 +8545,7 @@ area[!highway][building].associatedStreet_style[prop(crc)>=7272][prop(crc)<7575]
 }
 
 way[highway][prop(crc)>=7272][prop(crc)<7575],
-way.checkme5[prop(crc)>=7272][prop(crc)<7575], 
+way.checkme5[prop(crc)>=7272][prop(crc)<7575],
 way.checkme3[prop(crc)>=7272][prop(crc)<7575],
 way.checkme6[prop(crc)>=7272][prop(crc)<7575],
 way.checkme7[prop(crc)>=7272][prop(crc)<7575],
@@ -8531,7 +8562,7 @@ area[!highway][building].associatedStreet_style[prop(crc)>=7575][prop(crc)<7878]
 }
 
 way[highway][prop(crc)>=7575][prop(crc)<7878],
-way.checkme5[prop(crc)>=7575][prop(crc)<7878], 
+way.checkme5[prop(crc)>=7575][prop(crc)<7878],
 way.checkme3[prop(crc)>=7575][prop(crc)<7878],
 way.checkme6[prop(crc)>=7575][prop(crc)<7878],
 way.checkme7[prop(crc)>=7575][prop(crc)<7878],
@@ -8548,7 +8579,7 @@ area[!highway][building].associatedStreet_style[prop(crc)>=7878][prop(crc)<8181]
 }
 
 way[highway][prop(crc)>=7878][prop(crc)<8181],
-way.checkme5[prop(crc)>=7878][prop(crc)<8181], 
+way.checkme5[prop(crc)>=7878][prop(crc)<8181],
 way.checkme3[prop(crc)>=7878][prop(crc)<8181],
 way.checkme6[prop(crc)>=7878][prop(crc)<8181],
 way.checkme7[prop(crc)>=7878][prop(crc)<8181],
@@ -8565,7 +8596,7 @@ area[!highway][building].associatedStreet_style[prop(crc)>=8181][prop(crc)<8484]
 }
 
 way[highway][prop(crc)>=8181][prop(crc)<8484],
-way.checkme5[prop(crc)>=8181][prop(crc)<8484], 
+way.checkme5[prop(crc)>=8181][prop(crc)<8484],
 way.checkme3[prop(crc)>=8181][prop(crc)<8484],
 way.checkme6[prop(crc)>=8181][prop(crc)<8484],
 way.checkme7[prop(crc)>=8181][prop(crc)<8484],
@@ -8616,7 +8647,7 @@ area[!highway][building].associatedStreet_style[prop(crc)>=9090][prop(crc)<9393]
 }
 
 way[highway][prop(crc)>=9090][prop(crc)<9393],
-way.checkme5[prop(crc)>=9090][prop(crc)<9393], 
+way.checkme5[prop(crc)>=9090][prop(crc)<9393],
 way.checkme3[prop(crc)>=9090][prop(crc)<9393],
 way.checkme6[prop(crc)>=9090][prop(crc)<9393],
 way.checkme7[prop(crc)>=9090][prop(crc)<9393],
@@ -8633,7 +8664,7 @@ area[!highway][building].associatedStreet_style[prop(crc)>=9393][prop(crc)<9696]
 }
 
 way[highway][prop(crc)>=9393][prop(crc)<9696],
-way.checkme5[prop(crc)>=9393][prop(crc)<9696], 
+way.checkme5[prop(crc)>=9393][prop(crc)<9696],
 way.checkme3[prop(crc)>=9393][prop(crc)<9696],
 way.checkme6[prop(crc)>=9393][prop(crc)<9696],
 way.checkme7[prop(crc)>=9393][prop(crc)<9696],
@@ -8646,11 +8677,11 @@ way.associatedStreet_style[prop(crc)>=9393][prop(crc)<9696] {
 
 area[!highway][building].associatedStreet_style[prop(crc)>=9696] {
     color: #ff4444;
-    fill-color: #ff4444;        
+    fill-color: #ff4444;
 }
 
 way[highway][prop(crc)>=9696],
-way.checkme5[prop(crc)>=9696], 
+way.checkme5[prop(crc)>=9696],
 way.checkme3[prop(crc)>=9696],
 way.checkme6[prop(crc)>=9696],
 way.checkme7[prop(crc)>=9696],
@@ -8674,7 +8705,7 @@ Summary of different zoom levels:
   |z17-         normal POI icons (without text),
                 street name along highway=* ways
   |z18-         text for normal POI icons is shown
-  
+
  * text size and node size is adapted according to zoom level (see style source below)
  * all these zoom features are modifiable via style settings
  * maxspeed icons should not be distinguishable from POIs with "icon-image" property
@@ -8689,7 +8720,7 @@ node[!is_prop_set("icon-image")][!setting("hide_icons")]!.maxspeedclass {
     symbol-size: 2;
     symbol-shape: square;
     symbol-stroke-color: node_standard#ffff00;
-    major-z-index: 4.95; 
+    major-z-index: 4.95;
 }
 way > node|z-15!:tagged {
     symbol-shape: none;
@@ -8701,41 +8732,41 @@ node:tagged {
     symbol-stroke-color: none;
     symbol-fill-color: node_tagged#00ffff;
 }
-way > node|z-14[setting("hide_tagged_waynodes")]:tagged { 
-    symbol-shape: none; 
+way > node|z-14[setting("hide_tagged_waynodes")]:tagged {
+    symbol-shape: none;
 }
 way > node|z16!:tagged {
-    symbol-size: 1; 
+    symbol-size: 1;
 }
 
 node|z17 {
     symbol-size: 4;
 }
-way > node|z17 { 
-    symbol-size: 2; 
+way > node|z17 {
+    symbol-size: 2;
 }
-node|z17:connection { 
-    symbol-size: 4; 
-}
-
-node|z18 { 
-  symbol-size: 4; 
-}
-way > node|z18 { 
-    symbol-size: 3; 
-}
-node|z18:connection { 
-    symbol-size: 5; 
+node|z17:connection {
+    symbol-size: 4;
 }
 
-node|z19- { 
-    symbol-size: 4; 
+node|z18 {
+  symbol-size: 4;
 }
-way > node|z19- { 
-    symbol-size: 4; 
+way > node|z18 {
+    symbol-size: 3;
 }
-node|z19-:connection { 
-    symbol-size: 6; 
+node|z18:connection {
+    symbol-size: 5;
+}
+
+node|z19- {
+    symbol-size: 4;
+}
+way > node|z19- {
+    symbol-size: 4;
+}
+node|z19-:connection {
+    symbol-size: 6;
 }
 
 
@@ -8755,11 +8786,11 @@ node|z-17[setting("hide_icons")]!.text_z0 {
 }
 
 
-node|z19,area|z19[!setting("Show_Landuse_Labels_setting")] { 
-    font-size: 9; 
+node|z19,area|z19[!setting("Show_Landuse_Labels_setting")] {
+    font-size: 9;
 }
-node|z20-,area|z20-[!setting("Show_Landuse_Labels_setting")] { 
-    font-size: 10; 
+node|z20-,area|z20-[!setting("Show_Landuse_Labels_setting")] {
+    font-size: 10;
 }
 
 /*----------------------------------------------------------------------------------------------------------------------*\
@@ -8797,7 +8828,7 @@ way.roundabout_missing:closed[!junction][setting("roundabout_check")] {
 /* Motorway Oneway Checks */
 /**************************/
 
-way[highway=motorway][!oneway][setting("motor_oneway")], 
+way[highway=motorway][!oneway][setting("motor_oneway")],
 way[highway=motorway_link][!oneway][setting("motor_oneway")] {
     dashes-background-color: red;
     dashes: 4,9;
@@ -8981,7 +9012,7 @@ way[waterway][highway][setting("water_road")] {
 /*************************/
 
 way[highway]!:closed >[index=1] node|z15-!:connection!:tagged[setting("Unconnected_Nodes_setting")],
-way[highway]!:closed >[index=-1] node|z15-!:connection!:tagged[setting("Unconnected_Nodes_setting")] { 
+way[highway]!:closed >[index=-1] node|z15-!:connection!:tagged[setting("Unconnected_Nodes_setting")] {
     icon-image: "presets/misc/es.svg";
     icon-height: 18;
     icon-offset: 8;
@@ -9231,81 +9262,81 @@ node:connection[setting("visible_nodes")] {
 /* Address Definition */
 /**********************/
 
-node[addr:place] { 
-    symbol-shape: circle; 
-    symbol-size: 7; 
+node[addr:place] {
+    symbol-shape: circle;
+    symbol-size: 7;
     symbol-fill-color: lime;
 }
 
-node[addr:street] { 
-    symbol-shape: circle; 
-    symbol-size: 6; 
+node[addr:street] {
+    symbol-shape: circle;
+    symbol-size: 6;
     symbol-fill-color: green;
 }
 
-node[addr:housenumber] { 
-    symbol-shape: circle; 
-    symbol-size: 6; 
+node[addr:housenumber] {
+    symbol-shape: circle;
+    symbol-size: 6;
     symbol-fill-color: blue;
 }
 
-node[addr:housenumber][!addr:street] {  
+node[addr:housenumber][!addr:street] {
     symbol-fill-color: #95002B;
 }
 
 relation[type=associatedStreet] > node {
-    symbol-shape: circle; 
-    symbol-size: 6; 
+    symbol-shape: circle;
+    symbol-size: 6;
     symbol-fill-color: #FF9A40;
 }
 
 node[addr:housenumber]::hn_casing,
 node[addr:place]::hn_casing,
-node[addr:street]::hn_casing { 
-    z-index: -100; 
-    symbol-shape: circle; 
-    symbol-size: 8; 
-    symbol-fill-color: white; 
+node[addr:street]::hn_casing {
+    z-index: -100;
+    symbol-shape: circle;
+    symbol-size: 8;
+    symbol-fill-color: white;
 }
 
 /* Text addressing based on tag */
 
-node[addr:place][setting("Address_names")] { 
+node[addr:place][setting("Address_names")] {
     text: tag("name");
     font-weight: bold;
     text-halo-color: black;
     text-halo-radius: 1;
 }
 
-node[addr:street][setting("Address_names")] {  
+node[addr:street][setting("Address_names")] {
     text: tag("name");
     font-weight: bold;
     text-halo-color: black;
     text-halo-radius: 1;
 }
 
-node[addr:housenumber][setting("Address_names")] { 
+node[addr:housenumber][setting("Address_names")] {
     text: tag("addr:housenumber");
     font-weight: bold;
     text-halo-color: black;
     text-halo-radius: 1;
 }
 
-node[shop][setting("Address_names")] { 
+node[shop][setting("Address_names")] {
     text: tag("name");
     font-weight: bold;
     text-halo-color: black;
     text-halo-radius: 1;
 }
 
-node[tourism][setting("Address_names")] { 
+node[tourism][setting("Address_names")] {
     text: tag("name");
     font-weight: bold;
     text-halo-color: black;
     text-halo-radius: 1;
 }
 
-node[amenity][setting("Address_names")] { 
+node[amenity][setting("Address_names")] {
     text: tag("name");
     font-weight: bold;
     text-halo-color: black;
@@ -9314,27 +9345,27 @@ node[amenity][setting("Address_names")] {
 
 /* Text addressing without setting */
 
-node[shop][!setting("Address_names")] { 
+node[shop][!setting("Address_names")] {
     text: none;
 }
 
-node[tourism][!setting("Address_names")] { 
+node[tourism][!setting("Address_names")] {
     text: none;
 }
 
-node[amenity][!setting("Address_names")] { 
+node[amenity][!setting("Address_names")] {
     text: none;
 }
 
-node[addr:place][!setting("Address_names")] { 
+node[addr:place][!setting("Address_names")] {
     text: none;
 }
 
-node[addr:street][!setting("Address_names")] {  
+node[addr:street][!setting("Address_names")] {
     text: none;
 }
 
-node[addr:housenumber][!setting("Address_names")] { 
+node[addr:housenumber][!setting("Address_names")] {
     text: none;
 }
 
@@ -9347,7 +9378,7 @@ node|z-12[addr:street],
 node|z-12[addr:housenumber],
 node|z-12[shop],
 node|z-12[tourism],
-node|z-12[amenity] { 
+node|z-12[amenity] {
     symbol-size: 0;
     symbol-shape: none;
     text: none;
@@ -9368,7 +9399,7 @@ node|z13-15[addr:street],
 node|z13-15[addr:housenumber],
 node|z13-15[shop],
 node|z13-15[tourism],
-node|z13-15[amenity] { 
+node|z13-15[amenity] {
     symbol-size: 4;
     text: none;
 }
@@ -9376,7 +9407,7 @@ node|z13-15[amenity] {
 
 node|z13-15[addr:place]::hn_casing,
 node|z13-15[addr:street]::hn_casing,
-node|z13-15[addr:housenumber]::hn_casing { 
+node|z13-15[addr:housenumber]::hn_casing {
     symbol-size: 6;
 }
 
@@ -9387,7 +9418,7 @@ node|z16[addr:street],
 node|z16[addr:housenumber],
 node|z16[shop],
 node|z16[tourism],
-node|z16[amenity] { 
+node|z16[amenity] {
     symbol-size: 5;
     text: none;
 }
@@ -9396,29 +9427,29 @@ node|z16[amenity] {
 node|z16[addr:place]::hn_casing,
 node|z16[addr:street]::hn_casing,
 node|z16[addr:housenumber]::hn_casing {
-    symbol-size: 7; 
+    symbol-size: 7;
 }
 
 /* Zoom 17 */
 
 node|z17[addr:place],
 node|z17[addr:street],
-node|z17[addr:housenumber] { 
+node|z17[addr:housenumber] {
     symbol-size: 6;
-    font-size: 8; 
+    font-size: 8;
 }
 
 node|z17[shop],
 node|z17[tourism],
-node|z17[amenity] { 
+node|z17[amenity] {
     symbol-size: 6;
-    text: none; 
+    text: none;
 }
 
 node|z17[addr:place]::hn_casing,
 node|z17[addr:street]::hn_casing,
 node|z17[addr:housenumber]::hn_casing {
-    symbol-size: 8; 
+    symbol-size: 8;
 }
 
 /* Zoom 18-19 */
@@ -9428,15 +9459,15 @@ node|z18-19[addr:street],
 node|z18-19[addr:housenumber],
 node|z18-19[shop],
 node|z18-19[tourism],
-node|z18-19[amenity] { 
+node|z18-19[amenity] {
     symbol-size: 7;
     font-size: 10;
 }
 
 node|z18-19[addr:place]::hn_casing,
 node|z18-19[addr:street]::hn_casing,
-node|z18-19[addr:housenumber]::hn_casing { 
-    symbol-size: 9; 
+node|z18-19[addr:housenumber]::hn_casing {
+    symbol-size: 9;
 }
 
 /* Zoom 20-24 */
@@ -9448,13 +9479,13 @@ node|z20-24[shop],
 node|z20-24[tourism],
 node|z20-24[amenity] {
     symbol-size: 9;
-    font-size: 14; 
+    font-size: 14;
 }
 
 node|z20-24[addr:place]::hn_casing,
 node|z20-24[addr:street]::hn_casing,
 node|z20-24[addr:housenumber]::hn_casing {
-    symbol-size: 11; 
+    symbol-size: 11;
 }
 
 
@@ -9548,7 +9579,7 @@ node[place]:modified::modified_layer {
 /*************************/
 
 area[military][setting("sensitive")],
-area[boundary=military][setting("sensitive")], 
+area[boundary=military][setting("sensitive")],
 area[landuse=military][setting("sensitive")] {
     text:tr("WARNING");
     text-position: center;
@@ -9558,7 +9589,7 @@ area[landuse=military][setting("sensitive")] {
 }
 
 area[military][setting("sensitive")]::military,
-area[boundary=military][setting("sensitive")]::military, 
+area[boundary=military][setting("sensitive")]::military,
 area[landuse=military][setting("sensitive")]::military {
     fill-color: #801515;
     fill-opacity: .5;
@@ -9702,3 +9733,5 @@ way[highway][setting("remove_names")] {
 node[setting("remove_names")] {
     text: none;
 }
+
+
