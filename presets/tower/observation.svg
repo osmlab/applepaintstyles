@@ -1,1 +1,21 @@
-<svg height="14" viewBox="0 0 14 14" width="14" xmlns="http://www.w3.org/2000/svg"><path d="m0 0h14v14h-14z" fill="none" visibility="hidden"/><path d="m7 0-5 2v4h10v-4zm-4 3h2v2h-2zm3 0h2v2h-2zm3 0h2v2h-2zm-5.09375 3.625-.90625 7.375h1.5l.1875-1.46875 2.3125-1.53125 2.3125 1.5625.1875 1.4375h1.5l-.90625-7.34375zm1.4375.5625 3.3125.03125.1875 1.5625-1.84375 1.21875-1.84375-1.21875zm-.3125 2.5 1.21875.8125-1.4375.96875zm3.9375 0 .21875 1.78125-1.4375-.96875z" fill="#555"/></svg>
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:xl="http://www.w3.org/1999/xlink" version="1.1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 14 14" width="14" height="14">
+  <defs/>
+  <g id="Canvas_1" fill-opacity="1" stroke-dasharray="none" stroke="none" stroke-opacity="1" fill="none">
+    <title>Canvas 1</title>
+    <g id="Canvas_1_Layer_1">
+      <title>Layer 1</title>
+      <g id="Graphic_2"/>
+      <g id="Graphic_3">
+        <title>Bézier</title>
+        <path d="M 7 0 L 2 2 L 2 6 L 12 6 L 12 2 Z M 3 3 L 5 3 L 5 5 L 3 5 Z M 6 3 L 8 3 L 8 5 L 6 5 Z M 9 3 L 11 3 L 11 5 L 9 5 Z M 3.90625 6.625 L 3 14 L 4.5 14 L 4.6875 12.53125 L 7 11 L 9.3125 12.5625 L 9.5 14 L 11 14 L 10.09375 6.65625 Z M 5.34375 7.1875 L 8.65625 7.21875 L 8.84375 8.78125 L 7 10 L 5.15625 8.78125 Z M 5.03125 9.6875 L 6.25 10.5 L 4.8125 11.46875 Z M 8.96875 9.6875 L 9.1875 11.46875 L 7.75 10.5 Z" fill="#555"/>
+        <path d="M 7 0 L 2 2 L 2 6 L 12 6 L 12 2 Z M 3 3 L 5 3 L 5 5 L 3 5 Z M 6 3 L 8 3 L 8 5 L 6 5 Z M 9 3 L 11 3 L 11 5 L 9 5 Z M 3.90625 6.625 L 3 14 L 4.5 14 L 4.6875 12.53125 L 7 11 L 9.3125 12.5625 L 9.5 14 L 11 14 L 10.09375 6.65625 Z M 5.34375 7.1875 L 8.65625 7.21875 L 8.84375 8.78125 L 7 10 L 5.15625 8.78125 Z M 5.03125 9.6875 L 6.25 10.5 L 4.8125 11.46875 Z M 8.96875 9.6875 L 9.1875 11.46875 L 7.75 10.5 Z" stroke="white" stroke-linecap="butt" stroke-linejoin="round" stroke-width="2"/>
+      </g>
+      <g id="Graphic_4">
+        <title>Bézier</title>
+        <path d="M 7 0 L 2 2 L 2 6 L 12 6 L 12 2 Z M 3 3 L 5 3 L 5 5 L 3 5 Z M 6 3 L 8 3 L 8 5 L 6 5 Z M 9 3 L 11 3 L 11 5 L 9 5 Z M 3.90625 6.625 L 3 14 L 4.5 14 L 4.6875 12.53125 L 7 11 L 9.3125 12.5625 L 9.5 14 L 11 14 L 10.09375 6.65625 Z M 5.34375 7.1875 L 8.65625 7.21875 L 8.84375 8.78125 L 7 10 L 5.15625 8.78125 Z M 5.03125 9.6875 L 6.25 10.5 L 4.8125 11.46875 Z M 8.96875 9.6875 L 9.1875 11.46875 L 7.75 10.5 Z" fill="#555"/>
+      </g>
+    </g>
+  </g>
+</svg>

@@ -1,1 +1,43 @@
-<svg height="14" viewBox="0 0 14 14" width="14" xmlns="http://www.w3.org/2000/svg"><g fill="#555"><path d="m4 1h6v13h-6z"/><g fill-rule="evenodd"><path d="m2 14 2-6h6l2 6z"/><path d="m3 1 1 2h6l1-2z"/></g></g></svg>
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:xl="http://www.w3.org/1999/xlink" version="1.1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 14 14" width="14" height="14">
+  <defs/>
+  <g id="Canvas_1" fill-opacity="1" stroke-dasharray="none" stroke="none" stroke-opacity="1" fill="none">
+    <title>Canvas 1</title>
+    <g id="Canvas_1_Layer_1">
+      <title>Layer 1</title>
+      <g id="Group_2">
+        <g id="Graphic_6">
+          <rect x="4" y=".6412552" width="6" height="13" fill="#555"/>
+          <rect x="4" y=".6412552" width="6" height="13" stroke="white" stroke-linecap="butt" stroke-linejoin="round" stroke-width="2"/>
+        </g>
+        <g id="Group_3">
+          <g id="Graphic_5">
+            <path d="M 2 13.641255 L 4 7.641255 L 10 7.641255 L 12 13.641255 Z" fill="#555"/>
+            <path d="M 2 13.641255 L 4 7.641255 L 10 7.641255 L 12 13.641255 Z" stroke="white" stroke-linecap="butt" stroke-linejoin="round" stroke-width="2"/>
+          </g>
+          <g id="Graphic_4">
+            <path d="M 3 .6412552 L 4 2.6412552 L 10 2.6412552 L 11 .6412552 Z" fill="#555"/>
+            <path d="M 3 .6412552 L 4 2.6412552 L 10 2.6412552 L 11 .6412552 Z" stroke="white" stroke-linecap="butt" stroke-linejoin="round" stroke-width="2"/>
+          </g>
+        </g>
+      </g>
+    </g>
+    <g id="Canvas_1_Layer_3">
+      <title>Layer 3</title>
+      <g id="Group_7">
+        <g id="Graphic_11">
+          <rect x="4" y=".6412552" width="6" height="13" fill="#555"/>
+        </g>
+        <g id="Group_8">
+          <g id="Graphic_10">
+            <path d="M 2 13.641255 L 4 7.641255 L 10 7.641255 L 12 13.641255 Z" fill="#555"/>
+          </g>
+          <g id="Graphic_9">
+            <path d="M 3 .6412552 L 4 2.6412552 L 10 2.6412552 L 11 .6412552 Z" fill="#555"/>
+          </g>
+        </g>
+      </g>
+    </g>
+  </g>
+</svg>

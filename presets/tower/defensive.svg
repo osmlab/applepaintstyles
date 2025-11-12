@@ -1,1 +1,19 @@
-<svg height="14" viewBox="0 0 14 14" width="14" xmlns="http://www.w3.org/2000/svg"><path d="m0 0h14v14h-14z" fill="none" visibility="hidden"/><path d="m2.5 0v3h9v-3h-1.5v1h-2v-1h-2v1h-2v-1zm.5 4-.5 9h-1.5v1h4.5c0-1 .2770449-2.5 1.5-2.5 1.2738548.02672 1.5 1.5 1.5 2.5h4.5v-1h-1.5l-.5-9zm4 2c1 0 1 1 1 1v1h-2v-1s0-1 1-1z" fill="#555"/></svg>
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:xl="http://www.w3.org/1999/xlink" version="1.1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 14 14" width="14" height="14">
+  <defs/>
+  <g id="Canvas_1" fill-opacity="1" stroke-dasharray="none" stroke="none" stroke-opacity="1" fill="none">
+    <title>Canvas 1</title>
+    <g id="Canvas_1_Layer_1">
+      <title>Layer 1</title>
+      <g id="Graphic_2"/>
+      <g id="Graphic_3">
+        <path d="M 2.5 0 L 2.5 3 L 11.5 3 L 11.5 0 L 10 0 L 10 1 L 8 1 L 8 0 L 6 0 L 6 1 L 4 1 L 4 0 Z M 3 4 L 2.5 13 L 1 13 L 1 14 L 5.5 14 C 5.5 13 5.777045 11.5 7 11.5 C 8.273855 11.52672 8.5 13 8.5 14 L 13 14 L 13 13 L 11.5 13 L 11 4 Z M 7 6 C 8 6 8 7 8 7 L 8 8 L 6 8 L 6 7 C 6 7 6 6 7 6 Z" fill="#555"/>
+        <path d="M 2.5 0 L 2.5 3 L 11.5 3 L 11.5 0 L 10 0 L 10 1 L 8 1 L 8 0 L 6 0 L 6 1 L 4 1 L 4 0 Z M 3 4 L 2.5 13 L 1 13 L 1 14 L 5.5 14 C 5.5 13 5.777045 11.5 7 11.5 C 8.273855 11.52672 8.5 13 8.5 14 L 13 14 L 13 13 L 11.5 13 L 11 4 Z M 7 6 C 8 6 8 7 8 7 L 8 8 L 6 8 L 6 7 C 6 7 6 6 7 6 Z" stroke="white" stroke-linecap="butt" stroke-linejoin="round" stroke-width="2"/>
+      </g>
+      <g id="Graphic_5">
+        <path d="M 2.5 0 L 2.5 3 L 11.5 3 L 11.5 0 L 10 0 L 10 1 L 8 1 L 8 0 L 6 0 L 6 1 L 4 1 L 4 0 Z M 3 4 L 2.5 13 L 1 13 L 1 14 L 5.5 14 C 5.5 13 5.777045 11.5 7 11.5 C 8.273855 11.52672 8.5 13 8.5 14 L 13 14 L 13 13 L 11.5 13 L 11 4 Z M 7 6 C 8 6 8 7 8 7 L 8 8 L 6 8 L 6 7 C 6 7 6 6 7 6 Z" fill="#555"/>
+      </g>
+    </g>
+  </g>
+</svg>
